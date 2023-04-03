@@ -74,6 +74,7 @@ header nav {
   align-items: center;
   border-bottom: 1px solid #ddd;
   padding: 5px;
+   font-size: 1.6em;
   margin-bottom: 5px;
 }
 
@@ -85,7 +86,7 @@ header nav {
 
 
 .producto .nombreProducto {
-  font-size: 1.3rem;
+  font-size: 2.6rem;
   font-family: Segoe UI, sans-serif;
   white-space: nowrap;
 }
@@ -180,4 +181,177 @@ button {
 
 .modal input {
   width: 100%;
+}
+
+.buscar {
+  border-radius: 7px;
+  border: none;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  width: 75%;
+  font-size: 0.9rem;
+  margin-bottom: 3rem;
+  margin-top: 1rem;
+}
+
+
+
+.producto {
+  width: 100%;
+}
+
+.list-group-item.par {
+  background-color: #f3f3f3;
+ 
+}
+
+.list-group-item.impar {
+  background-color: #f7f7f7;
+ 
+}
+
+/* Estilos para el contenedor de productos */
+#listaProductos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+.producto-card {
+  position: relative;
+  padding: 16px;
+  background-color: #fff;
+  border-radius: 7px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.editarProducto {
+  position: absolute;
+  top: 8px;
+   border: none;
+  right: 8px;
+  border: 0;
+  outline: none;
+  box-shadow: none;
+}
+
+.precio {
+  font-size: 1.1em;
+  margin-right: 1rem; /* Agrega margen a la derecha del precio */
+
+}
+
+
+/* Crea una separación entre el precio y el texto "Cantidad" */
+.nombrePrecio {
+	 font-size: 1.1em;
+  display: flex;
+   margin-top: 2rem;
+  justify-content: space-between;
+  margin-bottom: 16px; /* Ajusta este valor según la cantidad de separación deseada */
+}
+
+
+
+/* Estilos para las tarjetas de productos alternativos */
+.producto-grid-item:nth-child(even) .producto-card {
+  background-color: #f2f2f2;
+}
+
+
+
+.boton-icono i {
+  display: block;
+ 
+  margin-bottom: 0.1rem;
+   padding: 8px 15px;
+
+   
+}
+
+.boton-icono {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin-right: 5px;
+  margin-bottom: 5px;
+  padding: 2rem;
+  width: 120px;
+  height: 80px;
+}
+
+.boton-icono svg {
+  font-size: 30px;
+  margin-bottom: 5px;
+}
+
+#contenedor-botones {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 2px;
+  margin-bottom: 2px;
+  justify-content: center;
+}
+
+#contenedor-botones .fila-botones {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+#contenedor-botones .fila-botones .boton-icono {
+  margin-right: 4px;
+  margin-left: 4px;
+}
+
+#contenedor-botones .fila-botones:first-of-type .boton-icono {
+  margin-bottom: 12px;
+}
+
+#contenedor-botones .fila-botones:last-of-type .boton-icono {
+  margin-top: 12px;
+}
+
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #f1f1f1;
+    font-size: 8px;
+    font-family: Segoe UI, sans-serif;
+    text-align: center;
+    padding: 5px 0;
+}
+
+#currentYear {
+    font-weight: bold;
+}
+
+.header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #1c1c1c;
+  color: white;
+  height: 128px;
+}
+
+.logo {
+  margin-right: 16px;
+}
+
+.title {
+  font-size: 24px;
+}
+
+.title h1 {
+  margin: 0;
+  font-weight: normal;
+}
+
+lottie-player {
+  display: block;
+  margin: 0 auto;
 }

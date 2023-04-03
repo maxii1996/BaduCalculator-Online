@@ -1,11 +1,10 @@
 document.getElementById('agregarProducto').addEventListener('click', agregarProducto);
 document.getElementById('facturar').addEventListener('click', facturar);
-
-
 document.addEventListener('DOMContentLoaded', () => {
     cargarProductos();
     mostrarOcultarBotonFacturar();
 });
+document.getElementById('buscarProducto').addEventListener('input', filtrarProductos);
 
 let productoId = 0;
 
@@ -18,7 +17,7 @@ function agregarProducto() {
         return;
     }
 
-    // Validación para evitar agregar productos con precio 0
+  
     if (precio == 0 || precio <= 0) {
         alert('No se pueden agregar productos con precio 0 o menor.');
         return;
@@ -29,11 +28,14 @@ function agregarProducto() {
     nuevoProducto.innerHTML = document.getElementById('productoTemplate').innerHTML.replace(/{id}/g, productoId).replace('{nombreProducto}', nombreProducto).replace('{precio}', precio);
     nuevoProducto.querySelector('.editarProducto').addEventListener('click', editarProducto);
     
+   const listItem = nuevoProducto.querySelector(".inner-product");
+    if (listItem) {
+      listItem.className += productoId % 2 === 0 ? ' par' : ' impar';
+    }
     listaProductos.appendChild(nuevoProducto);
     productoId++;
     mostrarOcultarBotonFacturar();
   
-    // Limpia los campos del formulario después de agregar un nuevo producto
     document.getElementById('nombreProducto').value = '';
     document.getElementById('precio').value = '';
 }
@@ -57,13 +59,11 @@ function mostrarNotificacion(mensaje, tipo) {
     }, 3000);
 }
 
-
-
-
 function editarProducto(event) {
-    const li = event.target.closest('li');
-    const nombreProducto = li.querySelector('.nombreProducto');
-    const precio = li.querySelector('.precio');
+    const card = event.target.closest('.producto-card');
+    const nombreProducto = card.querySelector('.nombreProducto');
+    const precio = card.querySelector('.precio');
+    const producto = card.closest('.producto-card');
 
     const editarProductoModal = new bootstrap.Modal(document.getElementById('editarProductoModal'));
     const confirmarEditarProducto = document.getElementById('confirmarEditarProducto');
@@ -103,19 +103,16 @@ function editarProducto(event) {
     };
 
     eliminarProductoModal.onclick = () => {
-        if (confirm('¿Estás seguro de que deseas eliminar este producto?')) {
-            li.remove();
+        if (confirm('¿Estás seguro de que deseas eliminar este producto? Se guardarán los cambios automaticamente.')) {
+           producto.remove();
             mostrarNotificacion('Producto eliminado correctamente', 'success');
             mostrarOcultarBotonFacturar();
-            editarProductoModal.hide(); // Asegurarse de que se cierre el modal después de eliminar el producto
+            editarProductoModal.hide();
+					guardarProductos();
+		  cargarProductos();
         }
     };
 }
-
-
-
-
-
 
 
 function actualizarPrecio(precioElement, nuevoPrecio) {
@@ -123,40 +120,14 @@ function actualizarPrecio(precioElement, nuevoPrecio) {
 }
 
 
-function eliminarProducto() {
-    const confirmacion = confirm('¿Estás seguro de que deseas eliminar este producto de la lista?');
-
-    if (confirmacion) {
-        const producto = this.closest('li');
-        const separador = producto.nextElementSibling;
-        producto.parentNode.removeChild(producto);
-        if (separador) {
-            separador.parentNode.removeChild(separador);
-        }
-        const elementoAnterior = producto.previousElementSibling;
-        if (elementoAnterior) {
-            elementoAnterior.remove();
-        }
-        this.closest('li');
-        producto.remove();
-        mostrarOcultarBotonFacturar();
-
-        // Mostrar notificación de éxito al eliminar el producto
-        showNotification('Producto eliminado correctamente');
-    }
-}
-
-
-
-
 function facturar() {
     const listaProductos = document.getElementById('listaProductos');
-    const productos = listaProductos.querySelectorAll('li');
+    const productos = listaProductos.querySelectorAll('.producto-card');
     const detalleFacturacion = document.getElementById('detalleFacturacion');
     let total = 0;
     let cantidadProductos = 0;
 
-    detalleFacturacion.innerHTML = ''; // Limpiar el detalle de facturación anterior
+    detalleFacturacion.innerHTML = '';
     productos.forEach(producto => {
         const nombreProducto = producto.querySelector('.nombreProducto').textContent;
         const precio = parseFloat(producto.querySelector('.precio').textContent.substring(1));
@@ -176,9 +147,6 @@ function facturar() {
     document.getElementById('total').textContent = total.toFixed(2);
     document.getElementById('cantidadProductos').textContent = `Cantidad de Productos facturados: ${cantidadProductos}`;
 }
-
-
-
 
 
 document.getElementById('cargarProductos').addEventListener('click', cargarProductos);
@@ -203,12 +171,8 @@ function guardarProductos() {
 
     const productosJson = JSON.stringify(productos);
     localStorage.setItem('productos', productosJson);
-
-    // Mostrar notificación de éxito al guardar los productos
     showNotification('Cambios guardados correctamente');
 }
-
-
 
 
 function cargarProductos() {
@@ -227,7 +191,6 @@ function cargarProductos() {
         agregarProducto();
     });
 
-    // Mostrar notificación de éxito al cargar los productos
     showNotification('Productos cargados correctamente.');
 }
 
@@ -248,8 +211,6 @@ function exportarProductos() {
     link.download = 'productos.json';
     link.click();
     URL.revokeObjectURL(url);
-
-    // Mostrar notificación de éxito al exportar los productos
     showNotification('Productos exportados en un archivo descargable');
 }
 
@@ -267,7 +228,6 @@ function importarProductos(event) {
             agregarProducto();
         });
 
-        // Mostrar notificación de éxito al importar los productos
         showNotification('Productos importados correctamente');
     };
     reader.readAsText(archivo);
@@ -304,3 +264,35 @@ function showNotification(message, duration = 3000) {
         notification.style.display = 'none';
     }, duration);
 }
+
+function filtrarProductos() {
+  const busqueda = this.value.toLowerCase();
+  const listaProductos = document.getElementById('listaProductos');
+  const productos = listaProductos.querySelectorAll('li');
+
+  productos.forEach(producto => {
+    const nombreProducto = producto.querySelector('.nombreProducto').textContent.toLowerCase();
+
+    if (nombreProducto.includes(busqueda)) {
+      producto.style.display = 'block';
+    } else {
+      producto.style.display = 'none';
+    }
+  });
+}
+
+const buscarProducto = document.getElementById('buscarProducto');
+const listaProductos = document.getElementById('listaProductos');
+buscarProducto.addEventListener('input', () => {
+  const valorBusqueda = buscarProducto.value.trim().toLowerCase();
+  listaProductos.childNodes.forEach((producto) => {
+    if (producto.querySelector('.nombreProducto').textContent.trim().toLowerCase().includes(valorBusqueda)) {
+      producto.style.display = 'block';
+    } else {
+      producto.style.display = 'none';
+    }
+  });
+});
+
+
+
