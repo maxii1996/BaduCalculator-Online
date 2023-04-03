@@ -116,3 +116,68 @@ html, body {
 button {
     cursor: pointer;
 }
+
+
+
+
+.navbar {
+  margin-bottom: 1rem;
+}
+
+.tituloSeccion {
+  margin-bottom: 1rem;
+}
+
+.form-container {
+  max-width: 20%;
+}
+
+.productos-container {
+  margin-left: 1rem;
+}
+
+.facturacion {
+  max-width: 100%;
+}
+
+.notification {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  width: auto;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 16px;
+  color: white;
+  background-color: #4caf50;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.modal input {
+  width: 100%;
+}
