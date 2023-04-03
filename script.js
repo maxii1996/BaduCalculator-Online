@@ -6,6 +6,13 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 document.getElementById('buscarProducto').addEventListener('input', filtrarProductos);
 document.getElementById('siguienteCliente').addEventListener('click', siguienteCliente);
+document.getElementById('save-btn').addEventListener('click', saveOptions);
+document.getElementById('reset-final-text-btn').addEventListener('click', resetFinalText);
+document.getElementById('reset-quick-text-1-btn').addEventListener('click', resetQuickText1);
+document.getElementById('reset-quick-text-2-btn').addEventListener('click', resetQuickText2);
+document.getElementById('reset-quick-text-3-btn').addEventListener('click', resetQuickText3);
+
+
 
 let productoId = 0;
 
@@ -320,3 +327,174 @@ function siguienteCliente() {
 }
 
 
+var modalBtn = document.getElementById("modal-btn");
+var modalContainer = document.getElementById("modal-container");
+var closeModalBtn = document.getElementById("close-modal-btn");
+var messageInput = document.getElementById("message-input");
+var endMessageInput = document.getElementById("end-message-input");
+var resetBtn = document.getElementById("reset-btn");
+var resetEndMessageBtn = document.getElementById("reset-end-message-btn");
+var saveBtn = document.getElementById("save-btn");
+var modalContainer = document.getElementById("modal-container");
+var savedValue = localStorage.getItem("savedMessage");
+var savedEndMessage = localStorage.getItem("savedEndMessage");
+var optionsBtn = document.getElementById("modal-btn");
+var modalContainer = document.getElementById("modal-container");
+
+modalBtn.onclick = function() {
+  modalContainer.style.display = "block";
+}
+
+closeModalBtn.onclick = function() {
+  modalContainer.style.display = "none";
+}
+
+
+window.onclick = function(event) {
+  if (event.target == modalContainer) {
+    modalContainer.style.display = "none";
+  }
+}
+
+if (savedValue !== null) {
+  messageInput.value = savedValue;
+}
+
+if (savedEndMessage !== null) {
+  endMessageInput.value = savedEndMessage;
+}
+
+resetBtn.onclick = function() {
+  messageInput.value = "/do La factura mostraría";
+}
+
+resetEndMessageBtn.onclick = function() {
+  endMessageInput.value = defaultEndMessage;
+}
+
+optionsBtn.onclick = function() {
+  modalContainer.style.display = "block";
+}
+
+modalContainer.addEventListener("click", function(event) {
+  event.stopPropagation();
+});
+
+var resetEndMessageBtn = document.getElementById("reset-end-message-btn");
+resetEndMessageBtn.addEventListener("click", function() {
+  var endMessageInput = document.getElementById("end-message-input");
+  endMessageInput.value = "Favor de abonar el importe al tendero más cercano. Gracias por su compra.";
+});
+
+var saveBtn = document.getElementById("save-btn");
+saveBtn.addEventListener("click", function() {
+  var messageInput = document.getElementById("message-input");
+  var endMessageInput = document.getElementById("end-message-input");
+  localStorage.setItem("message", messageInput.value);
+  localStorage.setItem("endMessage", endMessageInput.value);
+  closeModal();
+});
+
+resetBtn.onclick = function() {
+  messageInput.value = "/do La factura mostraría";
+};
+
+// BLOQUEA EL CIERRE CON EL CLICK
+function closeModal() {
+  var modalContainer = document.getElementById("modal-container");
+  modalContainer.style.display = "none";
+}
+
+function saveOptions() {
+    localStorage.setItem('message', document.getElementById('message-input').value);
+    localStorage.setItem('endMessage', document.getElementById('end-message-input').value);
+	localStorage.setItem('finalText', document.getElementById('final-text-input').value);
+    localStorage.setItem('quickText1', document.getElementById('quick-text-1-input').value);
+    localStorage.setItem('quickText2', document.getElementById('quick-text-2-input').value);
+    localStorage.setItem('quickText3', document.getElementById('quick-text-3-input').value);
+    closeModal();
+}
+
+function init() {
+   
+    const messageInput = document.getElementById('message-input');
+    const endMessageInput = document.getElementById('end-message-input');
+    messageInput.value = localStorage.getItem('message') || '/do La factura mostraría';
+    endMessageInput.value = localStorage.getItem('endMessage') || 'Favor de abonar el importe al tendero más cercano. Gracias por su compra.';
+const finalTextInput = document.getElementById('final-text-input');
+  finalTextInput.value = localStorage.getItem('finalText') || '>> TOTAL A PAGAR: ';
+  
+  const quickText1Input = document.getElementById('quick-text-1-input');
+  quickText1Input.value = localStorage.getItem('quickText1') || '';
+
+  const quickText2Input = document.getElementById('quick-text-2-input');
+  quickText2Input.value = localStorage.getItem('quickText2') || '';
+
+  const quickText3Input = document.getElementById('quick-text-3-input');
+  quickText3Input.value = localStorage.getItem('quickText3') || '';
+  
+}
+
+function resetFinalText() {
+  document.getElementById('final-text-input').value = '>> TOTAL A PAGAR: ';
+}
+
+function resetQuickText1() {
+  document.getElementById('quick-text-1-input').value = '';
+}
+
+function resetQuickText2() {
+  document.getElementById('quick-text-2-input').value = '';
+}
+
+function resetQuickText3() {
+  document.getElementById('quick-text-3-input').value = '';
+}
+
+
+// Función para exportar la configuración
+function exportarConfig() {
+  const config = {
+    message: document.getElementById("message-input").value,
+    endMessage: document.getElementById("end-message-input").value,
+    // Asegúrate de agregar aquí los IDs de los otros TextBox
+  };
+
+  const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(config));
+  const downloadAnchorNode = document.createElement("a");
+  downloadAnchorNode.setAttribute("href", dataStr);
+  downloadAnchorNode.setAttribute("download", "config.json");
+  downloadAnchorNode.click();
+  downloadAnchorNode.remove();
+}
+
+// Función para importar la configuración
+function importarConfig(event) {
+  const input = event.target;
+  const reader = new FileReader();
+
+  reader.onload = function () {
+    const config = JSON.parse(reader.result);
+    document.getElementById("message-input").value = config.message;
+    document.getElementById("end-message-input").value = config.endMessage;
+    // Asegúrate de agregar aquí los IDs de los otros TextBox
+
+    // Guarda la configuración importada en localStorage
+    localStorage.setItem("message", config.message);
+    localStorage.setItem("endMessage", config.endMessage);
+    // Asegúrate de guardar aquí los otros TextBox en localStorage
+  };
+
+  reader.readAsText(input.files[0]);
+}
+
+// Vincula las funciones a los eventos de clic de los botones
+document.getElementById("exportarConfig").addEventListener("click", exportarConfig);
+document.getElementById("importarConfig").addEventListener("click", function () {
+  document.getElementById("archivoConfig").click();
+});
+document.getElementById("archivoConfig").addEventListener("change", importarConfig);
+
+
+
+init();

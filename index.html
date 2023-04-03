@@ -17,18 +17,77 @@
 </head>
 <body>
     <header>
-	
-	
-	
-	
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
 		<div id="notification" class="notification" style="display: none;">
     <div id="notification-content" class="notification-content"></div>
 </div>
-            <div class="container">
-			
-	
+ <div class="container">
+<button id="modal-btn" class="btn btn-warning">
+  <i class="fas fa-cog"></i> Opciones
+</button>
 
+
+<div id="modal-container">
+  <div id="modal-content">
+    <h5>Personalizar textos de la Factura</h5>
+
+    <div class="d-flex mt-3">
+      <button id="save-btn" class="btn btn-success ventana-button">
+        <i class="fas fa-save"></i> Guardar
+      </button>
+      <button id="close-modal-btn" class="btn btn-danger ventana-button">
+        <i class="fas fa-times"></i> Cancelar
+      </button>
+      <button id="exportarConfig" class="btn btn-primary ventana-button">
+        <i class="fas fa-file-export"></i> Exportar configuración
+      </button>
+      <button id="importarConfig" class="btn btn-secondary ventana-button">
+        <i class="fas fa-file-import"></i> Importar configuración
+      </button>
+      <input type="file" id="archivoConfig" accept=".json" style="display: none;">
+    </div>
+	
+<br>
+
+
+    <div>
+	
+	
+      <label for="message-input">Productos a Facturar:</label>
+      <input type="text" id="message-input" value="/do La factura mostraría" style="width: 60%;">
+      <button id="reset-btn" class="btn btn-secondary">Restablecer</button>
+    </div>
+    <div>
+      <label for="end-message-input">Cuando Termina la factura:</label>
+      <input type="text" id="end-message-input" value="Favor de abonar el importe al tendero más cercano. Gracias por su compra." style="width: 60%;">
+      <button id="reset-end-message-btn" class="btn btn-secondary">Restablecer</button>
+    </div>
+   
+	
+	  <div>
+  <label for="final-text-input">Texto de Finalización:</label>
+  <input type="text" id="final-text-input" value=">> TOTAL A PAGAR: " style="width: 60%;">
+  <button id="reset-final-text-btn" class="btn btn-secondary">Restablecer</button>
+</div>
+
+<div>
+  <label for="quick-text-1-input">Texto Rápido 1:</label>
+  <input type="text" id="quick-text-1-input" value="" style="width: 60%;">
+  <button id="reset-quick-text-1-btn" class="btn btn-secondary">Restablecer</button>
+</div>
+<div>
+  <label for="quick-text-2-input">Texto Rápido 2:</label>
+  <input type="text" id="quick-text-2-input" value="" style="width: 60%;">
+  <button id="reset-quick-text-2-btn" class="btn btn-secondary">Restablecer</button>
+</div>
+<div>
+  <label for="quick-text-3-input">Texto Rápido 3:</label>
+  <input type="text" id="quick-text-3-input" value="" style="width: 60%;">
+  <button id="reset-quick-text-3-btn" class="btn btn-secondary">Restablecer</button>
+</div>
+  </div>
+  
+</div>
 			
 <div class="row">
   <div class="col">
@@ -90,23 +149,36 @@
 <center>
     <div class="col-md-8">
         <div class="productos">
-            <h2>Productos a Facturar</h2>
+          <span style="font-family: Segoe UI; font-size: 1.5rem;">Productos a Facturar</span>
+
             <div>
                 <input type="text" id="buscarProducto" placeholder="Buscar producto" class="buscar">
-            </div>
+            
+			
+			</div>
 		
 
             <ul id="listaProductos" class="list-group"></ul>
+			
+			
             <input type="file" id="archivoImportar" accept=".json" style="display: none;">
             <div class="button-container">
-                <button id="facturar" class="btn btn-primary custom-button">
+              
+			   <button id="facturar" class="btn btn-primary custom-button">
                     <i class="fas fa-file-invoice-dollar"></i> Facturar
                 </button>
                <button id="siguienteCliente" class="btn btn-secondary w-50 custom-button" disabled>
     <i class="fas fa-user-plus"></i> Siguiente Cliente
 </button>
+			  
 	<div id="notificacionContenedor" class="mt-2"></div>
+	
+	
+	
 <div id="listaProductos" class="mt-2"></div>
+
+ 
+
             </div>
         </div>
     </div>

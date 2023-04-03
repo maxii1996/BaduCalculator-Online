@@ -361,12 +361,23 @@ footer {
 	margin-left: 8rem;
     display: flex;
     width: 100%;
-    padding: 18px;
+	align-items: center;
+    padding: 20px;
+	  justify-content: center;
     margin-top: 3rem; 
 }
 
 .custom-button {
-    width: 50%;
+    width: 45%;
+	max-width: 23rem;
+    text-overflow: ellipsis; 
+    box-sizing: border-box;
+    height: 4rem;
+}
+
+.ventana-button {
+    width: 22%;
+	max-width: 16rem;
     text-overflow: ellipsis; 
     box-sizing: border-box;
     height: 4rem;
@@ -375,3 +386,75 @@ footer {
 .btn-primary {
     margin-right: 20px;
 }
+
+
+
+
+
+
+#options-btn {
+  background-color: #ffc107;
+  color: #333;
+  border: 1px solid #ffc107;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+#options-btn:hover {
+  background-color: #333;
+  color: #fff;
+}
+
+
+#modal-container {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.9);
+}
+
+#modal-content {
+  background-color: #fff;
+  padding: 4rem;
+  max-width: 80%;
+  height: 80%;
+  width: 100%;
+
+  max-height: 80%;
+  overflow-y: auto;
+  border-radius: 5px;
+  position: relative;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#modal-content div {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+#modal-content label {
+  margin-right: 1rem;
+}
+
+
+#modal-content input[type="text"] {
+    width: 100%;
+  max-width: 100%;
+}
+
+
+
+
