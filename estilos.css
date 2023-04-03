@@ -32,12 +32,24 @@ h6 {
     padding: 1rem;
 }
 
-.form, .productos, .facturacion {
+.form, .facturacion {
     border: 1px solid #ccc;
     border-radius: 7px;
-    padding: 3rem;
+    padding: 2rem;
+    width: 90%;
+	font-size: 0.8rem;
+	
+}
+
+.productos{
+	
+	  border: 1px solid #ccc;
+    border-radius: 7px;
+    padding: 2rem;
     width: 100%;
 	font-size: 0.9rem;
+	
+	
 }
 
 header nav {
@@ -61,12 +73,7 @@ header nav {
 }
 
 
-#facturar {
-	
-	 padding: 0.9rem;
-	  margin-top: 3rem;
-  width: 100%;
-}
+
 
 .producto {
   display: flex;
@@ -81,7 +88,6 @@ header nav {
 #detalleFacturacion li {
     font-size: 0.8rem;
 }
-
 
 
 
@@ -351,7 +357,21 @@ footer {
   font-weight: normal;
 }
 
-lottie-player {
-  display: block;
-  margin: 0 auto;
+.button-container {
+	margin-left: 8rem;
+    display: flex;
+    width: 100%;
+    padding: 18px;
+    margin-top: 3rem; 
+}
+
+.custom-button {
+    width: 50%;
+    text-overflow: ellipsis; 
+    box-sizing: border-box;
+    height: 4rem;
+}
+
+.btn-primary {
+    margin-right: 20px;
 }

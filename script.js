@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     mostrarOcultarBotonFacturar();
 });
 document.getElementById('buscarProducto').addEventListener('input', filtrarProductos);
+document.getElementById('siguienteCliente').addEventListener('click', siguienteCliente);
 
 let productoId = 0;
 
@@ -48,16 +49,20 @@ function esProductoDuplicado(nombreProducto) {
 }
 
 
-function mostrarNotificacion(mensaje, tipo) {
+function mostrarNotificacion(mensaje, tipo, icono) {
     const notificacion = document.createElement('div');
-    notificacion.classList.add('alert', `alert-${tipo}`, 'text-center', 'position-fixed', 'bottom-0', 'end-0', 'm-3');
-    notificacion.textContent = mensaje;
-    document.body.appendChild(notificacion);
+    notificacion.classList.add('alert', `alert-${tipo}`, 'text-center', 'position-absolute', 'top-0', 'end-0', 'm-3', 'd-flex', 'align-items-center', 'justify-content-center');
+    notificacion.innerHTML = `<i class="fas ${icono} me-2"></i>${mensaje}`;
+    
+    const notificacionContenedor = document.getElementById('notificacionContenedor');
+    notificacionContenedor.appendChild(notificacion);
 
     setTimeout(() => {
         notificacion.remove();
     }, 3000);
 }
+
+
 
 function editarProducto(event) {
     const card = event.target.closest('.producto-card');
@@ -143,6 +148,9 @@ function facturar() {
             detalleFacturacion.appendChild(detalle);
         }
     });
+
+  const botonSiguienteCliente = document.getElementById("siguienteCliente");
+  botonSiguienteCliente.disabled = false;
 
     document.getElementById('total').textContent = total.toFixed(2);
     document.getElementById('cantidadProductos').textContent = `Cantidad de Productos facturados: ${cantidadProductos}`;
@@ -254,16 +262,17 @@ botonToggleAgregarProducto.addEventListener('click', () => {
 });
 
 function showNotification(message, duration = 3000) {
-    const notification = document.getElementById('notification');
-    const notificationContent = document.getElementById('notification-content');
+  const notification = document.getElementById('notification');
+  const notificationContent = document.getElementById('notification-content');
 
-    notificationContent.textContent = message;
-    notification.style.display = 'block';
+  notificationContent.innerHTML = '<i class="fa fa-ballot-check"></i>' + message;
+  notification.style.display = 'block';
 
-    setTimeout(() => {
-        notification.style.display = 'none';
-    }, duration);
+  setTimeout(() => {
+    notification.style.display = 'none';
+  }, duration);
 }
+
 
 function filtrarProductos() {
   const busqueda = this.value.toLowerCase();
@@ -294,5 +303,20 @@ buscarProducto.addEventListener('input', () => {
   });
 });
 
+
+function siguienteCliente() {
+  const inputsCantidad = document.querySelectorAll(".producto-card input.cantidad");
+  inputsCantidad.forEach((input) => {
+    input.value = 0;
+  });
+  const detalleFacturacion = document.getElementById("detalleFacturacion");
+  detalleFacturacion.innerHTML = "";
+  const botonSiguienteCliente = document.getElementById("siguienteCliente");
+  botonSiguienteCliente.disabled = true;
+   document.getElementById('total').innerText = '0.00';
+    document.getElementById('cantidadProductos').innerText = '';
+	document.getElementById('siguienteCliente').addEventListener('click', siguienteCliente);
+  mostrarNotificacion("Factura realizada. Gracias por su compra", "success", "fa-check");
+}
 
 
