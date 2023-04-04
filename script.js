@@ -159,28 +159,7 @@ function facturar() {
     document.getElementById('total').textContent = total.toFixed(2);
     document.getElementById('cantidadProductos').textContent = `Cantidad de Productos facturados: ${cantidadProductos}`;
 
-const historialVentasTbody = document.getElementById('historial-ventas-tbody');
-  const fechaHora = new Date();
 
-  productos.forEach(producto => {
-    // ... (código existente) ...
-
-    if (cantidad > 0) {
-      // ... (código existente) ...
-
-      // Agrega la venta al historial
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td>${Math.floor(Math.random() * 1000000)}</td>
-        <td>${fechaHora.toLocaleString()}</td>
-        <td>${nombreProducto}</td>
-        <td>${cantidad}</td>
-        <td>$${precio.toFixed(2)}</td>
-        <td>$${subtotal.toFixed(2)}</td>
-      `;
-      historialVentasTbody.appendChild(tr);
-    }
-  });
 
 
 
@@ -573,17 +552,7 @@ document.addEventListener('keydown', (event) => {
 });
 
 
-const openHistorialVentasBtn = document.getElementById('open-historial-ventas');
-const closeHistorialVentasBtn = document.getElementById('close-historial-ventas-modal');
-const historialVentasModal = document.getElementById('historial-ventas-modal');
 
-openHistorialVentasBtn.addEventListener('click', () => {
-  historialVentasModal.style.display = 'block';
-});
-
-closeHistorialVentasBtn.addEventListener('click', () => {
-  historialVentasModal.style.display = 'none';
-});
 
 
 
