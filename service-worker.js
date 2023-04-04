@@ -1,10 +1,12 @@
-var CACHE_NAME = 'baducalc-cache-v1';
+var CACHE_NAME = 'baducalc-cache-v2';
 var urlsToCache = [
   '/',
   '/index.html',
   '/manifest.json',
-  '/estilos.css',
-  '/script.js',
+  '/css/style.css',
+  '/js/app.js',
+  '/icon-192x192.png',
+  '/icon-512x512.png'
 ];
 
 self.addEventListener('install', function(event) {
