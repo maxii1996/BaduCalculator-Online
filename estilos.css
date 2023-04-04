@@ -12,6 +12,7 @@ h2 {
 
 h2.tituloSeccion {
   font-size: 1.25rem;
+  opacity: 0.7;
 }
 
 h6 {
@@ -38,6 +39,7 @@ h6 {
     padding: 2rem;
     width: 90%;
 	font-size: 0.8rem;
+	 background-color: #fafafa;
 	
 }
 
@@ -133,6 +135,9 @@ button {
 
 .tituloSeccion {
   margin-bottom: 1rem;
+  opacity: 0.45;
+    font-size: 1.2rem;
+  font-weight: lighter;
 }
 
 .form-container {
@@ -457,4 +462,54 @@ footer {
 
 
 
+.contenidoFormulario {
+  width: 40%;
+}
 
+
+#productosAFacturar {
+  opacity: 0.4;
+  font-size: 1.6rem;
+  font-weight: lighter;
+}
+
+header {
+
+  top: 0;
+  z-index: 999;
+}
+
+
+.titulo {
+  font-size: 2rem;
+  color: black;
+}
+
+
+
+.logo {
+  height: 40px;
+  margin-right: 10px;
+}
+
+h1 {
+    font-weight: 400;
+}
+
+.container-fluid {
+  background-color: #303030;
+}
+#version {
+  font-size: 0.7rem;
+  color: #efefef;
+  font-weight: 400;
+}
+
+.text-secondary {
+  font-size: 0.8rem;
+  top: -1.4rem
+}
+
+.facturacion-bg {
+  background-color: #efefef;
+}

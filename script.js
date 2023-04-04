@@ -1,8 +1,26 @@
 document.getElementById('agregarProducto').addEventListener('click', agregarProducto);
 document.getElementById('facturar').addEventListener('click', facturar);
-document.addEventListener('DOMContentLoaded', () => {
-    cargarProductos();
-    mostrarOcultarBotonFacturar();
+document.addEventListener("DOMContentLoaded", () => {
+  cargarProductos();
+  mostrarOcultarBotonFacturar();
+  const exportarDatosBtn = document.querySelector("#historialVentasModal .btn-primary");
+  exportarDatosBtn.addEventListener("click", exportarDatos);
+  
+  const closeModal = () => {
+  const modal = document.querySelector('#historialVentasModal');
+  const backdrop = document.querySelector('.modal-backdrop');
+  modal.classList.remove('show');
+  modal.setAttribute('aria-hidden', 'true');
+  modal.setAttribute('style', 'display: none');
+  backdrop.remove();
+  
+}
+
+document.querySelector('#historialVentasModal .btn-close').addEventListener('click', closeModal);
+document.querySelector('#historialVentasModal .btn-secondary').addEventListener('click', closeModal);
+
+
+  
 });
 document.getElementById('buscarProducto').addEventListener('input', filtrarProductos);
 document.getElementById('siguienteCliente').addEventListener('click', siguienteCliente);
@@ -28,7 +46,7 @@ if ('serviceWorker' in navigator) {
 let productoId = 0;
 
 function agregarProducto() {
-    const nombreProducto = document.getElementById('nombreProducto').value;
+    const nombreProducto = document.getElementById('nombreProducto').value.trim();
     const precio = document.getElementById('precio').value;
 
     if (esProductoDuplicado(nombreProducto)) {
@@ -36,6 +54,10 @@ function agregarProducto() {
         return;
     }
 
+    if (nombreProducto.length < 2) {
+        alert('El nombre del producto debe tener al menos 2 caracteres.');
+        return;
+    }
   
     if (precio == 0 || precio <= 0) {
         alert('No se pueden agregar productos con precio 0 o menor.');
@@ -58,6 +80,8 @@ function agregarProducto() {
     document.getElementById('nombreProducto').value = '';
     document.getElementById('precio').value = '';
 }
+
+
 
 
 function esProductoDuplicado(nombreProducto) {
@@ -165,17 +189,23 @@ function facturar() {
         }
     });
 
-  const botonSiguienteCliente = document.getElementById("siguienteCliente");
-  botonSiguienteCliente.disabled = false;
+    const botonSiguienteCliente = document.getElementById("siguienteCliente");
+    botonSiguienteCliente.disabled = false;
 
     document.getElementById('total').textContent = total.toFixed(2);
     document.getElementById('cantidadProductos').textContent = `Cantidad de Productos facturados: ${cantidadProductos}`;
 
-
-
-
-
+    // Cambiar el color de fondo del div con la clase "facturacion" según el precio total
+    const facturacionDiv = document.querySelector('.facturacion');
+    if (total !== 0) {
+        facturacionDiv.style.backgroundColor = '#EAEDF290';
+    } else {
+        facturacionDiv.style.backgroundColor = '#fafafa';
+    }
+	
+	
 }
+
 
 
 document.getElementById('cargarProductos').addEventListener('click', cargarProductos);
@@ -200,7 +230,8 @@ function guardarProductos() {
 
     const productosJson = JSON.stringify(productos);
     localStorage.setItem('productos', productosJson);
-    showNotification('Cambios guardados correctamente');
+   showNotification('Los cambios se han guardado y aplicado correctamente', 3000, 'success', 'fa fa-check');
+
 }
 
 
@@ -264,14 +295,35 @@ function importarProductos(event) {
 
            
 function mostrarOcultarBotonFacturar() {
-    const listaProductos = document.getElementById('listaProductos');
-    const botonFacturar = document.getElementById('facturar');
-    if (listaProductos.children.length === 0) {
-        botonFacturar.style.display = 'none';
-    } else {
-        botonFacturar.style.display = 'block';
-    }
+  const listaProductos = document.getElementById('listaProductos');
+  const botonFacturar = document.getElementById('facturar');
+  const buscarProducto = document.getElementById('buscarProducto');
+  const siguienteCliente = document.getElementById('siguienteCliente');
+  const productosAFacturar = document.querySelector('#productosAFacturar span');
+  const facturacion = document.querySelector('.facturacion');
+
+  if (listaProductos.children.length === 0) {
+    botonFacturar.style.display = 'none';
+    buscarProducto.style.display = 'none';
+    siguienteCliente.style.display = 'none';
+    productosAFacturar.classList.add('zoom');
+    productosAFacturar.textContent = "Agregue productos para comenzar";
+    facturacion.style.display = 'none';
+  } else {
+    botonFacturar.style.display = 'block';
+    buscarProducto.style.display = 'block';
+    siguienteCliente.style.display = 'block';
+    productosAFacturar.classList.remove('zoom');
+    productosAFacturar.textContent = "Productos a Facturar";
+    facturacion.style.display = 'block';
+  }
 }
+
+
+
+
+
+
 
 const botonToggleAgregarProducto = document.getElementById('toggleAgregarProducto');
 const contenidoFormularioAgregarProducto = document.querySelector('.contenidoFormulario');
@@ -279,8 +331,10 @@ const contenidoFormularioAgregarProducto = document.querySelector('.contenidoFor
 botonToggleAgregarProducto.addEventListener('click', () => {
     const estaVisible = contenidoFormularioAgregarProducto.style.display !== 'none';
     contenidoFormularioAgregarProducto.style.display = estaVisible ? 'none' : 'block';
-    botonToggleAgregarProducto.innerHTML = estaVisible ? '&#x25BC;' : '&#x25B2;';
+    botonToggleAgregarProducto.innerHTML = estaVisible ? '<i class="fas fa-chevron-down"></i> Agregar Producto' : '<i class="fas fa-chevron-up"></i> Ocultar Menú';
 });
+
+
 
 function showNotification(message, duration = 3000) {
   const notification = document.getElementById('notification');
@@ -326,19 +380,82 @@ buscarProducto.addEventListener('input', () => {
 
 
 function siguienteCliente() {
+  const total = parseFloat(document.getElementById("total").textContent);
+
+  // Verificar si el total es igual a 0
+  if (total === 0) {
+    mostrarNotificacion("No se pueden facturar $0. Por favor, agregue productos a la factura.", "warning", "fa-exclamation-circle");
+    return; // Salir de la función
+  }
+  
   const inputsCantidad = document.querySelectorAll(".producto-card input.cantidad");
-  inputsCantidad.forEach((input) => {
+  const detalleFacturacion = document.getElementById("detalleFacturacion");
+  let factura = {
+    fecha: new Date(),
+    productos: [],
+    total: total
+  };
+
+  inputsCantidad.forEach((input, index) => {
+    const cantidad = parseInt(input.value);
+    if (cantidad > 0) {
+      const productoCard = input.closest(".producto-card");
+      const nombreProducto = productoCard.querySelector(".nombreProducto").textContent;
+      const precioTexto = productoCard.querySelector(".precio").textContent;
+      const precioProducto = parseFloat(precioTexto.replace("$", ""));
+      factura.productos.push({
+        nombre: nombreProducto,
+        precio: precioProducto,
+        cantidad: cantidad
+      });
+    }
     input.value = 0;
   });
-  const detalleFacturacion = document.getElementById("detalleFacturacion");
+
   detalleFacturacion.innerHTML = "";
   const botonSiguienteCliente = document.getElementById("siguienteCliente");
   botonSiguienteCliente.disabled = true;
-   document.getElementById('total').innerText = '0.00';
-    document.getElementById('cantidadProductos').innerText = '';
-	document.getElementById('siguienteCliente').addEventListener('click', siguienteCliente);
+  document.getElementById("total").innerText = "0.00";
+  document.getElementById("cantidadProductos").innerText = "";
+  generarTablaHistorial(factura);
   mostrarNotificacion("Factura realizada. Gracias por su compra", "success", "fa-check");
+   
+    const facturacionDiv = document.querySelector('.facturacion');
+       facturacionDiv.style.backgroundColor = '#fafafa';
+
 }
+
+
+
+function generarTablaHistorial(factura) {
+	
+	
+	
+	
+  const tableBody = document.getElementById("historialVentasTbody");
+
+  const row = document.createElement("tr");
+  const fechaCell = document.createElement("td");
+  fechaCell.textContent = factura.fecha.toLocaleString();
+  row.appendChild(fechaCell);
+
+  const productosCell = document.createElement("td");
+  productosCell.innerHTML = factura.productos
+    .map(
+      (producto, index) =>
+        `${producto.nombre} ($${producto.precio.toFixed(2)}) x${producto.cantidad}`
+    )
+    .join(", ");
+  row.appendChild(productosCell);
+
+  const totalCell = document.createElement("td");
+  totalCell.textContent = `$${factura.total.toFixed(2)}`;
+  row.appendChild(totalCell);
+
+  tableBody.appendChild(row);
+}
+
+
 
 
 var modalBtn = document.getElementById("modal-btn");
@@ -406,6 +523,7 @@ saveBtn.addEventListener("click", function() {
   var endMessageInput = document.getElementById("end-message-input");
   localStorage.setItem("message", messageInput.value);
   localStorage.setItem("endMessage", endMessageInput.value);
+   showNotification(`Cambios en los textos guardados correctamente`);
   closeModal();
 });
 
@@ -565,6 +683,31 @@ document.addEventListener('keydown', (event) => {
 
 
 
+function exportarDatos() {
+  const table = document.querySelector("#historialVentasTbody");
+  const rows = Array.from(table.querySelectorAll("tr"));
+  const csvContent = rows
+    .map((row) => {
+      const cells = Array.from(row.querySelectorAll("td"));
+      return cells.map((cell) => `"${cell.textContent.replace(/"/g, '""')}"`).join(",");
+    })
+    .join("\n");
+
+  const csvFile = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+  const fileName = "historial_ventas.csv";
+  const link = document.createElement("a");
+
+  if (navigator.msSaveBlob) {
+    navigator.msSaveBlob(csvFile, fileName);
+  } else {
+    link.href = URL.createObjectURL(csvFile);
+    link.setAttribute("download", fileName);
+    link.style.display = "none";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+}
 
 
 

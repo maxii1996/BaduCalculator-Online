@@ -21,13 +21,34 @@
 
 
    <title>BaduCalculator Online</title>
-</head>
+</head> 
 
 
 
 
 <body>
+
+
     <header>
+	
+
+
+
+<div class="container-fluid bg-dark text-white py-3">
+  <div class="container d-flex align-items-center">
+    <img src="https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/icon-192x192.png" alt="BaduCalculator Logo" height="64" align="left">
+    <h1 class="text-white mb-0 ml-3">BaduCalculator <sup class="text-secondary">online</sup></h1>
+   <span id="version">Versión 1.0.0  | Developed by Undermax Software</span>
+  </div>
+</div>
+
+
+	
+	
+</header>
+
+
+	
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
 		
 		<div id="notification" class="notification" style="display: none;">
@@ -39,10 +60,13 @@
 <button id="modal-btn" class="btn btn-warning">
   <i class="fas fa-cog"></i> Opciones
 </button>
-
+<a class="nav-link btn btn-primary" href="#" data-toggle="modal" data-target="#historialVentasModal">
+        <i class="fas fa-history"></i> Ventas
+      </a>
 
 
 <div id="modal-container">
+
 
   <div id="modal-content">
     <h5>Personalizar textos de la Factura</h5>
@@ -103,61 +127,29 @@
   <button id="reset-quick-text-3-btn" class="btn btn-secondary">Restablecer</button>
 </div>
   </div>
-  
 </div>
 			
-<div class="row">
-  <div class="col">
-    <button id="cargarProductos" class="btn btn-primary btn-sm boton-icono">
-      <i class="fa fa-sync"></i>
-      Cargar Productos
-    </button>
-  </div>
-  <div class="col">
-    <button id="guardarProductos" class="btn btn-success btn-sm boton-icono">
-      <i class="fa fa-save"></i>
-      Guardar Productos
-    </button>
-  </div>
+<div class="btn-group" role="group">
+<button id="guardarProductos" class="btn btn-success btn-sm boton-icono">
+    <i class="fa fa-save"></i>
+    Guardar Productos
+  </button>
+  <button id="cargarProductos" class="btn btn-primary btn-sm boton-icono">
+    <i class="fa fa-sync"></i>
+    Cargar Productos
+  </button>
+  <button id="exportarProductos" class="btn btn-secondary btn-sm boton-icono">
+    <i class="fa fa-download"></i>
+    Exportar Productos
+  </button>
+  <button id="importarProductos" class="btn btn-secondary btn-sm boton-icono">
+    <i class="fa fa-upload"></i>
+    Importar Productos
+  </button>
 </div>
+          
 
-<div class="row">
-  <div class="col">
-    <button id="exportarProductos" class="btn btn-secondary btn-sm boton-icono">
-      <i class="fa fa-download"></i>
-      Exportar Productos
-    </button>
-  </div>
-  <div class="col">
-    <button id="importarProductos" class="btn btn-secondary btn-sm boton-icono">
-      <i class="fa fa-upload"></i>
-      Importar Productos
-    </button>
-  </div>
-</div>
-            <input type="file" id="archivoImportar" accept=".json" style="display: none;">
-           <div class="form">
-    <h6 class="d-inline">Agregar Producto</h6>
-    <button id="toggleAgregarProducto" class="btn btn-link p-0 d-inline">&#x25BC;</button>
-    <div class="contenidoFormulario" >
-        <label for="nombreProducto">Nombre del Producto:</label>
-        <input type="text" id="nombreProducto" class="form-control">
-        <label for="precio">Precio:</label>
-        <input type="number" id="precio" class="form-control">
-        <button id="agregarProducto" class="btn btn-primary mt-3">Agregar Producto</button>
-    </div>
-</div>
-
-  <div class="col-md-4">
-                <div class="facturacion">
-                    <h2 class="tituloSeccion">Detalle de Facturación</h2>
-                    <hr>
-                    <ul id="detalleFacturacion" class="list-group"></ul>
-                    <hr>
-                    <h5>Total: $<span id="total">0</span></h5>
-                    <span id="cantidadProductos"></span>
-                </div>
-            </div>
+ 
 
 		   </div>
         </nav>
@@ -165,8 +157,68 @@
 
 <center>
     <div class="col-md-8">
+	
+	
+	
         <div class="productos">
-          <span style="font-family: Segoe UI; font-size: 1.5rem;">Productos a Facturar</span>
+		
+		<input type="file" id="archivoImportar" accept=".json" style="display: none;">
+
+ <div class="col-md-6">
+ <br>
+  <br>
+                <div class="facturacion">
+				
+
+                    <h6 class="tituloSeccion">Detalle de Facturación</h6>
+                
+                    <ul id="detalleFacturacion" class="list-group"></ul>
+                    <hr>
+                    <h6>Total: $<span id="total">0</span></h6>
+                    <span id="cantidadProductos"></span>
+               
+            </div>
+			</div>
+
+<br>
+    <button id="toggleAgregarProducto" class="btn btn-outline-secondary btn-lg">
+        <i class="fas fa-plus"></i> Agregar Producto
+    </button>
+   <br>
+   <br>
+   <div class="contenidoFormulario" style="display: none;">
+        <div class="form-group mb-3">
+            <label for="nombreProducto">Nombre del Producto:</label>
+            <input type="text" id="nombreProducto" class="form-control">
+        </div>
+        <div class="form-group mb-3">
+            <label for="precio">Precio:</label>
+            <input type="number" id="precio" class="form-control" min="1">
+        </div>
+       <button id="agregarProducto" class="btn btn-primary btn"><i class="fas fa-arrow-down "></i> </button>
+
+    
+</div>
+
+
+
+
+
+
+
+
+		
+		<br>
+          
+		 
+    
+        <h6 id="productosAFacturar"><span>Agregue productos para comenzar</span></h6>
+   
+	
+	
+
+
+
 
             <div>
                 <input type="text" id="buscarProducto" placeholder="Buscar producto" class="buscar">
@@ -204,6 +256,8 @@
     </div>
 	<br>
 	
+	</div>
+	
 	
 </center>
    
@@ -240,6 +294,42 @@
 
 
 
+
+<!-- Modal Historial de Ventas -->
+<div class="modal fade" id="historialVentasModal" tabindex="-1" role="dialog" aria-labelledby="historialVentasModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document" style="max-width: 80%;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="historialVentasModalLabel">Historial de Ventas</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Fecha / Hora</th>
+              <th>Productos</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody id="historialVentasTbody">
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-primary">Exportar Datos</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
 <script id="productoTemplate" type="text/template">
     <div class="producto-grid-item">
         <div class="producto-card">
@@ -251,7 +341,7 @@
                 <i class="fas fa-edit"></i>
             </button>
             <label for="cantidad-{id}" class="me-1">Cantidad:</label>
-            <input type="number" id="cantidad-{id}" class="cantidad form-control form-control-sm" value="0" min="0" style="width: 50px;">
+            <input type="number" id="cantidad-{id}" class="cantidad form-control form-control-sm" value="0" min="0" max="999999" style="width: 5rem">
         </div>
     </div>
 </script>
@@ -260,14 +350,9 @@
 </body>
 </html>
 
-<footer style="background-color: #222; color: #fff; font-size: 8px; font-family: Segoe UI, sans-serif; text-align: center; padding: 10px; position: fixed; left: 0; bottom: 0; width: 100%;">
-    &copy; <span id="currentYear"></span> - Undermax Software - Todos los derechos reservados - Versión 0.0.1
-</footer>
 
-<script>
-    const currentYear = new Date().getFullYear();
-    document.getElementById("currentYear").innerHTML = currentYear;
-</script>
+
+
 
 <script>
   if ('serviceWorker' in navigator) {
@@ -280,3 +365,5 @@
     });
   }
 </script>
+
+
