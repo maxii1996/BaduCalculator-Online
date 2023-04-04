@@ -13,7 +13,6 @@ document.getElementById('reset-quick-text-2-btn').addEventListener('click', rese
 document.getElementById('reset-quick-text-3-btn').addEventListener('click', resetQuickText3);
 
 
-
 let productoId = 0;
 
 function agregarProducto() {
@@ -68,8 +67,6 @@ function mostrarNotificacion(mensaje, tipo, icono) {
         notificacion.remove();
     }, 3000);
 }
-
-
 
 function editarProducto(event) {
     const card = event.target.closest('.producto-card');
@@ -161,6 +158,32 @@ function facturar() {
 
     document.getElementById('total').textContent = total.toFixed(2);
     document.getElementById('cantidadProductos').textContent = `Cantidad de Productos facturados: ${cantidadProductos}`;
+
+const historialVentasTbody = document.getElementById('historial-ventas-tbody');
+  const fechaHora = new Date();
+
+  productos.forEach(producto => {
+    // ... (código existente) ...
+
+    if (cantidad > 0) {
+      // ... (código existente) ...
+
+      // Agrega la venta al historial
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${Math.floor(Math.random() * 1000000)}</td>
+        <td>${fechaHora.toLocaleString()}</td>
+        <td>${nombreProducto}</td>
+        <td>${cantidad}</td>
+        <td>$${precio.toFixed(2)}</td>
+        <td>$${subtotal.toFixed(2)}</td>
+      `;
+      historialVentasTbody.appendChild(tr);
+    }
+  });
+
+
+
 }
 
 
@@ -365,7 +388,7 @@ if (savedEndMessage !== null) {
 }
 
 resetBtn.onclick = function() {
-  messageInput.value = "/do La factura mostraría";
+  messageInput.value = "/do La factura mostraría: ";
 }
 
 resetEndMessageBtn.onclick = function() {
@@ -396,7 +419,7 @@ saveBtn.addEventListener("click", function() {
 });
 
 resetBtn.onclick = function() {
-  messageInput.value = "/do La factura mostraría";
+  messageInput.value = "/do La factura mostraría: ";
 };
 
 // BLOQUEA EL CIERRE CON EL CLICK
@@ -451,13 +474,10 @@ function resetQuickText3() {
   document.getElementById('quick-text-3-input').value = '';
 }
 
-
-// Función para exportar la configuración
 function exportarConfig() {
   const config = {
     message: document.getElementById("message-input").value,
     endMessage: document.getElementById("end-message-input").value,
-    // Asegúrate de agregar aquí los IDs de los otros TextBox
   };
 
   const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(config));
@@ -468,7 +488,6 @@ function exportarConfig() {
   downloadAnchorNode.remove();
 }
 
-// Función para importar la configuración
 function importarConfig(event) {
   const input = event.target;
   const reader = new FileReader();
@@ -477,23 +496,99 @@ function importarConfig(event) {
     const config = JSON.parse(reader.result);
     document.getElementById("message-input").value = config.message;
     document.getElementById("end-message-input").value = config.endMessage;
-    // Asegúrate de agregar aquí los IDs de los otros TextBox
-
-    // Guarda la configuración importada en localStorage
     localStorage.setItem("message", config.message);
     localStorage.setItem("endMessage", config.endMessage);
-    // Asegúrate de guardar aquí los otros TextBox en localStorage
   };
 
   reader.readAsText(input.files[0]);
 }
 
-// Vincula las funciones a los eventos de clic de los botones
 document.getElementById("exportarConfig").addEventListener("click", exportarConfig);
 document.getElementById("importarConfig").addEventListener("click", function () {
   document.getElementById("archivoConfig").click();
 });
 document.getElementById("archivoConfig").addEventListener("change", importarConfig);
+
+
+
+
+
+document.getElementById("facturar").addEventListener("click", function () {
+  facturar(); // Llamar a la función facturar() para actualizar el detalle de facturación.
+
+  const messageInput = document.getElementById('message-input');
+  const finalTextInput = document.getElementById('final-text-input');
+  const endMessageInput = document.getElementById('end-message-input');
+
+  let itemsFacturados = '';
+
+  const detalleFacturacion = document.getElementById('detalleFacturacion').children;
+
+  for (const item of Array.from(detalleFacturacion)) {
+    const detalleProducto = item.textContent.split(" (")[0];
+    const cantidad = item.textContent.split(" x")[1].split(" unidades")[0];
+    const subtotal = item.textContent.split(" = $")[1];
+    itemsFacturados += `${detalleProducto} x${cantidad} unidades ($${subtotal}) + `;
+  }
+
+  if (itemsFacturados.length > 0) {
+    itemsFacturados = itemsFacturados.slice(0, -3); // Eliminar el último '+ ' de la cadena.
+  }
+
+  const total = document.getElementById("total").textContent;
+  const textoFactura = `${messageInput.value} ${itemsFacturados} ${finalTextInput.value}$${total} ${endMessageInput.value}`;
+
+  navigator.clipboard.writeText(textoFactura).then(() => {
+    console.log('Texto copiado al portapapeles:', textoFactura);
+  }, (err) => {
+    console.error('Error al copiar el texto:', err);
+  });
+});
+
+
+
+
+document.addEventListener('keydown', (event) => {
+  if (event.ctrlKey || event.metaKey) {
+    let textQuickNumber = null;
+
+    if (event.key === '1') {
+      textQuickNumber = 1;
+    } else if (event.key === '2') {
+      textQuickNumber = 2;
+    } else if (event.key === '3') {
+      textQuickNumber = 3;
+    }
+
+    if (textQuickNumber) {
+      const inputElement = document.getElementById(`quick-text-${textQuickNumber}-input`);
+      const text = inputElement.value;
+      navigator.clipboard.writeText(text).then(() => {
+        showNotification(`Texto Rápido ${textQuickNumber} copiado al portapapeles.`);
+      }).catch(err => {
+        console.error('Error al copiar el texto rápido al portapapeles:', err);
+      });
+    }
+  }
+});
+
+
+const openHistorialVentasBtn = document.getElementById('open-historial-ventas');
+const closeHistorialVentasBtn = document.getElementById('close-historial-ventas-modal');
+const historialVentasModal = document.getElementById('historial-ventas-modal');
+
+openHistorialVentasBtn.addEventListener('click', () => {
+  historialVentasModal.style.display = 'block';
+});
+
+closeHistorialVentasBtn.addEventListener('click', () => {
+  historialVentasModal.style.display = 'none';
+});
+
+
+
+
+
 
 
 

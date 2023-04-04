@@ -18,20 +18,26 @@
 <body>
     <header>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
+		
 		<div id="notification" class="notification" style="display: none;">
     <div id="notification-content" class="notification-content"></div>
 </div>
+
  <div class="container">
+ 
 <button id="modal-btn" class="btn btn-warning">
   <i class="fas fa-cog"></i> Opciones
 </button>
 
 
+
 <div id="modal-container">
+
   <div id="modal-content">
     <h5>Personalizar textos de la Factura</h5>
 
     <div class="d-flex mt-3">
+	
       <button id="save-btn" class="btn btn-success ventana-button">
         <i class="fas fa-save"></i> Guardar
       </button>
@@ -53,35 +59,35 @@
     <div>
 	
 	
-      <label for="message-input">Productos a Facturar:</label>
+      <label for="message-input">Texto Inicial:⠀⠀</label>
       <input type="text" id="message-input" value="/do La factura mostraría" style="width: 60%;">
       <button id="reset-btn" class="btn btn-secondary">Restablecer</button>
     </div>
     <div>
-      <label for="end-message-input">Cuando Termina la factura:</label>
+      <label for="end-message-input">Terminando:⠀⠀</label>
       <input type="text" id="end-message-input" value="Favor de abonar el importe al tendero más cercano. Gracias por su compra." style="width: 60%;">
       <button id="reset-end-message-btn" class="btn btn-secondary">Restablecer</button>
     </div>
    
 	
 	  <div>
-  <label for="final-text-input">Texto de Finalización:</label>
+  <label for="final-text-input">Detalle de Pago: </label>
   <input type="text" id="final-text-input" value=">> TOTAL A PAGAR: " style="width: 60%;">
   <button id="reset-final-text-btn" class="btn btn-secondary">Restablecer</button>
 </div>
 
 <div>
-  <label for="quick-text-1-input">Texto Rápido 1:</label>
+  <label for="quick-text-1-input">Texto Rápido 1:⠀</label>
   <input type="text" id="quick-text-1-input" value="" style="width: 60%;">
   <button id="reset-quick-text-1-btn" class="btn btn-secondary">Restablecer</button>
 </div>
 <div>
-  <label for="quick-text-2-input">Texto Rápido 2:</label>
+  <label for="quick-text-2-input">Texto Rápido 2:⠀</label>
   <input type="text" id="quick-text-2-input" value="" style="width: 60%;">
   <button id="reset-quick-text-2-btn" class="btn btn-secondary">Restablecer</button>
 </div>
 <div>
-  <label for="quick-text-3-input">Texto Rápido 3:</label>
+  <label for="quick-text-3-input">Texto Rápido 3:⠀</label>
   <input type="text" id="quick-text-3-input" value="" style="width: 60%;">
   <button id="reset-quick-text-3-btn" class="btn btn-secondary">Restablecer</button>
 </div>
@@ -171,7 +177,9 @@
     <i class="fas fa-user-plus"></i> Siguiente Cliente
 </button>
 			  
+			  
 	<div id="notificacionContenedor" class="mt-2"></div>
+	
 	
 	
 	
@@ -181,7 +189,11 @@
 
             </div>
         </div>
+		
     </div>
+	<br>
+	
+	
 </center>
    
 <div class="modal fade" id="editarProductoModal" tabindex="-1" aria-labelledby="editarProductoModalLabel" aria-hidden="true">
@@ -210,6 +222,12 @@
         </div>
     </div>
 </div>
+
+
+
+
+
+
 
 <script id="productoTemplate" type="text/template">
     <div class="producto-grid-item">
