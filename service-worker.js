@@ -1,15 +1,17 @@
+var CACHE_NAME = 'baducalc-cache-v1';
+var urlsToCache = [
+  '/',
+  '/index.html',
+  '/manifest.json',
+  '/estilos.css',
+  '/script.js',
+];
+
 self.addEventListener('install', function(event) {
   event.waitUntil(
-    caches.open('cache-name')
+    caches.open(CACHE_NAME)
       .then(function(cache) {
-        return cache.addAll([
-          '/',
-          '/index.html',
-          '/manifest.json',
-          '/script.js',
-          '/estilos.css'
-          // Agrega aquí todos los archivos que quieres que se almacenen en caché
-        ]);
+        return cache.addAll(urlsToCache);
       })
   );
 });
