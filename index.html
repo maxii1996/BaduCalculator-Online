@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-
-
-    <meta charset="UTF-8">
+ <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">	
 	<link rel="stylesheet" href="estilos.css">
@@ -15,40 +13,19 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-
-
-
-
-
    <title>BaduCalculator Online</title>
 </head> 
-
-
-
-
 <body>
-
-
-    <header>
-	
-
-
-
+<header>
 <div class="container-fluid bg-dark text-white py-3">
   <div class="container d-flex align-items-center">
     <img src="https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/icon-192x192.png" alt="BaduCalculator Logo" height="64" align="left">
     <h1 class="text-white mb-0 ml-3">BaduCalculator <sup class="text-secondary">online</sup></h1>
-   <span id="version">Versión 1.0.0  | Developed by Undermax Software</span>
+   <span id="version">Versión 1.0.1  | Developed by Undermax Software</span>
   </div>
 </div>
 
-
-	
-	
 </header>
-
-
-	
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
 		
 		<div id="notification" class="notification" style="display: none;">
@@ -64,15 +41,19 @@
         <i class="fas fa-history"></i> Ventas
       </a>
 
+ 
 
 <div id="modal-container">
 
 
   <div id="modal-content">
-    <h5>Personalizar textos de la Factura</h5>
-
+  
+   <h2>Ajustes generales</h2>
+   <br>
+   <hr>
+  
+  
     <div class="d-flex mt-3">
-	
       <button id="save-btn" class="btn btn-success ventana-button">
         <i class="fas fa-save"></i> Guardar
       </button>
@@ -87,46 +68,133 @@
       </button>
       <input type="file" id="archivoConfig" accept=".json" style="display: none;">
     </div>
-	
+<br>	
 <br>
+  <h4>Personalizar textos de la Factura</h4>
+  <br>
+  
+  
+<style>
+  .custom-input-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+    flex-wrap: nowrap;
+  }
+  
+  .custom-input-label {
+    white-space: nowrap;
+  }
+  
+  .custom-input {
+    background-color: #f8f9fa;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #495057;
+    width: 100%;
+    max-width: 50%;
+    margin-left: 1rem;
+  }
+</style>
 
 
-    <div>
-	
-	
-      <label for="message-input">Texto Inicial:⠀⠀</label>
-      <input type="text" id="message-input" value="/do La factura mostraría" style="width: 60%;">
-      <button id="reset-btn" class="btn btn-secondary">Restablecer</button>
-    </div>
-    <div>
-      <label for="end-message-input">Terminando:⠀⠀</label>
-      <input type="text" id="end-message-input" value="Favor de abonar el importe al tendero más cercano. Gracias por su compra." style="width: 60%;">
-      <button id="reset-end-message-btn" class="btn btn-secondary">Restablecer</button>
-    </div>
-   
-	
-	  <div>
-  <label for="final-text-input">Detalle de Pago: </label>
-  <input type="text" id="final-text-input" value=">> TOTAL A PAGAR: " style="width: 60%;">
+<div class="custom-input-container">
+  <label class="custom-input-label" for="message-input">Texto Inicial:</label>
+  <input type="text" id="message-input" value="/do La factura mostraría" class="custom-input">
+  <button id="reset-btn" class="btn btn-secondary">Restablecer</button>
+</div>
+<div class="custom-input-container">
+  <label class="custom-input-label" for="end-message-input">Terminando:</label>
+  <input type="text" id="end-message-input" value="Favor de abonar el importe al tendero más cercano. Gracias por su compra." class="custom-input">
+  <button id="reset-end-message-btn" class="btn btn-secondary">Restablecer</button>
+</div>
+<div class="custom-input-container">
+  <label class="custom-input-label" for="final-text-input">Detalle de Pago:</label>
+  <input type="text" id="final-text-input" value=">> TOTAL A PAGAR: " class="custom-input">
   <button id="reset-final-text-btn" class="btn btn-secondary">Restablecer</button>
 </div>
-
-<div>
-  <label for="quick-text-1-input">Texto Rápido 1:⠀</label>
-  <input type="text" id="quick-text-1-input" value="" style="width: 60%;">
+<div class="custom-input-container">
+  <label class="custom-input-label" for="quick-text-1-input">Texto Rápido 1:</label>
+  <input type="text" id="quick-text-1-input" value="" class="custom-input">
   <button id="reset-quick-text-1-btn" class="btn btn-secondary">Restablecer</button>
 </div>
-<div>
-  <label for="quick-text-2-input">Texto Rápido 2:⠀</label>
-  <input type="text" id="quick-text-2-input" value="" style="width: 60%;">
+<div class="custom-input-container">
+  <label class="custom-input-label" for="quick-text-2-input">Texto Rápido 2:</label>
+  <input type="text" id="quick-text-2-input" value="" class="custom-input">
   <button id="reset-quick-text-2-btn" class="btn btn-secondary">Restablecer</button>
 </div>
-<div>
-  <label for="quick-text-3-input">Texto Rápido 3:⠀</label>
-  <input type="text" id="quick-text-3-input" value="" style="width: 60%;">
+<div class="custom-input-container">
+  <label class="custom-input-label" for="quick-text-3-input">Texto Rápido 3:</label>
+  <input type="text" id="quick-text-3-input" value="" class="custom-input">
   <button id="reset-quick-text-3-btn" class="btn btn-secondary">Restablecer</button>
 </div>
+
+
+
+<hr>
+
+<h4 style="text-align: left;">Configuración de Sonidos:</h4>
+<!-- Agregar después de la última sección en el modal-content -->
+<div>
+
+
+
+
+<style>
+  .sound-config-row {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    margin-bottom: -2rem !important;
+  }
+
+  .sound-config-container {
+    display: flex !important;
+    flex-direction: column !important;
+  }
+</style>
+
+<div class="sound-config-container">
+  <div class="sound-config-row">
+    <label for="facturarSound" style="margin-right: 5rem;">Sonido del Boton Facturar:</label>
+    <select id="facturarSound" class="form-select ms-2" style="width: 23%;">
+       <option value="1">Sonido 1</option>
+      <option value="2">Sonido 2</option>
+      <option value="3">Sonido 3</option>
+      <option value="4">Sonido 4</option>
+      <option value="5">Sonido 5</option>
+    </select>
+    <input type="range" id="volumenFacturar" name="volumenFacturar" min="0" max="100" value="50" step="1" class="ms-2" style="width: 20%;">
+    <button id="playFacturarButton" class="btn btn-primary ms-2" style="width: 4rem;"><i class="fas fa-play"></i></button>
   </div>
+
+  <div class="sound-config-row">
+    <label for="finalizarSound" style="margin-right: 5rem;">Sonido de Finalizar Factura:</label>
+    <select id="finalizarSound" class="form-select ms-2" style="width: 23%;">
+         <option value="1">Sonido 1</option>
+      <option value="2">Sonido 2</option>
+      <option value="3">Sonido 3</option>
+    </select>
+    <input type="range" id="volumenFinalizar" name="volumenFinalizar" min="0" max="100" value="50" step="1" class="ms-2"  style="width: 20%;" >
+    <button id="playFinalizarButton" class="btn btn-primary ms-2" style="width: 4rem;"><i class="fas fa-play"></i></button>
+  </div>
+</div>
+
+
+
+  
+</div>
+
+
+
+  </div>
+  
+  
+  
+  
 </div>
 			
 <div class="btn-group" role="group">
@@ -146,16 +214,17 @@
     <i class="fa fa-upload"></i>
     Importar Productos
   </button>
-</div>
-          
+  
+  
+</div>      
 
- 
 
 		   </div>
         </nav>
     </header>
-
+	
 <center>
+
     <div class="col-md-8">
 	
 	
@@ -168,12 +237,9 @@
  <br>
   <br>
                 <div class="facturacion">
-				
-
-                    <h6 class="tituloSeccion">Detalle de Facturación</h6>
-                
+                    <h6 class="tituloSeccion">Detalle de Facturación</h6>       
                     <ul id="detalleFacturacion" class="list-group"></ul>
-                    <hr>
+                   <hr>
                     <h6>Total: $<span id="total">0</span></h6>
                     <span id="cantidadProductos"></span>
                
@@ -199,31 +265,14 @@
 
     
 </div>
-
-
-
-
-
-
-
-
 		
 		<br>
           
-		 
-    
         <h6 id="productosAFacturar"><span>Agregue productos para comenzar</span></h6>
    
-	
-	
-
-
-
-
             <div>
                 <input type="text" id="buscarProducto" placeholder="Buscar producto" class="buscar">
-            
-			
+		
 			</div>
 		
 
@@ -242,22 +291,13 @@
 			  
 			  
 	<div id="notificacionContenedor" class="mt-2"></div>
-	
-	
-	
-	
 <div id="listaProductos" class="mt-2"></div>
-
- 
 
             </div>
         </div>
-		
     </div>
 	<br>
-	
 	</div>
-	
 	
 </center>
    
@@ -287,13 +327,6 @@
         </div>
     </div>
 </div>
-
-
-
-
-
-
-
 
 <!-- Modal Historial de Ventas -->
 <div class="modal fade" id="historialVentasModal" tabindex="-1" role="dialog" aria-labelledby="historialVentasModalLabel" aria-hidden="true">
@@ -325,11 +358,6 @@
 </div>
 
 
-
-
-
-
-
 <script id="productoTemplate" type="text/template">
     <div class="producto-grid-item">
         <div class="producto-card">
@@ -349,9 +377,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-cn7l7gDp0eyniUwwAZgrzD06kc/tftFf19TOAs2zVinnD/C7E91j9yyk5//jjpt/" crossorigin="anonymous"></script>
 </body>
 </html>
-
-
-
 
 
 <script>

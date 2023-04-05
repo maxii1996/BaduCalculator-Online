@@ -513,3 +513,17 @@ h1 {
 .facturacion-bg {
   background-color: #efefef;
 }
+
+.sound-config-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.sound-config-container label {
+  margin-right: 2.5rem;
+}
+
+.sound-config-container input[type="range"] {
+  margin: 4rem;
+}

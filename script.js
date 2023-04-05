@@ -2,6 +2,7 @@ document.getElementById('agregarProducto').addEventListener('click', agregarProd
 document.getElementById('facturar').addEventListener('click', facturar);
 document.addEventListener("DOMContentLoaded", () => {
   cargarProductos();
+  loadSavedTexts();
   mostrarOcultarBotonFacturar();
   const exportarDatosBtn = document.querySelector("#historialVentasModal .btn-primary");
   exportarDatosBtn.addEventListener("click", exportarDatos);
@@ -199,12 +200,15 @@ function facturar() {
     const facturacionDiv = document.querySelector('.facturacion');
     if (total !== 0) {
         facturacionDiv.style.backgroundColor = '#EAEDF290';
+		 playFacturarSound();
     } else {
         facturacionDiv.style.backgroundColor = '#fafafa';
     }
 	
 	
 }
+
+
 
 
 
@@ -418,6 +422,7 @@ function siguienteCliente() {
   document.getElementById("total").innerText = "0.00";
   document.getElementById("cantidadProductos").innerText = "";
   generarTablaHistorial(factura);
+  playSiguienteClienteSound()
   mostrarNotificacion("Factura realizada. Gracias por su compra", "success", "fa-check");
    
     const facturacionDiv = document.querySelector('.facturacion');
@@ -521,11 +526,27 @@ var saveBtn = document.getElementById("save-btn");
 saveBtn.addEventListener("click", function() {
   var messageInput = document.getElementById("message-input");
   var endMessageInput = document.getElementById("end-message-input");
+  var finalTextInput = document.getElementById("final-text-input");
+  var quickText1Input = document.getElementById("quick-text-1-input");
+  var quickText2Input = document.getElementById("quick-text-2-input");
+  var quickText3Input = document.getElementById("quick-text-3-input");
+
   localStorage.setItem("message", messageInput.value);
   localStorage.setItem("endMessage", endMessageInput.value);
-   showNotification(`Cambios en los textos guardados correctamente`);
+  localStorage.setItem("finalText", finalTextInput.value);
+  localStorage.setItem("quickText1", quickText1Input.value);
+  localStorage.setItem("quickText2", quickText2Input.value);
+  localStorage.setItem("quickText3", quickText3Input.value);
+  localStorage.setItem("facturarSound", document.getElementById("facturarSound").value);
+  localStorage.setItem("finalizarSound", document.getElementById("finalizarSound").value);
+  localStorage.setItem("volumenFacturar", document.getElementById("volumenFacturar").value);
+  localStorage.setItem("volumenFinalizar", document.getElementById("volumenFinalizar").value);
+
+  showNotification(`Cambios en los textos y configuraciones de sonido guardados correctamente`);
   closeModal();
+ 
 });
+
 
 resetBtn.onclick = function() {
   messageInput.value = "/do La factura mostraría: ";
@@ -544,7 +565,14 @@ function saveOptions() {
     localStorage.setItem('quickText1', document.getElementById('quick-text-1-input').value);
     localStorage.setItem('quickText2', document.getElementById('quick-text-2-input').value);
     localStorage.setItem('quickText3', document.getElementById('quick-text-3-input').value);
-    closeModal();
+     localStorage.setItem("facturarSound", document.getElementById("facturarSound").value);
+  localStorage.setItem("finalizarSound", document.getElementById("finalizarSound").value);
+  localStorage.setItem("volumenFacturar", document.getElementById("volumenFacturar").value);
+  localStorage.setItem("volumenFinalizar", document.getElementById("volumenFinalizar").value);
+
+  showNotification(`Cambios en los textos y configuraciones de sonido guardados correctamente`);
+  closeModal();
+   
 }
 
 function init() {
@@ -584,9 +612,17 @@ function resetQuickText3() {
 }
 
 function exportarConfig() {
-  const config = {
+   const config = {
     message: document.getElementById("message-input").value,
     endMessage: document.getElementById("end-message-input").value,
+    finalText: document.getElementById("final-text-input").value,
+    quickText1: document.getElementById("quick-text-1-input").value,
+    quickText2: document.getElementById("quick-text-2-input").value,
+    quickText3: document.getElementById("quick-text-3-input").value,
+	 facturarSound: document.getElementById("facturarSound").value,
+    finalizarSound: document.getElementById("finalizarSound").value,
+    volumenFacturar: document.getElementById("volumenFacturar").value,
+    volumenFinalizar: document.getElementById("volumenFinalizar").value,
   };
 
   const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(config));
@@ -605,8 +641,28 @@ function importarConfig(event) {
     const config = JSON.parse(reader.result);
     document.getElementById("message-input").value = config.message;
     document.getElementById("end-message-input").value = config.endMessage;
+    document.getElementById("final-text-input").value = config.finalText;
+    document.getElementById("quick-text-1-input").value = config.quickText1;
+    document.getElementById("quick-text-2-input").value = config.quickText2;
+    document.getElementById("quick-text-3-input").value = config.quickText3;
+
     localStorage.setItem("message", config.message);
     localStorage.setItem("endMessage", config.endMessage);
+    localStorage.setItem("finalText", config.finalText);
+    localStorage.setItem("quickText1", config.quickText1);
+    localStorage.setItem("quickText2", config.quickText2);
+    localStorage.setItem("quickText3", config.quickText3);
+	
+	document.getElementById("facturarSound").value = config.facturarSound;
+    document.getElementById("finalizarSound").value = config.finalizarSound;
+    document.getElementById("volumenFacturar").value = config.volumenFacturar;
+    document.getElementById("volumenFinalizar").value = config.volumenFinalizar;
+
+    localStorage.setItem("facturarSound", config.facturarSound);
+    localStorage.setItem("finalizarSound", config.finalizarSound);
+    localStorage.setItem("volumenFacturar", config.volumenFacturar);
+    localStorage.setItem("volumenFinalizar", config.volumenFinalizar);
+	
   };
 
   reader.readAsText(input.files[0]);
@@ -710,6 +766,129 @@ function exportarDatos() {
 }
 
 
+
+
+const facturarSoundSelect = document.getElementById('facturarSound');
+const playFacturarButton = document.getElementById('playFacturarButton');
+const volumenFacturarSlider = document.getElementById('volumenFacturar');
+
+const sounds = [
+  'https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Factura1.wav',
+  'https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Factura2.wav',
+  'https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Factura3.wav',
+  'https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Factura4.wav',
+  'https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Factura5.wav',
+];
+
+if (facturarSoundSelect && playFacturarButton && volumenFacturarSlider) {
+  playFacturarButton.addEventListener('click', () => {
+    const soundIndex = parseInt(facturarSoundSelect.value) - 1;
+    const soundUrl = sounds[soundIndex];
+    const audio = new Audio(soundUrl);
+    audio.volume = volumenFacturarSlider.value / 100;
+    audio.play();
+  });
+
+  volumenFacturarSlider.addEventListener('input', () => {
+    audio.volume = volumenFacturarSlider.value / 100;
+  });
+}
+
+const finalizarSoundSelect = document.getElementById('finalizarSound');
+const playFinalizarButton = document.getElementById('playFinalizarButton');
+const volumenFinalizarSlider = document.getElementById('volumenFinalizar');
+
+const finalizarSounds = [
+  'https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Final1.wav',
+  'https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Final2.wav',
+  'https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Final3.wav',
+];
+
+if (finalizarSoundSelect && playFinalizarButton && volumenFinalizarSlider) {
+  playFinalizarButton.addEventListener('click', () => {
+    const soundIndex = parseInt(finalizarSoundSelect.value) - 1;
+    const soundUrl = finalizarSounds[soundIndex];
+    const audio = new Audio(soundUrl);
+    audio.volume = volumenFinalizarSlider.value / 100;
+    audio.play();
+  });
+
+  volumenFinalizarSlider.addEventListener('input', () => {
+    audio.volume = volumenFinalizarSlider.value / 100;
+  });
+}
+
+
+
+function playFacturarSound() {
+    const facturarSoundSelect = document.getElementById('facturarSound');
+    const playFacturarButton = document.getElementById('playFacturarButton');
+    const volumenFacturarSlider = document.getElementById('volumenFacturar');
+
+    const sounds = [
+      'https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Factura1.wav',
+      'https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Factura2.wav',
+      'https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Factura3.wav',
+      'https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Factura4.wav',
+      'https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Factura5.wav',
+    ];
+
+    if (facturarSoundSelect && playFacturarButton && volumenFacturarSlider) {
+      const soundIndex = parseInt(facturarSoundSelect.value) - 1;
+      const soundUrl = sounds[soundIndex];
+      const audio = new Audio(soundUrl);
+      audio.volume = volumenFacturarSlider.value / 100;
+      audio.play();
+    }
+}
+
+
+function playSiguienteClienteSound() {
+    const facturarSoundSelect = document.getElementById('facturarSound');
+    const playFacturarButton = document.getElementById('playFacturarButton');
+    const volumenFacturarSlider = document.getElementById('volumenFacturar');
+
+    const sounds = [
+      'https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Final1.wav',
+  'https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Final2.wav',
+  'https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Final3.wav',
+    ];
+
+    if (facturarSoundSelect && playFacturarButton && volumenFacturarSlider) {
+      const soundIndex = parseInt(finalizarSoundSelect.value) - 1;
+    const soundUrl = finalizarSounds[soundIndex];
+    const audio = new Audio(soundUrl);
+    audio.volume = volumenFinalizarSlider.value / 100;
+    audio.play();
+    }
+}
+
+
+
+
+
+
+function loadSavedTexts() {
+  var messageInput = document.getElementById("message-input");
+  var endMessageInput = document.getElementById("end-message-input");
+  var finalTextInput = document.getElementById("final-text-input");
+  var quickText1Input = document.getElementById("quick-text-1-input");
+  var quickText2Input = document.getElementById("quick-text-2-input");
+  var quickText3Input = document.getElementById("quick-text-3-input");
+
+  messageInput.value = localStorage.getItem("message") || messageInput.value;
+  endMessageInput.value = localStorage.getItem("endMessage") || endMessageInput.value;
+  finalTextInput.value = localStorage.getItem("finalText") || finalTextInput.value;
+  quickText1Input.value = localStorage.getItem("quickText1") || quickText1Input.value;
+  quickText2Input.value = localStorage.getItem("quickText2") || quickText2Input.value;
+  quickText3Input.value = localStorage.getItem("quickText3") || quickText3Input.value;
+
+document.getElementById("facturarSound").value = localStorage.getItem("facturarSound") || "1";
+document.getElementById("finalizarSound").value = localStorage.getItem("finalizarSound") || "1";
+document.getElementById("volumenFacturar").value = localStorage.getItem("volumenFacturar") || "50";
+document.getElementById("volumenFinalizar").value = localStorage.getItem("volumenFinalizar") || "50";
+
+}
 
 
 
