@@ -21,7 +21,7 @@
   <div class="container d-flex align-items-center">
     <img src="https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/icon-192x192.png" alt="BaduCalculator Logo" height="64" align="left">
     <h1 class="text-white mb-0 ml-3">BaduCalculator <sup class="text-secondary">online</sup></h1>
-   <span id="version">Versión 1.0.1  | Developed by Undermax Software</span>
+   <span id="version">Versión 1.0.2  | Developed by Undermax Software</span>
   </div>
 </div>
 
@@ -48,12 +48,14 @@
 
   <div id="modal-content">
   
-   <h2>Ajustes generales</h2>
-   <br>
+ 
+
    <hr>
   
-  
+    <h2>Ajustes generales</h2>
+	
     <div class="d-flex mt-3">
+	
       <button id="save-btn" class="btn btn-success ventana-button">
         <i class="fas fa-save"></i> Guardar
       </button>
@@ -68,8 +70,7 @@
       </button>
       <input type="file" id="archivoConfig" accept=".json" style="display: none;">
     </div>
-<br>	
-<br>
+
   <h4>Personalizar textos de la Factura</h4>
   <br>
   
@@ -84,6 +85,7 @@
   
   .custom-input-label {
     white-space: nowrap;
+	margin-left: 2rem !important;
   }
   
   .custom-input {
@@ -94,9 +96,12 @@
     font-size: 1rem;
     line-height: 1.5;
     color: #495057;
-    width: 100%;
-    max-width: 50%;
-    margin-left: 1rem;
+    width: 30%;
+	padding-left: 2rem;
+	padding-right: 2rem;
+    max-width: 30%;
+    margin-left: 2rem;
+	   margin-right: 2rem;
   }
 </style>
 
@@ -131,24 +136,18 @@
   <input type="text" id="quick-text-3-input" value="" class="custom-input">
   <button id="reset-quick-text-3-btn" class="btn btn-secondary">Restablecer</button>
 </div>
-
-
-
 <hr>
 
 <h4 style="text-align: left;">Configuración de Sonidos:</h4>
-<!-- Agregar después de la última sección en el modal-content -->
 <div>
-
-
-
 
 <style>
   .sound-config-row {
     display: flex !important;
     align-items: center !important;
     justify-content: flex-start !important;
-    margin-bottom: -2rem !important;
+    margin-bottom: -6rem !important;
+	margin-left: 2rem !important;
   }
 
   .sound-config-container {
@@ -180,21 +179,10 @@
     </select>
     <input type="range" id="volumenFinalizar" name="volumenFinalizar" min="0" max="100" value="50" step="1" class="ms-2"  style="width: 20%;" >
     <button id="playFinalizarButton" class="btn btn-primary ms-2" style="width: 4rem;"><i class="fas fa-play"></i></button>
+     </div>
+   </div>
   </div>
-</div>
-
-
-
-  
-</div>
-
-
-
-  </div>
-  
-  
-  
-  
+ </div>
 </div>
 			
 <div class="btn-group" role="group">
@@ -217,8 +205,6 @@
   
   
 </div>      
-
-
 		   </div>
         </nav>
     </header>
@@ -226,11 +212,7 @@
 <center>
 
     <div class="col-md-8">
-	
-	
-	
         <div class="productos">
-		
 		<input type="file" id="archivoImportar" accept=".json" style="display: none;">
 
  <div class="col-md-6">
@@ -241,8 +223,7 @@
                     <ul id="detalleFacturacion" class="list-group"></ul>
                    <hr>
                     <h6>Total: $<span id="total">0</span></h6>
-                    <span id="cantidadProductos"></span>
-               
+                    <span id="cantidadProductos"></span>              
             </div>
 			</div>
 
@@ -263,33 +244,23 @@
         </div>
        <button id="agregarProducto" class="btn btn-primary btn"><i class="fas fa-arrow-down "></i> </button>
 
-    
 </div>
-		
 		<br>
-          
         <h6 id="productosAFacturar"><span>Agregue productos para comenzar</span></h6>
-   
+ 
             <div>
                 <input type="text" id="buscarProducto" placeholder="Buscar producto" class="buscar">
-		
 			</div>
-		
-
             <ul id="listaProductos" class="list-group"></ul>
-			
-			
             <input type="file" id="archivoImportar" accept=".json" style="display: none;">
             <div class="button-container">
-              
 			   <button id="facturar" class="btn btn-primary custom-button">
                     <i class="fas fa-file-invoice-dollar"></i> Facturar
                 </button>
                <button id="siguienteCliente" class="btn btn-secondary w-50 custom-button" disabled>
     <i class="fas fa-user-plus"></i> Siguiente Cliente
 </button>
-			  
-			  
+			  		  
 	<div id="notificacionContenedor" class="mt-2"></div>
 <div id="listaProductos" class="mt-2"></div>
 
@@ -328,7 +299,6 @@
     </div>
 </div>
 
-<!-- Modal Historial de Ventas -->
 <div class="modal fade" id="historialVentasModal" tabindex="-1" role="dialog" aria-labelledby="historialVentasModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document" style="max-width: 80%;">
     <div class="modal-content">
@@ -378,7 +348,6 @@
 </body>
 </html>
 
-
 <script>
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', function() {
@@ -390,5 +359,3 @@
     });
   }
 </script>
-
-

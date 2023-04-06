@@ -413,25 +413,45 @@ footer {
 
 
 #modal-container {
-  display: none;
   position: fixed;
-  z-index: 1;
-  left: 0;
   top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  overflow: auto;
   background-color: rgba(0, 0, 0, 0.9);
+  display: none;
+  z-index: 1;
 }
 
-#modal-content {
-  background-color: #fff;
-  padding: 4rem;
-  max-width: 80%;
-  height: 80%;
-  width: 100%;
 
-  max-height: 80%;
+@media (min-width: 1080px) {
+  .d-flex.mt-3 {
+    gap: 1rem;
+	padding: 9rem;
+	padding-left: 3rem;
+	padding-right: 3rem;
+	width: 60%;
+	max-width: 60%;
+	height: 27%;
+	padding-bottom: 2.4rem;
+	padding-top: 2.4rem;
+	max-height: 27%;
+
+	
+	
+  }
+}
+
+
+
+#modal-content {
+  background-color: #f5f5f5;
+  padding: 1rem;
+  max-width: 100%;
+  height: 100%;
+  max-height: 100%;
+  width: 100%;
+  max-height: 100%;
   overflow-y: auto;
   border-radius: 5px;
   position: relative;
@@ -447,7 +467,8 @@ footer {
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  margin-bottom: 1rem;
+  height: 100%:
+  
 }
 
 #modal-content label {
@@ -517,7 +538,7 @@ h1 {
 .sound-config-container {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  
 }
 
 .sound-config-container label {
@@ -525,5 +546,9 @@ h1 {
 }
 
 .sound-config-container input[type="range"] {
-  margin: 4rem;
+  margin: 1rem;
+}
+
+.no-scroll {
+  overflow: hidden;
 }

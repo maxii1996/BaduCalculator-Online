@@ -3,26 +3,18 @@ document.getElementById('facturar').addEventListener('click', facturar);
 document.addEventListener("DOMContentLoaded", () => {
   cargarProductos();
   loadSavedTexts();
+  loadSalesFromLocalStorage();
   mostrarOcultarBotonFacturar();
   const exportarDatosBtn = document.querySelector("#historialVentasModal .btn-primary");
   exportarDatosBtn.addEventListener("click", exportarDatos);
-  
-  const closeModal = () => {
-  const modal = document.querySelector('#historialVentasModal');
-  const backdrop = document.querySelector('.modal-backdrop');
-  modal.classList.remove('show');
-  modal.setAttribute('aria-hidden', 'true');
-  modal.setAttribute('style', 'display: none');
-  backdrop.remove();
-  
-}
+
+
 
 document.querySelector('#historialVentasModal .btn-close').addEventListener('click', closeModal);
 document.querySelector('#historialVentasModal .btn-secondary').addEventListener('click', closeModal);
-
-
-  
+ 
 });
+
 document.getElementById('buscarProducto').addEventListener('input', filtrarProductos);
 document.getElementById('siguienteCliente').addEventListener('click', siguienteCliente);
 document.getElementById('save-btn').addEventListener('click', saveOptions);
@@ -30,7 +22,6 @@ document.getElementById('reset-final-text-btn').addEventListener('click', resetF
 document.getElementById('reset-quick-text-1-btn').addEventListener('click', resetQuickText1);
 document.getElementById('reset-quick-text-2-btn').addEventListener('click', resetQuickText2);
 document.getElementById('reset-quick-text-3-btn').addEventListener('click', resetQuickText3);
-
 
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', function() {
@@ -41,8 +32,6 @@ if ('serviceWorker' in navigator) {
     });
   });
 }
-
-
 
 let productoId = 0;
 
@@ -81,9 +70,6 @@ function agregarProducto() {
     document.getElementById('nombreProducto').value = '';
     document.getElementById('precio').value = '';
 }
-
-
-
 
 function esProductoDuplicado(nombreProducto) {
     const listaProductos = document.getElementById('listaProductos');
@@ -165,7 +151,6 @@ function actualizarPrecio(precioElement, nuevoPrecio) {
   precioElement.textContent = '$' + nuevoPrecio.toFixed(2);
 }
 
-
 function facturar() {
     const listaProductos = document.getElementById('listaProductos');
     const productos = listaProductos.querySelectorAll('.producto-card');
@@ -183,7 +168,6 @@ function facturar() {
             const subtotal = precio * cantidad;
             total += subtotal;
             cantidadProductos += cantidad;
-
             const detalle = document.createElement('li');
             detalle.innerHTML = `${nombreProducto} ($${precio}) x${cantidad} unidades = $${subtotal.toFixed(2)}`;
             detalleFacturacion.appendChild(detalle);
@@ -196,21 +180,14 @@ function facturar() {
     document.getElementById('total').textContent = total.toFixed(2);
     document.getElementById('cantidadProductos').textContent = `Cantidad de Productos facturados: ${cantidadProductos}`;
 
-    // Cambiar el color de fondo del div con la clase "facturacion" según el precio total
     const facturacionDiv = document.querySelector('.facturacion');
     if (total !== 0) {
         facturacionDiv.style.backgroundColor = '#EAEDF290';
 		 playFacturarSound();
     } else {
         facturacionDiv.style.backgroundColor = '#fafafa';
-    }
-	
-	
+    }		
 }
-
-
-
-
 
 document.getElementById('cargarProductos').addEventListener('click', cargarProductos);
 document.getElementById('guardarProductos').addEventListener('click', guardarProductos);
@@ -296,8 +273,7 @@ function importarProductos(event) {
     };
     reader.readAsText(archivo);
 }
-
-           
+          
 function mostrarOcultarBotonFacturar() {
   const listaProductos = document.getElementById('listaProductos');
   const botonFacturar = document.getElementById('facturar');
@@ -322,12 +298,6 @@ function mostrarOcultarBotonFacturar() {
     facturacion.style.display = 'block';
   }
 }
-
-
-
-
-
-
 
 const botonToggleAgregarProducto = document.getElementById('toggleAgregarProducto');
 const contenidoFormularioAgregarProducto = document.querySelector('.contenidoFormulario');
@@ -386,10 +356,10 @@ buscarProducto.addEventListener('input', () => {
 function siguienteCliente() {
   const total = parseFloat(document.getElementById("total").textContent);
 
-  // Verificar si el total es igual a 0
+
   if (total === 0) {
     mostrarNotificacion("No se pueden facturar $0. Por favor, agregue productos a la factura.", "warning", "fa-exclamation-circle");
-    return; // Salir de la función
+    return;
   }
   
   const inputsCantidad = document.querySelectorAll(".producto-card input.cantidad");
@@ -434,16 +404,11 @@ function siguienteCliente() {
 
 function generarTablaHistorial(factura) {
 	
-	
-	
-	
   const tableBody = document.getElementById("historialVentasTbody");
-
   const row = document.createElement("tr");
   const fechaCell = document.createElement("td");
   fechaCell.textContent = factura.fecha.toLocaleString();
   row.appendChild(fechaCell);
-
   const productosCell = document.createElement("td");
   productosCell.innerHTML = factura.productos
     .map(
@@ -456,12 +421,9 @@ function generarTablaHistorial(factura) {
   const totalCell = document.createElement("td");
   totalCell.textContent = `$${factura.total.toFixed(2)}`;
   row.appendChild(totalCell);
-
   tableBody.appendChild(row);
+  saveSalesToLocalStorage();
 }
-
-
-
 
 var modalBtn = document.getElementById("modal-btn");
 var modalContainer = document.getElementById("modal-container");
@@ -486,11 +448,14 @@ closeModalBtn.onclick = function() {
 }
 
 
-window.onclick = function(event) {
+window.onclick = function (event) {
   if (event.target == modalContainer) {
     modalContainer.style.display = "none";
   }
-}
+};
+
+
+
 
 if (savedValue !== null) {
   messageInput.value = savedValue;
@@ -552,11 +517,14 @@ resetBtn.onclick = function() {
   messageInput.value = "/do La factura mostraría: ";
 };
 
-// BLOQUEA EL CIERRE CON EL CLICK
 function closeModal() {
   var modalContainer = document.getElementById("modal-container");
   modalContainer.style.display = "none";
 }
+
+
+
+
 
 function saveOptions() {
     localStorage.setItem('message', document.getElementById('message-input').value);
@@ -679,7 +647,7 @@ document.getElementById("archivoConfig").addEventListener("change", importarConf
 
 
 document.getElementById("facturar").addEventListener("click", function () {
-  facturar(); // Llamar a la función facturar() para actualizar el detalle de facturación.
+  facturar();
 
   const messageInput = document.getElementById('message-input');
   const finalTextInput = document.getElementById('final-text-input');
@@ -697,7 +665,7 @@ document.getElementById("facturar").addEventListener("click", function () {
   }
 
   if (itemsFacturados.length > 0) {
-    itemsFacturados = itemsFacturados.slice(0, -3); // Eliminar el último '+ ' de la cadena.
+    itemsFacturados = itemsFacturados.slice(0, -3); 
   }
 
   const total = document.getElementById("total").textContent;
@@ -766,8 +734,6 @@ function exportarDatos() {
 }
 
 
-
-
 const facturarSoundSelect = document.getElementById('facturarSound');
 const playFacturarButton = document.getElementById('playFacturarButton');
 const volumenFacturarSlider = document.getElementById('volumenFacturar');
@@ -780,17 +746,21 @@ const sounds = [
   'https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Factura5.wav',
 ];
 
+let audio; // Definir audio fuera del evento 'click'
+
 if (facturarSoundSelect && playFacturarButton && volumenFacturarSlider) {
   playFacturarButton.addEventListener('click', () => {
     const soundIndex = parseInt(facturarSoundSelect.value) - 1;
     const soundUrl = sounds[soundIndex];
-    const audio = new Audio(soundUrl);
+    audio = new Audio(soundUrl); // Asignar valor a audio dentro del evento 'click'
     audio.volume = volumenFacturarSlider.value / 100;
     audio.play();
   });
 
   volumenFacturarSlider.addEventListener('input', () => {
-    audio.volume = volumenFacturarSlider.value / 100;
+    if (audio) { // Asegurarse de que audio está definido antes de cambiar el volumen
+      audio.volume = volumenFacturarSlider.value / 100;
+    }
   });
 }
 
@@ -804,20 +774,23 @@ const finalizarSounds = [
   'https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Final3.wav',
 ];
 
+let finalizarAudio; // Definir finalizarAudio fuera del evento 'click'
+
 if (finalizarSoundSelect && playFinalizarButton && volumenFinalizarSlider) {
   playFinalizarButton.addEventListener('click', () => {
     const soundIndex = parseInt(finalizarSoundSelect.value) - 1;
     const soundUrl = finalizarSounds[soundIndex];
-    const audio = new Audio(soundUrl);
-    audio.volume = volumenFinalizarSlider.value / 100;
-    audio.play();
+    finalizarAudio = new Audio(soundUrl); // Asignar valor a finalizarAudio dentro del evento 'click'
+    finalizarAudio.volume = volumenFinalizarSlider.value / 100;
+    finalizarAudio.play();
   });
 
   volumenFinalizarSlider.addEventListener('input', () => {
-    audio.volume = volumenFinalizarSlider.value / 100;
+    if (finalizarAudio) { // Asegurarse de que finalizarAudio está definido antes de cambiar el volumen
+      finalizarAudio.volume = volumenFinalizarSlider.value / 100;
+    }
   });
 }
-
 
 
 function playFacturarSound() {
@@ -864,10 +837,6 @@ function playSiguienteClienteSound() {
 }
 
 
-
-
-
-
 function loadSavedTexts() {
   var messageInput = document.getElementById("message-input");
   var endMessageInput = document.getElementById("end-message-input");
@@ -890,7 +859,29 @@ document.getElementById("volumenFinalizar").value = localStorage.getItem("volume
 
 }
 
+function saveSalesToLocalStorage() {
+  const tableBody = document.getElementById("historialVentasTbody");
+  localStorage.setItem('salesHistory', tableBody.innerHTML);
+}
 
+function loadSalesFromLocalStorage() {
+  const tableBody = document.getElementById("historialVentasTbody");
+  const savedSalesHistory = localStorage.getItem('salesHistory');
+  if (savedSalesHistory) {
+    tableBody.innerHTML = savedSalesHistory;
+  }
+}
+
+
+function closeHistorialVentasModal() {
+  $('#historialVentasModal').modal('hide');
+}
+
+
+const closeButtons = document.querySelectorAll("#historialVentasModal .btn-close, #historialVentasModal .btn-secondary");
+closeButtons.forEach(button => {
+  button.addEventListener('click', closeHistorialVentasModal);
+});
 
 
 
