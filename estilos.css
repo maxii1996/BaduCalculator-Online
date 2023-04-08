@@ -74,9 +74,6 @@ header nav {
   border-bottom: none;
 }
 
-
-
-
 .producto {
   display: flex;
   justify-content: space-between;
@@ -121,13 +118,9 @@ html, body {
   height: 100%;
 }
 
-
 button {
     cursor: pointer;
 }
-
-
-
 
 .navbar {
   margin-bottom: 1rem;
@@ -205,8 +198,6 @@ button {
   margin-top: 1rem;
 }
 
-
-
 .producto {
   width: 100%;
 }
@@ -221,7 +212,6 @@ button {
  
 }
 
-/* Estilos para el contenedor de productos */
 #listaProductos {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -248,36 +238,28 @@ button {
 
 .precio {
   font-size: 1.1em;
-  margin-right: 1rem; /* Agrega margen a la derecha del precio */
+  margin-right: 1rem; 
 
 }
 
-
-/* Crea una separación entre el precio y el texto "Cantidad" */
 .nombrePrecio {
 	 font-size: 1.1em;
   display: flex;
    margin-top: 2rem;
   justify-content: space-between;
-  margin-bottom: 16px; /* Ajusta este valor según la cantidad de separación deseada */
+  margin-bottom: 16px;
 }
 
 
-
-/* Estilos para las tarjetas de productos alternativos */
 .producto-grid-item:nth-child(even) .producto-card {
   background-color: #f2f2f2;
 }
 
 
-
 .boton-icono i {
-  display: block;
- 
+  display: block; 
   margin-bottom: 0.1rem;
    padding: 8px 15px;
-
-   
 }
 
 .boton-icono {
@@ -392,11 +374,6 @@ footer {
     margin-right: 20px;
 }
 
-
-
-
-
-
 #options-btn {
   background-color: #ffc107;
   color: #333;
@@ -423,7 +400,6 @@ footer {
   z-index: 1;
 }
 
-
 @media (min-width: 1080px) {
   .d-flex.mt-3 {
     gap: 1rem;
@@ -436,13 +412,8 @@ footer {
 	padding-bottom: 2.4rem;
 	padding-top: 2.4rem;
 	max-height: 27%;
-
-	
-	
-  }
 }
-
-
+}
 
 #modal-content {
   background-color: #f5f5f5;
@@ -481,8 +452,6 @@ footer {
   max-width: 100%;
 }
 
-
-
 .contenidoFormulario {
   width: 40%;
 }
@@ -506,8 +475,6 @@ header {
   color: black;
 }
 
-
-
 .logo {
   height: 40px;
   margin-right: 10px;
@@ -518,8 +485,9 @@ h1 {
 }
 
 .container-fluid {
-  background-color: #303030;
+  background-color: #fff;
 }
+
 #version {
   font-size: 0.7rem;
   color: #efefef;
@@ -552,3 +520,10 @@ h1 {
 .no-scroll {
   overflow: hidden;
 }
+
+.modal-fullscreen {
+  background-color: #00000060;
+  color: black;
+  
+}
+
