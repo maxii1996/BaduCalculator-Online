@@ -1,18 +1,31 @@
 document.getElementById('agregarProducto').addEventListener('click', agregarProducto);
 document.getElementById('facturar').addEventListener('click', facturar);
 document.addEventListener("DOMContentLoaded", () => {
+	
+  console.log('DOMContentLoaded');
   cargarProductos();
   loadSavedTexts();
   loadSalesFromLocalStorage();
   mostrarOcultarBotonFacturar();
+	const productos = document.querySelector('.productos');
+productos.style.backgroundColor = '#fff';
+ 
   const exportarDatosBtn = document.querySelector("#historialVentasModal .btn-primary");
   exportarDatosBtn.addEventListener("click", exportarDatos);
 
+  document.querySelector("#historialVentasModal .btn-close").addEventListener("click", closeModal);
+  document.querySelector("#historialVentasModal .btn-secondary").addEventListener("click", closeModal);
 
 
-document.querySelector('#historialVentasModal .btn-close').addEventListener('click', closeModal);
-document.querySelector('#historialVentasModal .btn-secondary').addEventListener('click', closeModal);
- 
+  const facturarRapidaModal = $("#facturarapida1");
+
+  
+   const cargarFacturacionRapidaBtn = document.getElementById("cargarFacturacionRapida");
+  cargarFacturacionRapidaBtn.addEventListener("click", cargarValoresFacturacionRapida);
+  
+
+
+
 });
 
 document.getElementById('buscarProducto').addEventListener('input', filtrarProductos);
@@ -22,6 +35,8 @@ document.getElementById('reset-final-text-btn').addEventListener('click', resetF
 document.getElementById('reset-quick-text-1-btn').addEventListener('click', resetQuickText1);
 document.getElementById('reset-quick-text-2-btn').addEventListener('click', resetQuickText2);
 document.getElementById('reset-quick-text-3-btn').addEventListener('click', resetQuickText3);
+
+
 
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', function() {
@@ -79,17 +94,24 @@ function esProductoDuplicado(nombreProducto) {
 
 
 function mostrarNotificacion(mensaje, tipo, icono) {
-    const notificacion = document.createElement('div');
-    notificacion.classList.add('alert', `alert-${tipo}`, 'text-center', 'position-absolute', 'top-0', 'end-0', 'm-3', 'd-flex', 'align-items-center', 'justify-content-center');
-    notificacion.innerHTML = `<i class="fas ${icono} me-2"></i>${mensaje}`;
-    
-    const notificacionContenedor = document.getElementById('notificacionContenedor');
-    notificacionContenedor.appendChild(notificacion);
+  const notificacion = document.createElement('div');
+  notificacion.classList.add('alert', `alert-${tipo}`, 'text-center', 'd-flex', 'align-items-center', 'justify-content-center');
+  notificacion.innerHTML = `<i class="fas ${icono} me-2"></i>${mensaje}`;
 
+  const notificacionContenedor = document.getElementById('notificacionContenedor');
+  notificacionContenedor.appendChild(notificacion);
+
+  setTimeout(() => {
+    notificacion.classList.add('fadeOut');
     setTimeout(() => {
-        notificacion.remove();
-    }, 3000);
+      notificacion.remove();
+    }, 1000);
+  }, 3000);
+  
+  notificacion.classList.add('alert-custom');
 }
+
+
 
 function editarProducto(event) {
     const card = event.target.closest('.producto-card');
@@ -301,12 +323,80 @@ function mostrarOcultarBotonFacturar() {
 
 const botonToggleAgregarProducto = document.getElementById('toggleAgregarProducto');
 const contenidoFormularioAgregarProducto = document.querySelector('.contenidoFormulario');
+const tarjetasProducto = document.querySelectorAll('.producto-card');
 
 botonToggleAgregarProducto.addEventListener('click', () => {
-    const estaVisible = contenidoFormularioAgregarProducto.style.display !== 'none';
-    contenidoFormularioAgregarProducto.style.display = estaVisible ? 'none' : 'block';
-    botonToggleAgregarProducto.innerHTML = estaVisible ? '<i class="fas fa-chevron-down"></i> Agregar Producto' : '<i class="fas fa-chevron-up"></i> Ocultar Menú';
+  contenidoFormularioAgregarProducto.classList.toggle('mostrar');
+  botonToggleAgregarProducto.innerHTML = contenidoFormularioAgregarProducto.classList.contains('mostrar') ? '<i class="fas fa-chevron-up"></i> Ocultar Menú' : '<i class="fas fa-chevron-down"></i> Agregar Producto';
+
+  if (contenidoFormularioAgregarProducto.classList.contains('mostrar')) {
+    const seccionFacturacion = document.querySelector('.facturacion');
+    document.querySelectorAll('.producto-card').forEach(tarjeta => tarjeta.style.backgroundColor = '#b4bbc817');
+    botonToggleAgregarProducto.classList.add('toggle-active');
+    const buscarProducto = document.getElementById('buscarProducto');
+    const productosAFacturar = document.getElementById('productosAFacturar');
+    const botonFacturar = document.getElementById('facturar');
+    const botonSiguienteCliente = document.getElementById('siguienteCliente');
+    seccionFacturacion.style.display = 'none';
+	const productos = document.querySelector('.productos');
+productos.style.backgroundColor = '#fafafa';
+
+    buscarProducto.style.display = 'none';
+    productosAFacturar.style.display = 'none';
+    botonFacturar.style.display = 'none';
+    botonSiguienteCliente.style.display = 'none';
+  } else {
+    const seccionFacturacion = document.querySelector('.facturacion');
+    const buscarProducto = document.getElementById('buscarProducto');
+    document.querySelectorAll('.producto-card').forEach(tarjeta => tarjeta.style.backgroundColor = '#efefef40');
+    botonToggleAgregarProducto.classList.remove('toggle-active');
+    const productosAFacturar = document.getElementById('productosAFacturar');
+    const botonFacturar = document.getElementById('facturar');
+    const botonSiguienteCliente = document.getElementById('siguienteCliente');
+    seccionFacturacion.style.display = 'block';
+    buscarProducto.style.display = 'block';
+	const productos = document.querySelector('.productos');
+productos.style.backgroundColor = '#fff';
+
+    productosAFacturar.style.display = 'block';
+    botonFacturar.style.display = 'block';
+    botonSiguienteCliente.style.display = 'block';
+  }
 });
+
+
+
+
+
+function mostrarOcultarBotonFacturar() {
+  const listaProductos = document.getElementById('listaProductos');
+  const botonFacturar = document.getElementById('facturar');
+  const buscarProducto = document.getElementById('buscarProducto');
+  const siguienteCliente = document.getElementById('siguienteCliente');
+  const productosAFacturar = document.querySelector('#productosAFacturar span');
+  const facturacion = document.querySelector('.facturacion');
+
+  if (listaProductos.children.length === 0) {
+    botonFacturar.style.display = 'none';
+    buscarProducto.style.display = 'none';
+    siguienteCliente.style.display = 'none';
+    productosAFacturar.classList.add('zoom');
+    productosAFacturar.textContent = "Agregue productos para comenzar";
+    facturacion.style.display = 'none';
+  } else {
+    botonFacturar.style.display = 'block';
+    buscarProducto.style.display = 'block';
+    siguienteCliente.style.display = 'block';
+    productosAFacturar.classList.remove('zoom');
+    productosAFacturar.textContent = "Productos a Facturar";
+    facturacion.style.display = 'block';
+  }
+}
+
+mostrarOcultarBotonFacturar();
+
+
+
 
 
 
@@ -358,7 +448,7 @@ function siguienteCliente() {
 
 
   if (total === 0) {
-    mostrarNotificacion("No se pueden facturar $0. Por favor, agregue productos a la factura.", "warning", "fa-exclamation-circle");
+    mostrarNotificacion("‎ No se pueden facturar $0. Por favor, agregue productos a la factura.", "warning", "fa-exclamation-circle");
     return;
   }
   
@@ -393,7 +483,7 @@ function siguienteCliente() {
   document.getElementById("cantidadProductos").innerText = "";
   generarTablaHistorial(factura);
   playSiguienteClienteSound()
-  mostrarNotificacion("Factura realizada. Gracias por su compra", "success", "fa-check");
+  mostrarNotificacion("‎ Factura realizada. Gracias por su compra", "success", "fa-check");
    
     const facturacionDiv = document.querySelector('.facturacion');
        facturacionDiv.style.backgroundColor = '#fafafa';
@@ -649,34 +739,39 @@ document.getElementById("archivoConfig").addEventListener("change", importarConf
 document.getElementById("facturar").addEventListener("click", function () {
   facturar();
 
-  const messageInput = document.getElementById('message-input');
-  const finalTextInput = document.getElementById('final-text-input');
-  const endMessageInput = document.getElementById('end-message-input');
+  const totalFacturado = parseFloat(document.getElementById("total").textContent);
 
-  let itemsFacturados = '';
+  if (totalFacturado > 0) {
+    const messageInput = document.getElementById('message-input');
+    const finalTextInput = document.getElementById('final-text-input');
+    const endMessageInput = document.getElementById('end-message-input');
 
-  const detalleFacturacion = document.getElementById('detalleFacturacion').children;
+    let itemsFacturados = '';
 
-  for (const item of Array.from(detalleFacturacion)) {
-    const detalleProducto = item.textContent.split(" (")[0];
-    const cantidad = item.textContent.split(" x")[1].split(" unidades")[0];
-    const subtotal = item.textContent.split(" = $")[1];
-    itemsFacturados += `${detalleProducto} x${cantidad} unidades ($${subtotal}) + `;
+    const detalleFacturacion = document.getElementById('detalleFacturacion').children;
+
+    for (const item of Array.from(detalleFacturacion)) {
+      const detalleProducto = item.textContent.split(" (")[0];
+      const cantidad = item.textContent.split(" x")[1].split(" unidades")[0];
+      const subtotal = item.textContent.split(" = $")[1];
+      itemsFacturados += `${detalleProducto} x${cantidad} unidades ($${subtotal}) + `;
+    }
+
+    if (itemsFacturados.length > 0) {
+      itemsFacturados = itemsFacturados.slice(0, -3); 
+    }
+
+    const total = document.getElementById("total").textContent;
+    const textoFactura = `${messageInput.value} ${itemsFacturados} ${finalTextInput.value}$${total} ${endMessageInput.value}`;
+
+    navigator.clipboard.writeText(textoFactura).then(() => {
+      console.log('Texto copiado al portapapeles:', textoFactura);
+    }, (err) => {
+      console.error('Error al copiar el texto:', err);
+    });
   }
-
-  if (itemsFacturados.length > 0) {
-    itemsFacturados = itemsFacturados.slice(0, -3); 
-  }
-
-  const total = document.getElementById("total").textContent;
-  const textoFactura = `${messageInput.value} ${itemsFacturados} ${finalTextInput.value}$${total} ${endMessageInput.value}`;
-
-  navigator.clipboard.writeText(textoFactura).then(() => {
-    console.log('Texto copiado al portapapeles:', textoFactura);
-  }, (err) => {
-    console.error('Error al copiar el texto:', err);
-  });
 });
+
 
 
 
@@ -739,26 +834,26 @@ const playFacturarButton = document.getElementById('playFacturarButton');
 const volumenFacturarSlider = document.getElementById('volumenFacturar');
 
 const sounds = [
-  'https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Factura1.wav',
-  'https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Factura2.wav',
-  'https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Factura3.wav',
-  'https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Factura4.wav',
-  'https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Factura5.wav',
+  "https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Factura1.wav",
+  "https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Factura2.wav",
+  "https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Factura3.wav",
+  "https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Factura4.wav",
+  "https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Factura5.wav",
 ];
 
-let audio; // Definir audio fuera del evento 'click'
+let audio;
 
 if (facturarSoundSelect && playFacturarButton && volumenFacturarSlider) {
   playFacturarButton.addEventListener('click', () => {
     const soundIndex = parseInt(facturarSoundSelect.value) - 1;
     const soundUrl = sounds[soundIndex];
-    audio = new Audio(soundUrl); // Asignar valor a audio dentro del evento 'click'
+    audio = new Audio(soundUrl); 
     audio.volume = volumenFacturarSlider.value / 100;
     audio.play();
   });
 
   volumenFacturarSlider.addEventListener('input', () => {
-    if (audio) { // Asegurarse de que audio está definido antes de cambiar el volumen
+    if (audio) { 
       audio.volume = volumenFacturarSlider.value / 100;
     }
   });
@@ -769,24 +864,24 @@ const playFinalizarButton = document.getElementById('playFinalizarButton');
 const volumenFinalizarSlider = document.getElementById('volumenFinalizar');
 
 const finalizarSounds = [
-  'https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Final1.wav',
-  'https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Final2.wav',
-  'https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Final3.wav',
+  "https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Final1.wav",
+  "https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Final2.wav",
+  "https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Final3.wav",
 ];
 
-let finalizarAudio; // Definir finalizarAudio fuera del evento 'click'
+let finalizarAudio; 
 
 if (finalizarSoundSelect && playFinalizarButton && volumenFinalizarSlider) {
   playFinalizarButton.addEventListener('click', () => {
     const soundIndex = parseInt(finalizarSoundSelect.value) - 1;
     const soundUrl = finalizarSounds[soundIndex];
-    finalizarAudio = new Audio(soundUrl); // Asignar valor a finalizarAudio dentro del evento 'click'
+    finalizarAudio = new Audio(soundUrl);
     finalizarAudio.volume = volumenFinalizarSlider.value / 100;
     finalizarAudio.play();
   });
 
   volumenFinalizarSlider.addEventListener('input', () => {
-    if (finalizarAudio) { // Asegurarse de que finalizarAudio está definido antes de cambiar el volumen
+    if (finalizarAudio) { 
       finalizarAudio.volume = volumenFinalizarSlider.value / 100;
     }
   });
@@ -798,13 +893,14 @@ function playFacturarSound() {
     const playFacturarButton = document.getElementById('playFacturarButton');
     const volumenFacturarSlider = document.getElementById('volumenFacturar');
 
-    const sounds = [
-      'https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Factura1.wav',
-      'https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Factura2.wav',
-      'https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Factura3.wav',
-      'https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Factura4.wav',
-      'https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Factura5.wav',
-    ];
+ const sounds = [
+  "https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Factura1.wav",
+  "https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Factura2.wav",
+  "https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Factura3.wav",
+  "https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Factura4.wav",
+  "https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Factura5.wav",
+];
+
 
     if (facturarSoundSelect && playFacturarButton && volumenFacturarSlider) {
       const soundIndex = parseInt(facturarSoundSelect.value) - 1;
@@ -822,9 +918,9 @@ function playSiguienteClienteSound() {
     const volumenFacturarSlider = document.getElementById('volumenFacturar');
 
     const sounds = [
-      'https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Final1.wav',
-  'https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Final2.wav',
-  'https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Final3.wav',
+  "https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Final1.wav",
+  "https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Final2.wav",
+  "https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Final3.wav",
     ];
 
     if (facturarSoundSelect && playFacturarButton && volumenFacturarSlider) {
@@ -872,17 +968,203 @@ function loadSalesFromLocalStorage() {
   }
 }
 
-
 function closeHistorialVentasModal() {
   $('#historialVentasModal').modal('hide');
 }
-
 
 const closeButtons = document.querySelectorAll("#historialVentasModal .btn-close, #historialVentasModal .btn-secondary");
 closeButtons.forEach(button => {
   button.addEventListener('click', closeHistorialVentasModal);
 });
 
+
+function facturarRapido() {
+guardarConfiguracionFacturacionRapida();
+}
+
+document.getElementById('facturacionRapidaBtn').addEventListener('click', () => {
+  $('#facturarapida1').modal('show');
+    actualizarFacturacionRapida();
+  cargarConfiguracionFacturacionRapida(); 
+});
+
+
+function guardarConfiguracionFacturacionRapida() {
+	
+  const facturacionRapidaInputs = document.querySelectorAll('.facturacion-rapida-cantidad');
+  let configuracion = {};
+
+  facturacionRapidaInputs.forEach(input => {
+    const nombreProducto = input.getAttribute('data-producto');
+    configuracion[nombreProducto] = input.value;
+  });
+
+  console.log('Guardando configuración:', configuracion); 
+  localStorage.setItem("configuracionFacturacionRapida", JSON.stringify(configuracion));
+  
+  
+  const notificationFast = document.getElementById('NotificationFast');
+  notificationFast.classList.remove('d-none');
+
+
+  setTimeout(() => {
+    notificationFast.classList.add('d-none');
+  }, 3000);
+}
+
+const aplicarBtn = document.querySelector("#facturarapida1 .btn-primary");
+aplicarBtn.addEventListener("click", () => {
+  facturarRapido();
+  guardarConfiguracionFacturacionRapida();
+    resetearValoresFacturacionComun();
+
+});
+
+
+function cargarValoresFacturacionRapida(configuracion) {
+  const listaProductos = document.getElementById('listaProductos');
+  const productos = listaProductos.querySelectorAll('.producto-card');
+
+  productos.forEach(producto => {
+    const nombreProducto = producto.querySelector('.nombreProducto').textContent;
+    if (configuracion.hasOwnProperty(nombreProducto)) {
+      producto.querySelector('.cantidad').value = configuracion[nombreProducto];
+    }
+  });
+}
+
+
+function cargarConfiguracionFacturacionRapida() {
+   const configuracion = JSON.parse(localStorage.getItem("configuracionFacturacionRapida"));
+  console.log('Cargando configuración:', configuracion); 
+
+if (configuracion) {
+    cargarValoresFacturacionRapida(configuracion);
+  } 
+}
+
+
+function actualizarFacturacionRapida() {
+  const listaProductos = document.getElementById('listaProductos');
+  const productos = listaProductos.querySelectorAll('.producto-card');
+  const facturacionRapidaProductos = document.getElementById('facturacionRapidaProductos');
+
+  facturacionRapidaProductos.innerHTML = '';
+
+  productos.forEach((producto, index) => {
+    const nombreProducto = producto.querySelector('.nombreProducto').textContent;
+    const cantidad = parseInt(producto.querySelector('.cantidad').value);
+
+    const col = document.createElement('div');
+    col.classList.add('col-md-4');
+
+    const formGroup = document.createElement('div');
+    formGroup.classList.add('form-group');
+
+    const label = document.createElement('label');
+    label.textContent = nombreProducto;
+    formGroup.appendChild(label);
+
+    const input = document.createElement('input');
+input.type = 'number';
+input.min = '0';
+input.max = '999999'; 
+input.value = cantidad;
+input.classList.add('form-control', 'facturacion-rapida-cantidad');
+input.setAttribute('data-producto', nombreProducto);
+
+
+input.addEventListener('change', function() {
+    if (this.value > 999999) {
+        this.value = 999999;
+        alert('El valor máximo permitido es 999999');
+    }
+});
+
+formGroup.appendChild(input);
+
+    col.appendChild(formGroup);
+    facturacionRapidaProductos.appendChild(col);
+
+    if ((index + 1) % 3 === 0) {
+      const clearfix = document.createElement('div');
+      clearfix.classList.add('clearfix');
+      facturacionRapidaProductos.appendChild(clearfix);
+    }
+  });
+}
+
+function resetearValoresFacturacionComun() {
+  const listaProductos = document.getElementById('listaProductos');
+  const productos = listaProductos.querySelectorAll('.producto-card');
+
+  productos.forEach(producto => {
+    producto.querySelector('.cantidad').value = 0;
+  });
+}
+
+
+document.querySelector("#facturarapida1 .btn.btn-secondary").addEventListener("click", () => {
+  resetearValoresFacturacionComun();
+});
+
+
+document.getElementById('facturacionRapidaBtn').addEventListener('click', () => {
+  actualizarFacturacionRapida();
+  $('#facturarapida1').modal('show');
+});
+
+document.getElementById('cargarFacturacionRapida').addEventListener('click', () => {
+  cargarConfiguracionFacturacionRapida();
+});
+
+ document.getElementById('cargarFacturacionRapida').addEventListener('click', function() {
+    const button = this;
+    const text = button.querySelector('.original-text');
+
+    text.textContent = 'Cargado';
+
+    setTimeout(function() {
+      text.textContent = 'Factura Rápida';
+    }, 1000);
+  });
+
+
+const facturacionRapidaBtn = document.getElementById('facturacionRapidaBtn');
+const facturarapida1 = document.getElementById('facturarapida1');
+
+facturacionRapidaBtn.addEventListener('click', function () {
+
+  const listaProductos = document.getElementById('listaProductos');
+  const productos = listaProductos.querySelectorAll('.producto-card');
+  const hayProductos = productos.length > 0;
+  const mensajeContainer = facturarapida1.querySelector('.mensaje-container');
+  const aplicarFacturacionRapida = document.getElementById('aplicarFacturacionRapida');
+
+  if (hayProductos) {
+    mensajeContainer.style.display = 'none';
+    aplicarFacturacionRapida.style.display = 'block';
+  } else {
+    mensajeContainer.style.display = 'block';
+    aplicarFacturacionRapida.style.display = 'none';
+  }
+});
+
+
+const restablecerFacturacionRapida = document.getElementById('restablecerFacturacionRapida');
+
+restablecerFacturacionRapida.addEventListener('click', function () {
+  const confirmacion = confirm('¿Quieres restablecer todos los valores de los campos?');
+
+  if (confirmacion) {
+    const facturacionRapidaProductos = document.getElementById('facturacionRapidaProductos');
+    const inputs = facturacionRapidaProductos.querySelectorAll('.facturacion-rapida-cantidad');
+
+    inputs.forEach(input => {
+      input.value = 0;
+    });
+  }
+});
 
 
 
