@@ -5,42 +5,14 @@ document.addEventListener("DOMContentLoaded", () => {
   loadSavedTexts();
   loadSalesFromLocalStorage();
   mostrarOcultarBotonFacturar();
-
- 
   const exportarDatosBtn = document.querySelector("#historialVentasModal .btn-primary");
   exportarDatosBtn.addEventListener("click", exportarDatos);
 
-  document.querySelector("#historialVentasModal .btn-close").addEventListener("click", closeModal);
-  document.querySelector("#historialVentasModal .btn-secondary").addEventListener("click", closeModal);
 
 
-  const facturarRapidaModal = $("#facturarapida1");
-
-  const closeButton = $("#facturarapida1 .btn-close");
-  const aplicarButton = $("#facturarapida1 .btn-primary");
-  const cerrarButton = $("#facturarapida1 .btn-secondary");
-  
-   const cargarFacturacionRapidaBtn = document.getElementById("cargarFacturacionRapida");
-  cargarFacturacionRapidaBtn.addEventListener("click", cargarValoresFacturacionRapida);
-  
-
-  closeButton.on("click", () => {
-    facturarRapidaModal.modal("hide");
-  });
-
-  aplicarButton.on("click", () => {
-    facturarRapido();
-    guardarConfiguracionFacturacionRapida();
-    facturarRapidaModal.modal("hide");
-  });
-
-  cerrarButton.on("click", () => {
-    facturarRapidaModal.modal("hide");
-  });
-  
-  
-    cargarConfiguracionFacturacionRapida();
-
+document.querySelector('#historialVentasModal .btn-close').addEventListener('click', closeModal);
+document.querySelector('#historialVentasModal .btn-secondary').addEventListener('click', closeModal);
+ 
 });
 
 document.getElementById('buscarProducto').addEventListener('input', filtrarProductos);
@@ -677,39 +649,34 @@ document.getElementById("archivoConfig").addEventListener("change", importarConf
 document.getElementById("facturar").addEventListener("click", function () {
   facturar();
 
-  const totalFacturado = parseFloat(document.getElementById("total").textContent);
+  const messageInput = document.getElementById('message-input');
+  const finalTextInput = document.getElementById('final-text-input');
+  const endMessageInput = document.getElementById('end-message-input');
 
-  if (totalFacturado > 0) {
-    const messageInput = document.getElementById('message-input');
-    const finalTextInput = document.getElementById('final-text-input');
-    const endMessageInput = document.getElementById('end-message-input');
+  let itemsFacturados = '';
 
-    let itemsFacturados = '';
+  const detalleFacturacion = document.getElementById('detalleFacturacion').children;
 
-    const detalleFacturacion = document.getElementById('detalleFacturacion').children;
-
-    for (const item of Array.from(detalleFacturacion)) {
-      const detalleProducto = item.textContent.split(" (")[0];
-      const cantidad = item.textContent.split(" x")[1].split(" unidades")[0];
-      const subtotal = item.textContent.split(" = $")[1];
-      itemsFacturados += `${detalleProducto} x${cantidad} unidades ($${subtotal}) + `;
-    }
-
-    if (itemsFacturados.length > 0) {
-      itemsFacturados = itemsFacturados.slice(0, -3); 
-    }
-
-    const total = document.getElementById("total").textContent;
-    const textoFactura = `${messageInput.value} ${itemsFacturados} ${finalTextInput.value}$${total} ${endMessageInput.value}`;
-
-    navigator.clipboard.writeText(textoFactura).then(() => {
-      console.log('Texto copiado al portapapeles:', textoFactura);
-    }, (err) => {
-      console.error('Error al copiar el texto:', err);
-    });
+  for (const item of Array.from(detalleFacturacion)) {
+    const detalleProducto = item.textContent.split(" (")[0];
+    const cantidad = item.textContent.split(" x")[1].split(" unidades")[0];
+    const subtotal = item.textContent.split(" = $")[1];
+    itemsFacturados += `${detalleProducto} x${cantidad} unidades ($${subtotal}) + `;
   }
-});
 
+  if (itemsFacturados.length > 0) {
+    itemsFacturados = itemsFacturados.slice(0, -3); 
+  }
+
+  const total = document.getElementById("total").textContent;
+  const textoFactura = `${messageInput.value} ${itemsFacturados} ${finalTextInput.value}$${total} ${endMessageInput.value}`;
+
+  navigator.clipboard.writeText(textoFactura).then(() => {
+    console.log('Texto copiado al portapapeles:', textoFactura);
+  }, (err) => {
+    console.error('Error al copiar el texto:', err);
+  });
+});
 
 
 
@@ -772,11 +739,11 @@ const playFacturarButton = document.getElementById('playFacturarButton');
 const volumenFacturarSlider = document.getElementById('volumenFacturar');
 
 const sounds = [
-  "https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Factura1.wav",
-  "https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Factura2.wav",
-  "https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Factura3.wav",
-  "https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Factura4.wav",
-  "https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Factura5.wav",
+  'https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Factura1.wav',
+  'https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Factura2.wav',
+  'https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Factura3.wav',
+  'https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Factura4.wav',
+  'https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Factura5.wav',
 ];
 
 let audio; // Definir audio fuera del evento 'click'
@@ -802,9 +769,9 @@ const playFinalizarButton = document.getElementById('playFinalizarButton');
 const volumenFinalizarSlider = document.getElementById('volumenFinalizar');
 
 const finalizarSounds = [
-  "https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Final1.wav",
-  "https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Final2.wav",
-  "https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Final3.wav",
+  'https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Final1.wav',
+  'https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Final2.wav',
+  'https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Final3.wav',
 ];
 
 let finalizarAudio; // Definir finalizarAudio fuera del evento 'click'
@@ -831,14 +798,13 @@ function playFacturarSound() {
     const playFacturarButton = document.getElementById('playFacturarButton');
     const volumenFacturarSlider = document.getElementById('volumenFacturar');
 
- const sounds = [
-  "https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Factura1.wav",
-  "https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Factura2.wav",
-  "https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Factura3.wav",
-  "https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Factura4.wav",
-  "https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Factura5.wav",
-];
-
+    const sounds = [
+      'https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Factura1.wav',
+      'https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Factura2.wav',
+      'https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Factura3.wav',
+      'https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Factura4.wav',
+      'https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Factura5.wav',
+    ];
 
     if (facturarSoundSelect && playFacturarButton && volumenFacturarSlider) {
       const soundIndex = parseInt(facturarSoundSelect.value) - 1;
@@ -856,9 +822,9 @@ function playSiguienteClienteSound() {
     const volumenFacturarSlider = document.getElementById('volumenFacturar');
 
     const sounds = [
-  "https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Final1.wav",
-  "https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Final2.wav",
-  "https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Final3.wav",
+      'https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Final1.wav',
+  'https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Final2.wav',
+  'https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/Resources/Final3.wav',
     ];
 
     if (facturarSoundSelect && playFacturarButton && volumenFacturarSlider) {
@@ -917,121 +883,6 @@ closeButtons.forEach(button => {
   button.addEventListener('click', closeHistorialVentasModal);
 });
 
-
-
-function facturarRapido() {
-guardarConfiguracionFacturacionRapida();
-
-
-}
-
-
-document.getElementById('facturacionRapidaBtn').addEventListener('click', () => {
-  $('#facturarapida1').modal('show');
-});
-
-
-function guardarConfiguracionFacturacionRapida() {
-  const facturacionRapidaInputs = document.querySelectorAll('.facturacion-rapida-cantidad');
-  let configuracion = {};
-
-  facturacionRapidaInputs.forEach(input => {
-    const nombreProducto = input.getAttribute('data-producto');
-    configuracion[nombreProducto] = input.value;
-  });
-
-  console.log('Guardando configuración:', configuracion); // Agrega esto para ver la configuración que se está guardando
-  localStorage.setItem("configuracionFacturacionRapida", JSON.stringify(configuracion));
-}
-
-const aplicarBtn = document.querySelector("#facturarapida1 .btn-primary");
-aplicarBtn.addEventListener("click", () => {
-  facturarRapido();
-  guardarConfiguracionFacturacionRapida();
-});
-
-
-
-
-function cargarValoresFacturacionRapida() {
-  const listaProductos = document.getElementById('listaProductos');
-  const productos = listaProductos.querySelectorAll('.producto-card');
-  const facturacionRapidaInputs = document.querySelectorAll('.facturacion-rapida-cantidad');
-
-  facturacionRapidaInputs.forEach(input => {
-    const nombreProducto = input.getAttribute('data-producto');
-    productos.forEach(producto => {
-      if (producto.querySelector('.nombreProducto').textContent === nombreProducto) {
-        producto.querySelector('.cantidad').value = input.value;
-      }
-    });
-  });
-}
-
-
-
-function cargarConfiguracionFacturacionRapida() {
-  const configuracion = JSON.parse(localStorage.getItem("configuracionFacturacionRapida"));
-  console.log('Cargando configuración:', configuracion); // Agrega esto para ver la configuración cargada
-
-  if (configuracion) {
-    const facturacionRapidaInputs = document.querySelectorAll('.facturacion-rapida-cantidad');
-
-    facturacionRapidaInputs.forEach(input => {
-      const nombreProducto = input.getAttribute('data-producto');
-      if (configuracion.hasOwnProperty(nombreProducto)) {
-        input.value = configuracion[nombreProducto];
-      }
-    });
-  }
-}
-
-
-function actualizarFacturacionRapida() {
-  const listaProductos = document.getElementById('listaProductos');
-  const productos = listaProductos.querySelectorAll('.producto-card');
-  const facturacionRapidaProductos = document.getElementById('facturacionRapidaProductos');
-
-  facturacionRapidaProductos.innerHTML = '';
-
-  productos.forEach((producto, index) => {
-    const nombreProducto = producto.querySelector('.nombreProducto').textContent;
-    const cantidad = parseInt(producto.querySelector('.cantidad').value);
-
-    const col = document.createElement('div');
-    col.classList.add('col-md-4');
-
-    const formGroup = document.createElement('div');
-    formGroup.classList.add('form-group');
-
-    const label = document.createElement('label');
-    label.textContent = nombreProducto;
-    formGroup.appendChild(label);
-
-    const input = document.createElement('input');
-    input.type = 'number';
-    input.min = '0';
-    input.value = cantidad;
-    input.classList.add('form-control', 'facturacion-rapida-cantidad');
-    input.setAttribute('data-producto', nombreProducto);
-    formGroup.appendChild(input);
-
-    col.appendChild(formGroup);
-    facturacionRapidaProductos.appendChild(col);
-
-    if ((index + 1) % 3 === 0) {
-      const clearfix = document.createElement('div');
-      clearfix.classList.add('clearfix');
-      facturacionRapidaProductos.appendChild(clearfix);
-    }
-  });
-}
-
-
-document.getElementById('facturacionRapidaBtn').addEventListener('click', () => {
-  actualizarFacturacionRapida();
-  $('#facturarapida1').modal('show');
-});
 
 
 
