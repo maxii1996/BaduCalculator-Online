@@ -21,7 +21,7 @@
   <div class="container d-flex align-items-center">
     <img src="https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/icon-192x192.png" alt="BaduCalculator Logo" height="64" align="left">
     <h1 class="text-white mb-0 ml-3">BaduCalculator <sup class="text-secondary">online</sup></h1>
-   <span id="version">Versión 1.0.3  | Developed by Undermax Software</span>
+   <span id="version">Versión 1.0.4  | Developed by Undermax Software</span>
   </div>
 </div>
 
@@ -369,7 +369,16 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <table class="table table-bordered">
+	    <div class="d-flex justify-content-between">
+	   <input type="text" id="searchInput" class="form-control mb-3" placeholder="Buscar por nombre de producto">
+        <div class="input-group mb-3">
+	  <span class="input-group-text">Precio entre:</span>
+    <input type="number" id="minPriceInput" class="form-control" placeholder="Mínimo" min="0" max="99999999">
+    <span class="input-group-text">y</span>
+    <input type="number" id="maxPriceInput" class="form-control" placeholder="Máximo" min="0" max="99999999">
+	 </div>
+	 </div>
+	 <table class="table table-bordered">
           <thead>
             <tr>
               <th>Fecha / Hora</th>
@@ -378,16 +387,43 @@
             </tr>
           </thead>
           <tbody id="historialVentasTbody">
+		 
           </tbody>
         </table>
+		 <nav>
+    <ul class="pagination" id="salesPagination">
+    </ul>
+  </nav>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-        <button type="button" class="btn btn-primary">Exportar Datos</button>
+
+       <button type="button" class="btn btn-danger" id="deleteSalesButton">Borrar registros de venta</button>
+  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+  <button type="button" class="btn btn-primary">Exportar Datos</button>
+	 </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="deleteConfirmationModal" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteConfirmationModalLabel">Borrar registros de ventas</h5>
+      </div>
+      <div class="modal-body">
+        ¿Borrar realmente los registros de ventas?
+      </div>
+      <div class="modal-footer">
+<button type="button" class="btn btn-secondary" id="cancelDeleteButton">No, cancelar</button>
+        <button type="button" class="btn btn-danger" id="confirmDeleteButton">Sí, borrarlos</button>
       </div>
     </div>
   </div>
 </div>
+
+
+
 
 
 <div class="modal modal-fullscreen" tabindex="-1" id="facturarapida1" data-backdrop="static" data-bs-keyboard="false">

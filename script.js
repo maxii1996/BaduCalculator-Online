@@ -1,5 +1,21 @@
 document.getElementById('agregarProducto').addEventListener('click', agregarProducto);
 document.getElementById('facturar').addEventListener('click', facturar);
+document.getElementById("searchInput").addEventListener("input", filterTable);
+document.getElementById("minPriceInput").addEventListener("input", filterTable);
+document.getElementById("maxPriceInput").addEventListener("input", filterTable);
+document.getElementById("cancelDeleteButton").addEventListener("click", () => {
+  $("#deleteConfirmationModal").modal("hide");
+});
+
+document.getElementById("deleteSalesButton").addEventListener("click", () => {
+  $("#deleteConfirmationModal").modal("show");
+});
+
+document.getElementById("confirmDeleteButton").addEventListener("click", () => {
+  deleteSales();
+  $("#deleteConfirmationModal").modal("hide");
+});
+
 document.addEventListener("DOMContentLoaded", () => {
 	
   console.log('DOMContentLoaded');
@@ -513,6 +529,8 @@ function generarTablaHistorial(factura) {
   row.appendChild(totalCell);
   tableBody.appendChild(row);
   saveSalesToLocalStorage();
+  updateSalesTable();
+  updatePagination();
 }
 
 var modalBtn = document.getElementById("modal-btn");
@@ -966,6 +984,8 @@ function loadSalesFromLocalStorage() {
   if (savedSalesHistory) {
     tableBody.innerHTML = savedSalesHistory;
   }
+    updateSalesTable();
+  updatePagination();
 }
 
 function closeHistorialVentasModal() {
@@ -1165,6 +1185,72 @@ restablecerFacturacionRapida.addEventListener('click', function () {
     });
   }
 });
+
+
+
+function filterTable() {
+  const searchInput = document.getElementById("searchInput");
+  const searchValue = searchInput.value.toLowerCase();
+  const minPriceInput = document.getElementById("minPriceInput");
+  const maxPriceInput = document.getElementById("maxPriceInput");
+  const minPrice = parseFloat(minPriceInput.value) || -Infinity;
+  const maxPrice = parseFloat(maxPriceInput.value) || Infinity;
+  const table = document.getElementById("historialVentasTbody");
+  const rows = table.querySelectorAll("tr");
+
+  rows.forEach(row => {
+    const productosCell = row.querySelector("td:nth-child(2)");
+    const productosText = productosCell.textContent.toLowerCase();
+    const totalCell = row.querySelector("td:nth-child(3)");
+    const total = parseFloat(totalCell.textContent.replace("$", ""));
+
+    if (productosText.includes(searchValue) && total >= minPrice && total <= maxPrice) {
+      row.style.display = "";
+    } else {
+      row.style.display = "none";
+    }
+  });
+}
+
+function deleteSales() {
+  const tableBody = document.getElementById("historialVentasTbody");
+  tableBody.innerHTML = "";
+  saveSalesToLocalStorage();
+}
+
+const itemsPerPage = 10;
+let currentPage = 1;
+
+function updateSalesTable() {
+  const tableBody = document.getElementById("historialVentasTbody");
+  const sales = Array.from(tableBody.children);
+  sales.forEach((sale, index) => {
+    sale.style.display = index >= (currentPage - 1) * itemsPerPage && index < currentPage * itemsPerPage ? "" : "none";
+  });
+}
+
+function updatePagination() {
+  const tableBody = document.getElementById("historialVentasTbody");
+  const totalPages = Math.ceil(tableBody.children.length / itemsPerPage);
+  const pagination = document.getElementById("salesPagination");
+  
+  pagination.innerHTML = "";
+  for (let i = 1; i <= totalPages; i++) {
+    const li = document.createElement("li");
+    li.classList.add("page-item");
+    if (i === currentPage) li.classList.add("active");
+    li.innerHTML = `<a class="page-link" href="#">${i}</a>`;
+    li.addEventListener("click", (e) => {
+      e.preventDefault();
+      currentPage = i;
+      updateSalesTable();
+      updatePagination();
+    });
+    pagination.appendChild(li);
+  }
+}
+
+
 
 
 
