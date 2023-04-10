@@ -18,6 +18,7 @@ document.getElementById("confirmDeleteButton").addEventListener("click", () => {
 
 document.addEventListener("DOMContentLoaded", () => {
 	
+	cargarEstadoAutoguardado();
   console.log('DOMContentLoaded');
   cargarProductos();
   loadSavedTexts();
@@ -67,39 +68,14 @@ if ('serviceWorker' in navigator) {
 let productoId = 0;
 
 function agregarProducto() {
-    const nombreProducto = document.getElementById('nombreProducto').value.trim();
-    const precio = document.getElementById('precio').value;
+ 
+   agregarProductoSinNotificacion();
+    mostrarNotificacion('Producto agregado correctamente', 'success', '');
 
-    if (esProductoDuplicado(nombreProducto)) {
-        alert('No se pueden agregar productos con el mismo nombre.');
-        return;
-    }
-
-    if (nombreProducto.length < 2) {
-        alert('El nombre del producto debe tener al menos 2 caracteres.');
-        return;
-    }
-  
-    if (precio == 0 || precio <= 0) {
-        alert('No se pueden agregar productos con precio 0 o menor.');
-        return;
-    }
-
-    const listaProductos = document.getElementById('listaProductos');
-    const nuevoProducto = document.createElement('div');
-    nuevoProducto.innerHTML = document.getElementById('productoTemplate').innerHTML.replace(/{id}/g, productoId).replace('{nombreProducto}', nombreProducto).replace('{precio}', precio);
-    nuevoProducto.querySelector('.editarProducto').addEventListener('click', editarProducto);
-    
-   const listItem = nuevoProducto.querySelector(".inner-product");
-    if (listItem) {
-      listItem.className += productoId % 2 === 0 ? ' par' : ' impar';
-    }
-    listaProductos.appendChild(nuevoProducto);
-    productoId++;
-    mostrarOcultarBotonFacturar();
-  
-    document.getElementById('nombreProducto').value = '';
-    document.getElementById('precio').value = '';
+    if (autoguardarProductos.checked) {
+    guardarProductos();
+  }
+	
 }
 
 function esProductoDuplicado(nombreProducto) {
@@ -255,7 +231,8 @@ function guardarProductos() {
 
 
 function cargarProductos() {
-    const productosJson = localStorage.getItem('productos');
+  
+   const productosJson = localStorage.getItem('productos');
     if (!productosJson) {
         return;
     }
@@ -267,11 +244,55 @@ function cargarProductos() {
     productos.forEach(producto => {
         document.getElementById('nombreProducto').value = producto.nombreProducto;
         document.getElementById('precio').value = producto.precio;
-        agregarProducto();
+        agregarProductoSinNotificacion();
     });
-
-    showNotification('Productos cargados correctamente.');
 }
+
+
+
+
+function agregarProductoSinNotificacion() {
+   
+   const nombreProducto = document.getElementById('nombreProducto').value.trim();
+    const precio = document.getElementById('precio').value;
+
+    if (esProductoDuplicado(nombreProducto)) {
+        alert('No se pueden agregar productos con el mismo nombre.');
+        return;
+    }
+
+    if (nombreProducto.length < 2) {
+        alert('El nombre del producto debe tener al menos 2 caracteres.');
+        return;
+    }
+  
+    if (precio == 0 || precio <= 0) {
+        alert('No se pueden agregar productos con precio 0 o menor.');
+        return;
+    }
+
+    const listaProductos = document.getElementById('listaProductos');
+    const nuevoProducto = document.createElement('div');
+    nuevoProducto.innerHTML = document.getElementById('productoTemplate').innerHTML.replace(/{id}/g, productoId).replace('{nombreProducto}', nombreProducto).replace('{precio}', precio);
+    nuevoProducto.querySelector('.editarProducto').addEventListener('click', editarProducto);
+    
+   const listItem = nuevoProducto.querySelector(".inner-product");
+    if (listItem) {
+      listItem.className += productoId % 2 === 0 ? ' par' : ' impar';
+    }
+    listaProductos.appendChild(nuevoProducto);
+    productoId++;
+    mostrarOcultarBotonFacturar();
+  
+    document.getElementById('nombreProducto').value = '';
+    document.getElementById('precio').value = '';
+	
+
+   
+   
+   
+}
+
 
 
 function exportarProductos() {
@@ -1250,7 +1271,30 @@ function updatePagination() {
   }
 }
 
+const autoguardarProductos = document.getElementById('autoguardarProductos');
 
+autoguardarProductos.addEventListener('change', () => {
+  guardarEstadoAutoguardado();
+
+  if (autoguardarProductos.checked) {
+    guardarProductos();
+  }
+});
+
+function guardarEstadoAutoguardado() {
+  const autoguardadoActivo = autoguardarProductos.checked;
+  localStorage.setItem('autoguardadoActivo', autoguardadoActivo);
+}
+
+function cargarEstadoAutoguardado() {
+  const autoguardadoActivo = localStorage.getItem('autoguardadoActivo');
+
+  if (autoguardadoActivo === 'true') {
+    autoguardarProductos.checked = true;
+  } else {
+    autoguardarProductos.checked = false;
+  }
+}
 
 
 

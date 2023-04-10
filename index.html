@@ -34,10 +34,21 @@
 
  <div class="container">
  
+
+<label class="toggle" style="margin-left: 2rem;">
+  <input class="toggle-checkbox" type="checkbox" id="autoguardarProductos" checked>
+  <div class="toggle-switch"></div>
+  <span class="toggle-label">Guardar al agregar</span>
+</label>
+
+
 <button id="modal-btn" class="btn btn-warning">
   <i class="fas fa-cog"></i> Opciones
 </button>
-
+<a class="nav-link btn btn-primary" href="#" data-toggle="modal" data-target="#historialVentasModal">
+        <i class="fas fa-history"></i> Ventas
+      </a>
+	  
 <button type="button" class="custom-btn" id="cargarFacturacionRapida">
 
   <div class="text-container">
@@ -50,9 +61,7 @@
 
 
 
-<a class="nav-link btn btn-primary" href="#" data-toggle="modal" data-target="#historialVentasModal">
-        <i class="fas fa-history"></i> Historial de Ventas
-      </a>
+
 
  
 
@@ -214,6 +223,8 @@
   </div>
  </div>
 </div>
+
+
 			
 <div class="btn-group" role="group">
 <button id="guardarProductos" class="btn btn-success btn-sm boton-icono">
