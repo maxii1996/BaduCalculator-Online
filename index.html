@@ -12,10 +12,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:900i&display=swap">
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
-  <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
-  
+
    <title>BaduCalculator Online</title>
 </head> 
 <body>
@@ -24,7 +21,7 @@
   <div class="container d-flex align-items-center">
     <img src="https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/icon-192x192.png" alt="BaduCalculator Logo" height="64" align="left">
     <h1 class="text-white mb-0 ml-3">BaduCalculator <sup class="text-secondary">online</sup></h1>
-   <span id="version">Versión 1.0.5  | Developed by Undermax Software</span>
+   <span id="version">Versión 1.0.4  | Developed by Undermax Software</span>
   </div>
 </div>
 
@@ -219,12 +216,16 @@
     </select>
     <input type="range" id="volumenFinalizar" name="volumenFinalizar" min="0" max="100" value="50" step="1" class="ms-2"  style="width: 20%;" >
     <button id="playFinalizarButton" class="btn btn-primary ms-2" style="width: 4rem;"><i class="fas fa-play"></i></button>
+  
+
   </div>
    </div>
   </div>
  </div>
 </div>
-	
+
+
+			
 <div class="btn-group" role="group">
 <button id="guardarProductos" class="btn btn-success btn-sm boton-icono">
     <i class="fa fa-save"></i>
@@ -242,7 +243,10 @@
     <i class="fa fa-upload"></i>
     Importar Productos
   </button>
-
+  
+  
+  
+  
 </div>      
 		   </div>
         </nav>
@@ -250,28 +254,47 @@
 	
 <center>
 
-  <div class="col-md-8">
-  <div class="productos">
-  <input type="file" id="archivoImportar" accept=".json" style="display: none;">
-  <div class="col-md-6">
+    <div class="col-md-8">
+	
+	
+        <div class="productos">
+		
+	
+		
+		<input type="file" id="archivoImportar" accept=".json" style="display: none;">
+
+ <div class="col-md-6">
  
  	 <button id="toggleAgregarProducto" class="btn btn-outline-secondary btn-lg">
         <i class="fas fa-plus"></i> Agregar Producto
     </button>
-	
+		
+ 
  <div id="notificacionContenedor" class="mt-1" style="width: 95%;"></div>
+
+  
+
  <br>
+ 
+ 
   <br>
-   <div class="facturacion">
-      <h6 class="tituloSeccion">Detalle de Facturación</h6> 				
-        <ul id="detalleFacturacion" class="list-group"></ul>
-          <hr>
-            <h6>Total: $<span id="total">0</span></h6>
-                <span id="cantidadProductos"></span>   
+                <div class="facturacion">
+				
+                    <h6 class="tituloSeccion">Detalle de Facturación</h6> 
+					
+                    <ul id="detalleFacturacion" class="list-group"></ul>
+                   <hr>
+                    <h6>Total: $<span id="total">0</span></h6>
+					
+                    <span id="cantidadProductos"></span>   
+					
             </div>
-			</div> 
-			<br>
-			
+			</div>
+
+
+   
+   <br>
+ 
 <div class="contenidoFormulario">
   <div class="form-tarjeta">
     <div class="form-group mb-3">
@@ -284,24 +307,34 @@
     </div>
     <button id="agregarProducto" class="btn btn-primary btn"><i class="fas fa-arrow-down"></i> Agregar Producto</button>
   </div>
+  
 </div>
 
+
+
+		
+		
         <h6 id="productosAFacturar"><span>Agregue productos para comenzar</span></h6>
 
             <div>
-              <input type="text" id="buscarProducto" placeholder="Buscar producto" class="buscar">
+				
+                <input type="text" id="buscarProducto" placeholder="Buscar producto" class="buscar">
+			 
 			</div>
 			<br>
             <ul id="listaProductos" class="list-group"></ul>
             <input type="file" id="archivoImportar" accept=".json" style="display: none;">
-            <div class="button-container">	
-		  <button id="facturar" class="btn btn-primary custom-button">
-            <i class="fas fa-file-invoice-dollar"></i> Facturar
-         </button>	
-     <button id="siguienteCliente" class="btn btn-secondary w-50 custom-button" disabled>
-     <i class="fas fa-user-plus"></i> Siguiente Cliente
+            <div class="button-container">
+			
+			   <button id="facturar" class="btn btn-primary custom-button">
+                    <i class="fas fa-file-invoice-dollar"></i> Facturar
+                </button>
+				
+               <button id="siguienteCliente" class="btn btn-secondary w-50 custom-button" disabled>
+    <i class="fas fa-user-plus"></i> Siguiente Cliente
 </button>
 			  		  
+
 <div id="listaProductos" class="mt-2"></div>
 
             </div>
@@ -400,6 +433,10 @@
   </div>
 </div>
 
+
+
+
+
 <div class="modal modal-fullscreen" tabindex="-1" id="facturarapida1" data-backdrop="static" data-bs-keyboard="false">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -429,10 +466,15 @@
   </div>
 </div>
 
+
+
+
+
+
+
 <script id="productoTemplate" type="text/template">
     <div class="producto-grid-item">
-      <div class="producto-card" data-id="{id}">
-
+        <div class="producto-card">
             <div class="nombrePrecio">
                 <span class="nombreProducto">{nombreProducto}</span>
                 <span class="precio">$ {precio}</span>
