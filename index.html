@@ -3,17 +3,18 @@
 <head>
  <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">    
-    <link rel="stylesheet" href="estilos.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link rel="manifest" href="manifest.json">
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:900i&display=swap">
-    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">	
+	<link rel="stylesheet" href="estilos.css">
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<link rel="manifest" href="manifest.json">
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:900i&display=swap">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
   
    <title>BaduCalculator Online</title>
 </head> 
@@ -23,7 +24,7 @@
   <div class="container d-flex align-items-center">
     <img src="https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/icon-192x192.png" alt="BaduCalculator Logo" height="64" align="left">
     <h1 class="text-white mb-0 ml-3">BaduCalculator <sup class="text-secondary">online</sup></h1>
-   <span id="version">Versión 1.0.6  | Developed by Undermax Software</span>
+   <span id="version">Versión 1.0.5  | Developed by Undermax Software</span>
   </div>
 </div>
 
@@ -330,17 +331,10 @@
                 </div>
             </div>
             <div class="modal-footer">
-<div class="btn btn-danger" id="eliminarProductoModal" style="position: relative;">Eliminar</div>
+			<button type="button" class="btn btn-danger" id="eliminarProductoModal">Eliminar</button>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="cancelarEditarProducto">Cancelar</button>
                 <button type="button" class="btn btn-primary" id="confirmarEditarProducto">Guardar cambios</button>
             </div>
-			
-			<p class="text-center mt-3" style="font-size: 1.1rem;">
- Sugerencia
-</p>
-			<p class="text-center mt-2" style="font-size: 0.78rem;">
- Puedes borrar todos los productos si mantienes pulsado el botón de Eliminar durante 3 segundos.
-</p>
         </div>
     </div>
 </div>
@@ -388,51 +382,6 @@
     </div>
   </div>
 </div>
-
-
-
-<div class="modal" tabindex="-1" role="dialog" id="confirmDeleteAllModal" data-backdrop="static" data-keyboard="false">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Confirmar eliminación de todos los productos</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <p>¿Deseas borrar todos los productos existentes de la lista?</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger" id="confirmDeleteAll">Eliminar todos</button>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<div class="modal" tabindex="-1" role="dialog" id="confirmDeleteSingleModal" data-backdrop="static" data-keyboard="false">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Confirmar eliminación</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <p>¿Estás seguro de que deseas eliminar este producto? Se guardarán los cambios automáticamente.</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger" id="confirmDeleteSingle">Eliminar</button>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-
 
 <div class="modal fade" id="deleteConfirmationModal" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">

@@ -152,27 +152,16 @@ function editarProducto(event) {
         editarProductoModal.hide();
     };
 
-
-
-const confirmDeleteSingleModal = $("#confirmDeleteSingleModal");
-const confirmDeleteSingleBtn = document.getElementById("confirmDeleteSingle");
-
-eliminarProductoModal.onclick = () => {
-  confirmDeleteSingleModal.modal("show");
-};
-
-confirmDeleteSingleBtn.addEventListener("click", () => {
-  producto.remove();
-  mostrarNotificacion('Producto eliminado correctamente', 'success');
-  mostrarOcultarBotonFacturar();
-  editarProductoModal.hide();
-  guardarProductos();
-  cargarProductos();
-  confirmDeleteSingleModal.modal("hide");
-});
-
-
-
+    eliminarProductoModal.onclick = () => {
+        if (confirm('¿Estás seguro de que deseas eliminar este producto? Se guardarán los cambios automaticamente.')) {
+           producto.remove();
+            mostrarNotificacion('Producto eliminado correctamente', 'success');
+            mostrarOcultarBotonFacturar();
+            editarProductoModal.hide();
+					guardarProductos();
+		  cargarProductos();
+        }
+    };
 }
 
 
@@ -849,7 +838,7 @@ document.getElementById("facturar").addEventListener("click", function () {
 
 
 document.addEventListener('keydown', (event) => {
-    if (event.altKey) {
+  if (event.ctrlKey || event.metaKey) {
     let textQuickNumber = null;
 
     if (event.key === '1') {
@@ -1379,53 +1368,6 @@ function guardarOrdenTarjetas() {
 }
 
 
-const eliminarProductoModal = document.getElementById("eliminarProductoModal");
-const confirmaDeleteAll = $("#confirmDeleteAllModal");
-const confirmarDeleteAllBtn = document.getElementById("confirmDeleteAll");
-
-let timeoutID;
-let startTime;
-const fillDuration = 3000;
-
-function setButtonProgress(progress) {
-  eliminarProductoModal.innerHTML = `Eliminar<div style="position: absolute; top: 0; left: 0; width: ${progress * 100}%; height: 100%; background-color: rgba(0, 0, 0, 0.2);"></div>`;
-}
-
-eliminarProductoModal.addEventListener("mousedown", () => {
-  startTime = Date.now();
-  setButtonProgress(0);
-  timeoutID = setInterval(() => {
-    const elapsedTime = Date.now() - startTime;
-    const progress = elapsedTime / fillDuration;
-    if (progress >= 1) {
-      clearInterval(timeoutID);
-      setButtonProgress(0);
-      confirmaDeleteAll.modal("show");
-    } else {
-      setButtonProgress(progress);
-    }
-  }, 100);
-});
-
-eliminarProductoModal.addEventListener("mouseleave", () => {
-  clearInterval(timeoutID);
-  setButtonProgress(0);
-});
-
-
-
-eliminarProductoModal.addEventListener("mouseup", () => {
-  clearInterval(timeoutID);
-  setButtonProgress(0);
-});
-
-confirmarDeleteAllBtn.addEventListener("click", () => {
-  // Borra todos los productos de la lista aquí
-  const listaProductos = document.getElementById("listaProductos");
-  listaProductos.innerHTML = "";
-  confirmaDeleteAll.modal("hide");
-  guardarProductos();
-});
 
 
 
