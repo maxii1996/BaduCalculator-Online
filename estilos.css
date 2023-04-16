@@ -811,3 +811,18 @@ font-size: 0.74rem;
 
   line-height: 1.2;
 }
+
+/* Asegúrate de reemplazar .producto-card con la clase que utilices para las tarjetas de productos */
+.producto-card {
+  cursor: grab;
+}
+
+.producto-card:active {
+  cursor: grabbing;
+}
+
+.placeholder {
+  border: 1px dashed #cccccc;
+  background-color: #f5f5f5;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+}
