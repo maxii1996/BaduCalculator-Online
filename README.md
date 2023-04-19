@@ -11,16 +11,17 @@ Te damos la bienvenida al GitHub oficial de BaduCalculator Online!
 
 ## Ejecuta BaduCalculator Online desde tu navegador aquí:
 
-
+> Versión Release (100% funcional)
 > https://maxii1996.github.io/BaduCalculator-Online/
 
 
 ### También tenemos una versión de desarrollo (Early Access) la cual se ejecutará en:
 
-https://maxii1996.github.io/Badu-Calculator-Online-Dev-Preview-/
+> Versión No-Release (En desarrollo, podría contener fallas.)
+> https://maxii1996.github.io/Badu-Calculator-Online-Dev-Preview-/
 
 
-### ¿Qué cambia entre la versión Release (R) Y las de Desarrollo, o NR (No Release)
+### ¿Qué cambia entre la versión Release (R) Y las de Desarrollo, o NR (No Release)?
 
 - La diferencia principal es la estabilidad y funcionalidad, mientras que las versiones Release, pueden estar apenas un poco más desactualizadas que las versiones NR, las mismas garantizan 
 su funcionamiento 100% y estabilidad. Las versiones NR, pueden contener nuevas funcionalidades o contenido, pero podrían tener fallas que serán solucionadas hasta transformarse en versión Release.
