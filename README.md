@@ -4,7 +4,6 @@
 
 Te damos la bienvenida al GitHub oficial de BaduCalculator Online!
 
-![GOTO](https://user-images.githubusercontent.com/18560836/233149322-90a1cb1e-e214-4420-b316-287b09fe57dc.png)
 
 ***
 
@@ -20,9 +19,13 @@ Te damos la bienvenida al GitHub oficial de BaduCalculator Online!
 
 https://maxii1996.github.io/Badu-Calculator-Online-Dev-Preview-/
 
+
+
+***
+***
 ![https://www.paypal.com/donate/?hosted_button_id=25R4EDU7CGDFA](https://user-images.githubusercontent.com/18560836/233149506-ebc0780e-0364-4a31-8c41-8fbf359fb47e.png)
 
-# IMPORTANTE 
+## IMPORTANTE 
 Si te gusto el proyecto, considera apoyarme con una donación! Se agradecerá mucho!!
 
 https://www.paypal.com/donate/?hosted_button_id=25R4EDU7CGDFA
