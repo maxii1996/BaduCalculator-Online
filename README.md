@@ -18,13 +18,19 @@ Si te gusto el proyecto, considera apoyarme con una donación! Se agradecerá mu
 
 https://www.paypal.com/donate/?hosted_button_id=25R4EDU7CGDFA
 
-## Historial de Cambios
+## Historial de Cambios e Implementaciones:
 
-https://github.com/users/maxii1996/projects/1
+> https://github.com/users/maxii1996/projects/1
+
+
+
+
 
 ***
 
-> Historia del programa #
+
+
+> Historia del programa.
 
 Conoce la historia del programa visitando este enlace:
 
