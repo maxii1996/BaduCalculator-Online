@@ -53,4 +53,4 @@ https://www.paypal.com/donate/?hosted_button_id=25R4EDU7CGDFA
 
 Conoce la historia del programa visitando este enlace:
 
-https://github.com/maxii1996/BaduCalculator-Online/wiki/Historia-de-BaduCalculator...
+https://github.com/maxii1996/BaduCalculator-Online/wiki
