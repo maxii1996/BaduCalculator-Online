@@ -1,8 +1,8 @@
 {
   "name": "BaduCalculator-Online",
   "short_name": "BaduCalculator",
-  "description": "Online Edition from BaduCalculator",
-  "start_url": "/",
+  "description": "BaduCalculator Online - Developed by Undermax Software",
+  "start_url": "https://maxii1996.github.io/BaduCalculator-Online/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#000000",
