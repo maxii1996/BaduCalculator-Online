@@ -6,9 +6,15 @@ Te damos la bienvenida al GitHub oficial de BaduCalculator Online!
 
 ![GOTO](https://user-images.githubusercontent.com/18560836/233149322-90a1cb1e-e214-4420-b316-287b09fe57dc.png)
 
+***
+
+![minibanner](https://user-images.githubusercontent.com/18560836/233150090-f3ef19b8-abbd-4c1c-a604-3b565627f08d.png)
+
 ## Ejecuta BaduCalculator Online desde tu navegador aquí:
 
-https://maxii1996.github.io/BaduCalculator-Online/
+
+> https://maxii1996.github.io/BaduCalculator-Online/
+
 
 ### También tenemos una versión de desarrollo (Early Acess) la cual se ejecutará en:
 
