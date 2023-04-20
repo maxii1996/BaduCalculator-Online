@@ -1,11 +1,9 @@
-
-
 body {
-    font-family: Arial, sans-serif;
-    line-height: 1.6;
-    margin: 0;
-    padding: 0;
-	
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+
 }
 
 
@@ -29,51 +27,53 @@ h6 {
 }
 
 .container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 2rem;
-    padding: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 2rem;
+  padding: 1rem;
 }
 
-.form, .facturacion {
-    border: 1px solid #ccc;
-    border-radius: 7px;
-    padding: 2rem;
-    width: 90%;
-	font-size: 0.8rem;
-	 background-color: #fafafa;
-	
+.form,
+.facturacion {
+  border: 1px solid #ccc;
+  border-radius: 7px;
+  padding: 2rem;
+  width: 90%;
+  font-size: 0.8rem;
+  background-color: #fafafa;
+
 }
 
-.productos{
-	
-	  border: 1px solid #ccc;
-    border-radius: 7px;
-    padding: 2rem;
-    width: 100%;
-	font-size: 0.9rem;
-	
-	
+.productos {
+
+  border: 1px solid #ccc;
+  border-radius: 7px;
+  padding: 2rem;
+  width: 100%;
+  font-size: 0.9rem;
+
+
 }
 
 header nav {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 1rem;
-    padding: 1rem;
-    background-color: #f8f9fa;
-    border-bottom: 1px solid #dee2e6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #dee2e6;
 }
 
 #listaProductos li {
   list-style: none;
-    margin-bottom: 0;
-    border: none;
-  
+  margin-bottom: 0;
+  border: none;
+
 }
+
 #listaProductos li:last-child {
   border-bottom: none;
 }
@@ -84,12 +84,12 @@ header nav {
   align-items: center;
   border-bottom: 1px solid #ddd;
   padding: 5px;
-   font-size: 1.6em;
+  font-size: 1.6em;
   margin-bottom: 5px;
 }
 
 #detalleFacturacion li {
-    font-size: 0.8rem;
+  font-size: 0.8rem;
 }
 
 
@@ -108,22 +108,26 @@ header nav {
   font-size: 1.2rem;
   font-family: Segoe UI, sans-serif;
   white-space: nowrap;
+  display: block;
+  text-align: center;
+  margin-bottom: 0.5rem;
 }
 
 
 .productos ul li {
-    border-bottom: 1px solid #ddd;
-    padding-bottom: 5px;
-    margin-bottom: 5px;
-	 height: 100%;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 5px;
+  margin-bottom: 5px;
+  height: 100%;
 }
 
-html, body {
+html,
+body {
   height: 100%;
 }
 
 button {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .navbar {
@@ -133,7 +137,7 @@ button {
 .tituloSeccion {
   margin-bottom: 1rem;
   opacity: 0.45;
-    font-size: 1.2rem;
+  font-size: 1.2rem;
   font-weight: lighter;
 }
 
@@ -208,23 +212,25 @@ button {
 
 .list-group-item.par {
   background-color: #f3f3f3;
- 
+
 }
 
 .list-group-item.impar {
   background-color: #f7f7f7;
- 
+
 }
 
 #listaProductos {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 1rem;
+  padding-left: 4rem;
+  padding-right: 4rem;
 }
 
 .producto-card {
   position: relative;
-  padding: 16px;
+  padding: 15px;
   background-color: #efefef40;
   border-radius: 7px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -237,7 +243,7 @@ button {
 .editarProducto {
   position: absolute;
   top: 8px;
-   border: none;
+  border: none;
   right: 8px;
   border: 0;
   outline: none;
@@ -246,16 +252,17 @@ button {
 
 .precio {
   font-size: 1.1em;
-  margin-right: 1rem; 
+  margin-right: 1rem;
 
 }
 
 .nombrePrecio {
-	 font-size: 1.1em;
+  font-size: 1.1em;
   display: flex;
-   margin-top: 2rem;
+  margin-top: 2rem;
   justify-content: space-between;
   margin-bottom: 16px;
+  align-items: center;
 }
 
 
@@ -263,10 +270,10 @@ button {
 
 
 .boton-icono i {
-  display: block; 
+  display: block;
   margin-bottom: 0.1rem;
-  
-   padding: 8px 15px;
+
+  padding: 8px 15px;
 }
 
 .boton-icono {
@@ -290,7 +297,7 @@ button {
 #contenedor-botones {
   display: flex;
   flex-wrap: wrap;
-  
+
   margin-top: 2px;
   margin-bottom: 2px;
   justify-content: center;
@@ -317,18 +324,18 @@ button {
 }
 
 footer {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    background-color: #f1f1f1;
-    font-size: 8px;
-    font-family: Segoe UI, sans-serif;
-    text-align: center;
-    padding: 5px 0;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: #f1f1f1;
+  font-size: 8px;
+  font-family: Segoe UI, sans-serif;
+  text-align: center;
+  padding: 5px 0;
 }
 
 #currentYear {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .header {
@@ -354,33 +361,33 @@ footer {
 }
 
 .button-container {
-	margin-left: 8rem;
-    display: flex;
-    width: 100%;
-	align-items: center;
-    padding: 20px;
-	  justify-content: center;
-    margin-top: 3rem; 
+  margin-left: 8rem;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  padding: 20px;
+  justify-content: center;
+  margin-top: 3rem;
 }
 
 .custom-button {
-    width: 45%;
-	max-width: 23rem;
-    text-overflow: ellipsis; 
-    box-sizing: border-box;
-    height: 4rem;
+  width: 45%;
+  max-width: 23rem;
+  text-overflow: ellipsis;
+  box-sizing: border-box;
+  height: 4rem;
 }
 
 .ventana-button {
-    width: 22%;
-	max-width: 16rem;
-    text-overflow: ellipsis; 
-    box-sizing: border-box;
-    height: 4rem;
+  width: 22%;
+  max-width: 16rem;
+  text-overflow: ellipsis;
+  box-sizing: border-box;
+  height: 4rem;
 }
 
 .btn-primary {
-    margin-right: 20px;
+  margin-right: 20px;
 }
 
 #options-btn {
@@ -412,16 +419,16 @@ footer {
 @media (min-width: 1080px) {
   .d-flex.mt-3 {
     gap: 1rem;
-	padding: 9rem;
-	padding-left: 3rem;
-	padding-right: 3rem;
-	width: 60%;
-	max-width: 60%;
-	height: 27%;
-	padding-bottom: 2.4rem;
-	padding-top: 2.4rem;
-	max-height: 27%;
-}
+    padding: 9rem;
+    padding-left: 3rem;
+    padding-right: 3rem;
+    width: 60%;
+    max-width: 60%;
+    height: 27%;
+    padding-bottom: 2.4rem;
+    padding-top: 2.4rem;
+    max-height: 27%;
+  }
 }
 
 #modal-content {
@@ -448,7 +455,7 @@ footer {
   align-items: center;
   width: 100%;
   height: 100%;
-  
+
 }
 
 #modal-content label {
@@ -457,7 +464,7 @@ footer {
 
 
 #modal-content input[type="text"] {
-    width: 100%;
+  width: 100%;
   max-width: 100%;
 }
 
@@ -488,7 +495,7 @@ header {
 }
 
 h1 {
-    font-weight: 400;
+  font-weight: 400;
 }
 
 .container-fluid {
@@ -513,7 +520,7 @@ h1 {
 .sound-config-container {
   display: flex;
   align-items: center;
-  
+
 }
 
 .sound-config-container label {
@@ -531,7 +538,7 @@ h1 {
 .modal-fullscreen {
   background-color: #f0f0f0;
   color: black;
- 
+
 }
 
 #facturacionRapidaBtn {
@@ -583,14 +590,14 @@ h1 {
   align-items: center;
   background: #3a2471;
   color: #fff;
-    text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.85);
+  text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.85);
   width: 11rem;
   height: 2.7rem;
   border: 0;
   font-size: 15px;
   border-radius: 4px;
-   font-family: Arial, sans-serif;
-   font-weight: 500;
+  font-family: Arial, sans-serif;
+  font-weight: 500;
   transition: 1.3s;
   overflow: hidden;
   padding: 0 10px;
@@ -612,7 +619,7 @@ h1 {
   top: 0;
   opacity: .5;
   filter: blur(30px);
-  transform: translateX(-100px)  skewX(-15deg);
+  transform: translateX(-100px) skewX(-15deg);
 }
 
 .custom-btn:after {
@@ -630,12 +637,12 @@ h1 {
 }
 
 .custom-btn:hover {
-   background: #3a2471;
+  background: #3a2471;
   cursor: pointer;
 }
 
 .custom-btn:hover:before {
-  transform: translateX(300px)  skewX(-15deg);
+  transform: translateX(300px) skewX(-15deg);
   opacity: 0.3;
   transition: .7s;
 }
@@ -644,7 +651,7 @@ h1 {
   transform: translateX(300px) skewX(-15deg);
   opacity: 1;
   transition: .7s;
- 
+
 }
 
 .alert-custom {
@@ -665,6 +672,7 @@ h1 {
   from {
     transform: translateY(-100%);
   }
+
   to {
     transform: translateY(0);
   }
@@ -674,6 +682,7 @@ h1 {
   from {
     opacity: 1;
   }
+
   to {
     opacity: 0;
   }
@@ -684,16 +693,18 @@ h1 {
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.5s ease-out, opacity 0.5s ease-out;
-  width: 90%;
+  width: 75%;
   margin: 0 auto;
   background-color: #ffffff;
   padding: 2rem;
   padding-top: 2rem;
-  padding-bottom: 2rem;
-  border: 1px solid #cccccc;
+  padding-bottom: 1rem;
+  border: 2px solid #d0d0d0df;
   box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
-  border-radius: 0.25rem;
+  border-radius: 0.45rem;
   opacity: 0;
+  margin-bottom: 10%;
+  margin-top: 1%;
   height: auto;
   display: flex;
   justify-content: space-between;
@@ -701,8 +712,10 @@ h1 {
 }
 
 
+
+
 .contenidoFormulario.mostrar .form-tarjeta {
-  max-height: 10rem;
+  max-height: 17rem;
   opacity: 1;
 
 }
@@ -710,15 +723,15 @@ h1 {
 .contenidoFormulario .form-tarjeta .form-group {
   display: inline-block;
   width: 100%;
-  margin-top: 5%;
-   margin-bottom: 5%;
+  margin-top: 3%;
+  margin-bottom: 43%;
   margin-right: 5%;
 }
 
 .contenidoFormulario .form-tarjeta .form-group:last-child {
   margin-right: 50;
-   margin-top: 5%;
-   margin-bottom: 5%;
+  margin-top: 5%;
+  margin-bottom: 5%;
 }
 
 .contenidoFormulario .form-tarjeta button {
@@ -740,6 +753,7 @@ h1 {
   from {
     transform: scale(1);
   }
+
   to {
     transform: scale(0.98);
   }
@@ -766,9 +780,12 @@ h1 {
   vertical-align: middle;
   transition: background 0.25s;
 }
-.toggle-switch:before, .toggle-switch:after {
+
+.toggle-switch:before,
+.toggle-switch:after {
   content: "";
 }
+
 .toggle-switch:before {
   display: block;
   background: linear-gradient(to bottom, #fff 0%, #eee 100%);
@@ -781,14 +798,17 @@ h1 {
   left: 4px;
   transition: left 0.25s;
 }
+
 .toggle:hover .toggle-switch:before {
   background: linear-gradient(to bottom, #fff 0%, #fff 100%);
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.5);
 }
-.toggle-checkbox:checked + .toggle-switch {
+
+.toggle-checkbox:checked+.toggle-switch {
   background: #56c080;
 }
-.toggle-checkbox:checked + .toggle-switch:before {
+
+.toggle-checkbox:checked+.toggle-switch:before {
   left: 30px;
 }
 
@@ -802,12 +822,12 @@ h1 {
   position: relative;
   top: 2px;
   right: 0rem;
-    opacity: 0.8;
+  opacity: 0.8;
   font-size: 0.61rem;
 }
 
 .btn-group button.btn {
-font-size: 0.74rem;
+  font-size: 0.74rem;
 
   line-height: 1.2;
 }
@@ -826,3 +846,85 @@ font-size: 0.74rem;
   background-color: #f5f5f5;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
 }
+
+.categoria-label {
+  font-size: 0.8rem;
+  padding: 2px 4px;
+  border-radius: 4px;
+  color: #ffffff;
+}
+
+.categoriaNombre {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+}
+
+.step-container {
+  display: flex;
+  overflow-x: hidden;
+  width: 100%;
+  position: relative;
+}
+
+.step {
+  flex-shrink: 0;
+  width: 100%;
+  transition: transform 0.3s ease-in-out;
+}
+
+.step input[type="text"],
+.step input[type="number"] {
+  width: 70% !important;
+}
+
+.step .form-group {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.step button {
+  margin-left: 10px;
+}
+
+#progressBar {
+  height: 8px;
+  background-color: #00bcd4;
+  width: 0;
+  margin-bottom: 30px;
+  margin-top: 22px;
+  padding-bottom: 0.12rem;
+  border-radius: 50px;
+}
+
+#categoriaProductoAgregar {
+  width: 60%;
+}
+
+#nombreProducto {
+  width: 40%;
+}
+
+#step1 input#nombreProducto {
+  width: 35% !important;
+}
+
+#step2 input#precio {
+  width: 28% !important;
+}
+
+
+
+#productosAFacturar {
+  margin-top: -8rem; 
+}
+
+.error-msg {
+  color: red;
+  font-size: 14px;
+  margin-top: 20px;
+  display: none;
+}
+
+

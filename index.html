@@ -1,488 +1,643 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
- <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">    
-    <link rel="stylesheet" href="estilos.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link rel="manifest" href="manifest.json">
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:900i&display=swap">
-    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
-  
-   <title>BaduCalculator Online</title>
-</head> 
-<body>
-<header>
-<div class="container-fluid bg-dark text-white py-3">
-  <div class="container d-flex align-items-center">
-    <img src="https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/icon-192x192.png" alt="BaduCalculator Logo" height="64" align="left">
-    <h1 class="text-white mb-0 ml-3">BaduCalculator <sup class="text-secondary">online</sup></h1>
-   <span id="version">Versión 1.0.6  | Developed by Undermax Software</span>
-  </div>
-</div>
 
-</header>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-		
-		<div id="notification" class="notification" style="display: none;">
-    <div id="notification-content" class="notification-content"></div>
-</div>
-<div class="container">
-<label class="toggle" style="margin-left: 2rem;">
-  <input class="toggle-checkbox" type="checkbox" id="autoguardarProductos" checked>
-  <div class="toggle-switch"></div>
-  <span class="toggle-label">Guardar al agregar</span>
-</label>
-<button id="modal-btn" class="btn btn-warning">
-  <i class="fas fa-cog"></i> Opciones
-</button>
-<a class="nav-link btn btn-primary" href="#" data-toggle="modal" data-target="#historialVentasModal">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="estilos.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="manifest" href="manifest.json">
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:900i&display=swap">
+  <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
+
+  <title>BaduCalculator Online</title>
+</head>
+
+<body>
+  <header>
+    <div class="container-fluid bg-dark text-white py-3">
+      <div class="container d-flex align-items-center">
+        <img src="https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/icon-192x192.png"
+          alt="BaduCalculator Logo" height="64" align="left">
+        <h1 class="text-white mb-0 ml-3">BaduCalculator <sup class="text-secondary">online</sup></h1>
+        <span id="version">Versión 1.0.7 | Developed by Undermax Software</span>
+      </div>
+    </div>
+
+  </header>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+
+    <div id="notification" class="notification" style="display: none;">
+      <div id="notification-content" class="notification-content"></div>
+    </div>
+    <div class="container">
+      <label class="toggle" style="margin-left: 2rem;">
+        <input class="toggle-checkbox" type="checkbox" id="autoguardarProductos" checked>
+        <div class="toggle-switch"></div>
+        <span class="toggle-label">Guardar al agregar</span>
+      </label>
+      <button id="modal-btn" class="btn btn-warning">
+        <i class="fas fa-cog"></i> Opciones
+      </button>
+      <a class="nav-link btn btn-primary" href="#" data-toggle="modal" data-target="#historialVentasModal">
         <i class="fas fa-history"></i> Ventas
       </a>
-<button type="button" class="custom-btn" id="cargarFacturacionRapida">
+      <button type="button" class="custom-btn" id="cargarFacturacionRapida">
 
-  <div class="text-container">
-    <span class="original-text"> ‎  Factura Rápida ‎  </span>
-	  <i class="fas fa-bolt"></i>
-  </div>
-</button>
-
-<div id="modal-container">
-  <div id="modal-content"> 
-   <hr>
-    <h2>Ajustes generales</h2>
-    <div class="d-flex mt-3">
-
-      <button id="save-btn" class="btn btn-success ventana-button">
-        <i class="fas fa-save"></i> Guardar
+        <div class="text-container">
+          <span class="original-text"> ‎ Factura Rápida ‎ </span>
+          <i class="fas fa-bolt"></i>
+        </div>
       </button>
-      <button id="close-modal-btn" class="btn btn-danger ventana-button">
-        <i class="fas fa-times"></i> Cancelar
-      </button>
-      <button id="exportarConfig" class="btn btn-primary ventana-button">
-        <i class="fas fa-file-export"></i> Exportar configuración
-      </button>
-      <button id="importarConfig" class="btn btn-secondary ventana-button">
-        <i class="fas fa-file-import"></i> Importar configuración
-      </button>
-      <input type="file" id="archivoConfig" accept=".json" style="display: none;">
-    </div>
-  
-    <div class="d-flex mt-3">
-	 <h5>Facturación Rápida de productos:</h5>
-<button type="button" class="btn btn-primary d-flex justify-content-between align-items-center" style="width: 25%;" id="facturacionRapidaBtn">
-    <i class="fas fa-arrow-circle-right"></i><span style="padding-right: 1rem;">Personalizar</span>
 
-</button>
-
-</div>
-<br>
-  <h4>Personalizar textos de la Factura</h4>
-  <br>
-  
-  
-<style>
-  .custom-input-container {
-    display: flex;
-    align-items: center;
-    margin-bottom: 1rem;
-    flex-wrap: nowrap;
-  }
-  
-  .custom-input-label {
-    white-space: nowrap;
-	margin-left: 2rem !important;
-  }
-  
-  .custom-input {
-    background-color: #f8f9fa;
-    border: 1px solid #ced4da;
-    border-radius: 0.25rem;
-    padding: 0.375rem 0.75rem;
-    font-size: 1rem;
-    line-height: 1.5;
-    color: #495057;
-    width: 30%;
-	padding-left: 2rem;
-	padding-right: 2rem;
-    max-width: 30%;
-    margin-left: 2rem;
-	   margin-right: 2rem;
-  }
-</style>
-
-
-<div class="custom-input-container">
-  <label class="custom-input-label" for="message-input">Texto Inicial:</label>
-  <input type="text" id="message-input" value="/do La factura mostraría" class="custom-input">
-  <button id="reset-btn" class="btn btn-secondary">Restablecer</button>
-</div>
-<div class="custom-input-container">
-  <label class="custom-input-label" for="end-message-input">Terminando:</label>
-  <input type="text" id="end-message-input" value="Favor de abonar el importe al tendero más cercano. Gracias por su compra." class="custom-input">
-  <button id="reset-end-message-btn" class="btn btn-secondary">Restablecer</button>
-</div>
-<div class="custom-input-container">
-  <label class="custom-input-label" for="final-text-input">Detalle de Pago:</label>
-  <input type="text" id="final-text-input" value=">> TOTAL A PAGAR: " class="custom-input">
-  <button id="reset-final-text-btn" class="btn btn-secondary">Restablecer</button>
-</div>
-<div class="custom-input-container">
-  <label class="custom-input-label" for="quick-text-1-input">Texto Rápido 1:</label>
-  <input type="text" id="quick-text-1-input" value="" class="custom-input">
-  <button id="reset-quick-text-1-btn" class="btn btn-secondary">Restablecer</button>
-</div>
-<div class="custom-input-container">
-  <label class="custom-input-label" for="quick-text-2-input">Texto Rápido 2:</label>
-  <input type="text" id="quick-text-2-input" value="" class="custom-input">
-  <button id="reset-quick-text-2-btn" class="btn btn-secondary">Restablecer</button>
-</div>
-<div class="custom-input-container">
-  <label class="custom-input-label" for="quick-text-3-input">Texto Rápido 3:</label>
-  <input type="text" id="quick-text-3-input" value="" class="custom-input">
-  <button id="reset-quick-text-3-btn" class="btn btn-secondary">Restablecer</button>
-</div>
-<hr>
-
-<h4 style="text-align: left;">Configuración de Sonidos:</h4>
-<div>
-
-<style>
-  .sound-config-row {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: flex-start !important;
-    margin-bottom: -6rem !important;
-	margin-left: 2rem !important;
-  }
-
-  .sound-config-container {
-    display: flex !important;
-    flex-direction: column !important;
-  }
-</style>
-
-<div class="sound-config-container">
-  <div class="sound-config-row">
-    <label for="facturarSound" style="margin-right: 5rem;">Sonido del Boton Facturar:</label>
-    <select id="facturarSound" class="form-select ms-2" style="width: 23%;">
-       <option value="1">Sonido 1</option>
-      <option value="2">Sonido 2</option>
-      <option value="3">Sonido 3</option>
-      <option value="4">Sonido 4</option>
-      <option value="5">Sonido 5</option>
-    </select>
-    <input type="range" id="volumenFacturar" name="volumenFacturar" min="0" max="100" value="50" step="1" class="ms-2" style="width: 20%;">
-    <button id="playFacturarButton" class="btn btn-primary ms-2" style="width: 4rem;"><i class="fas fa-play"></i></button>
-  </div>
-
-  <div class="sound-config-row">
-    <label for="finalizarSound" style="margin-right: 5rem;">Sonido de Finalizar Factura:</label>
-    <select id="finalizarSound" class="form-select ms-2" style="width: 23%;">
-         <option value="1">Sonido 1</option>
-      <option value="2">Sonido 2</option>
-      <option value="3">Sonido 3</option>
-    </select>
-    <input type="range" id="volumenFinalizar" name="volumenFinalizar" min="0" max="100" value="50" step="1" class="ms-2"  style="width: 20%;" >
-    <button id="playFinalizarButton" class="btn btn-primary ms-2" style="width: 4rem;"><i class="fas fa-play"></i></button>
-  </div>
-   </div>
-  </div>
- </div>
-</div>
-	
-<div class="btn-group" role="group">
-<button id="guardarProductos" class="btn btn-success btn-sm boton-icono">
-    <i class="fa fa-save"></i>
-    Guardar Productos
-  </button>
-  <button id="cargarProductos" class="btn btn-primary btn-sm boton-icono">
-    <i class="fa fa-sync"></i>
-    Cargar Productos
-  </button>
-  <button id="exportarProductos" class="btn btn-secondary btn-sm boton-icono">
-    <i class="fa fa-download"></i>
-    Exportar Productos
-  </button>
-  <button id="importarProductos" class="btn btn-secondary btn-sm boton-icono">
-    <i class="fa fa-upload"></i>
-    Importar Productos
-  </button>
-
-</div>      
-		   </div>
-        </nav>
-    </header>
-	
-<center>
-
-  <div class="col-md-8">
-  <div class="productos">
-  <input type="file" id="archivoImportar" accept=".json" style="display: none;">
-  <div class="col-md-6">
- 
- 	 <button id="toggleAgregarProducto" class="btn btn-outline-secondary btn-lg">
-        <i class="fas fa-plus"></i> Agregar Producto
-    </button>
-	
- <div id="notificacionContenedor" class="mt-1" style="width: 95%;"></div>
- <br>
-  <br>
-   <div class="facturacion">
-      <h6 class="tituloSeccion">Detalle de Facturación</h6> 				
-        <ul id="detalleFacturacion" class="list-group"></ul>
+      <div id="modal-container">
+        <div id="modal-content">
           <hr>
-            <h6>Total: $<span id="total">0</span></h6>
-                <span id="cantidadProductos"></span>   
+          <h2>Ajustes generales</h2>
+          <div class="d-flex mt-3">
+
+            <button id="save-btn" class="btn btn-success ventana-button">
+              <i class="fas fa-save"></i> Guardar
+            </button>
+            <button id="close-modal-btn" class="btn btn-danger ventana-button">
+              <i class="fas fa-times"></i> Cancelar
+            </button>
+            <button id="exportarConfig" class="btn btn-primary ventana-button">
+              <i class="fas fa-file-export"></i> Exportar configuración
+            </button>
+            <button id="importarConfig" class="btn btn-secondary ventana-button">
+              <i class="fas fa-file-import"></i> Importar configuración
+            </button>
+            <input type="file" id="archivoConfig" accept=".json" style="display: none;">
+          </div>
+
+          <div class="d-flex mt-3">
+            <h5>Facturación Rápida de productos:</h5>
+            <button type="button" class="btn btn-primary d-flex justify-content-between align-items-center"
+              style="width: 25%;" id="facturacionRapidaBtn">
+              <i class="fas fa-arrow-circle-right"></i><span style="padding-right: 1rem;">Personalizar</span>
+            </button>
+            <h5 class="ml-3">Categorías:</h5>
+            <button type="button" class="btn btn-primary d-flex justify-content-between align-items-center ml-2"
+              id="abrirAdministrarCategorias">
+              <span>Editar Categorías</span><i class="fas fa-edit ml-2"></i>
+            </button>
+
+
+
+          </div>
+
+          <br>
+          <h4>Personalizar textos de la Factura</h4>
+          <br>
+
+
+          <style>
+            .custom-input-container {
+              display: flex;
+              align-items: center;
+              margin-bottom: 1rem;
+              flex-wrap: nowrap;
+            }
+
+            .custom-input-label {
+              white-space: nowrap;
+              margin-left: 2rem !important;
+            }
+
+            .custom-input {
+              background-color: #f8f9fa;
+              border: 1px solid #ced4da;
+              border-radius: 0.25rem;
+              padding: 0.375rem 0.75rem;
+              font-size: 1rem;
+              line-height: 1.5;
+              color: #495057;
+              width: 30%;
+              padding-left: 2rem;
+              padding-right: 2rem;
+              max-width: 30%;
+              margin-left: 2rem;
+              margin-right: 2rem;
+            }
+          </style>
+
+
+          <div class="custom-input-container">
+            <label class="custom-input-label" for="message-input">Texto Inicial:</label>
+            <input type="text" id="message-input" value="/do La factura mostraría" class="custom-input">
+            <button id="reset-btn" class="btn btn-secondary">Restablecer</button>
+          </div>
+          <div class="custom-input-container">
+            <label class="custom-input-label" for="end-message-input">Terminando:</label>
+            <input type="text" id="end-message-input"
+              value="Favor de abonar el importe al tendero más cercano. Gracias por su compra." class="custom-input">
+            <button id="reset-end-message-btn" class="btn btn-secondary">Restablecer</button>
+          </div>
+          <div class="custom-input-container">
+            <label class="custom-input-label" for="final-text-input">Detalle de Pago:</label>
+            <input type="text" id="final-text-input" value=">> TOTAL A PAGAR: " class="custom-input">
+            <button id="reset-final-text-btn" class="btn btn-secondary">Restablecer</button>
+          </div>
+          <div class="custom-input-container">
+            <label class="custom-input-label" for="quick-text-1-input">Texto Rápido 1:</label>
+            <input type="text" id="quick-text-1-input" value="" class="custom-input">
+            <button id="reset-quick-text-1-btn" class="btn btn-secondary">Restablecer</button>
+          </div>
+          <div class="custom-input-container">
+            <label class="custom-input-label" for="quick-text-2-input">Texto Rápido 2:</label>
+            <input type="text" id="quick-text-2-input" value="" class="custom-input">
+            <button id="reset-quick-text-2-btn" class="btn btn-secondary">Restablecer</button>
+          </div>
+          <div class="custom-input-container">
+            <label class="custom-input-label" for="quick-text-3-input">Texto Rápido 3:</label>
+            <input type="text" id="quick-text-3-input" value="" class="custom-input">
+            <button id="reset-quick-text-3-btn" class="btn btn-secondary">Restablecer</button>
+          </div>
+          <hr>
+
+          <h4 style="text-align: left;">Configuración de Sonidos:</h4>
+          <div>
+
+            <style>
+              .sound-config-row {
+                display: flex !important;
+                align-items: center !important;
+                justify-content: flex-start !important;
+                margin-bottom: -6rem !important;
+                margin-left: 2rem !important;
+              }
+
+              .sound-config-container {
+                display: flex !important;
+                flex-direction: column !important;
+              }
+            </style>
+
+            <div class="sound-config-container">
+              <div class="sound-config-row">
+                <label for="facturarSound" style="margin-right: 5rem;">Sonido del Boton Facturar:</label>
+                <select id="facturarSound" class="form-select ms-2" style="width: 23%;">
+                  <option value="1">Sonido 1</option>
+                  <option value="2">Sonido 2</option>
+                  <option value="3">Sonido 3</option>
+                  <option value="4">Sonido 4</option>
+                  <option value="5">Sonido 5</option>
+                </select>
+                <input type="range" id="volumenFacturar" name="volumenFacturar" min="0" max="100" value="50" step="1"
+                  class="ms-2" style="width: 20%;">
+                <button id="playFacturarButton" class="btn btn-primary ms-2" style="width: 4rem;"><i
+                    class="fas fa-play"></i></button>
+              </div>
+
+              <div class="sound-config-row">
+                <label for="finalizarSound" style="margin-right: 5rem;">Sonido de Finalizar Factura:</label>
+                <select id="finalizarSound" class="form-select ms-2" style="width: 23%;">
+                  <option value="1">Sonido 1</option>
+                  <option value="2">Sonido 2</option>
+                  <option value="3">Sonido 3</option>
+                </select>
+                <input type="range" id="volumenFinalizar" name="volumenFinalizar" min="0" max="100" value="50" step="1"
+                  class="ms-2" style="width: 20%;">
+                <button id="playFinalizarButton" class="btn btn-primary ms-2" style="width: 4rem;"><i
+                    class="fas fa-play"></i></button>
+              </div>
             </div>
-			</div> 
-			<br>
-			
-<div class="contenidoFormulario">
-  <div class="form-tarjeta">
-    <div class="form-group mb-3">
-      <label for="nombreProducto">Nombre del Producto:</label>
-      <input type="text" id="nombreProducto" class="form-control">
+          </div>
+        </div>
+      </div>
+
+      <div class="btn-group" role="group">
+        <button id="guardarProductos" class="btn btn-success btn-sm boton-icono">
+          <i class="fa fa-save"></i>
+          Guardar Productos
+        </button>
+        <button id="cargarProductos" class="btn btn-primary btn-sm boton-icono">
+          <i class="fa fa-sync"></i>
+          Cargar Productos
+        </button>
+        <button id="exportarProductos" class="btn btn-secondary btn-sm boton-icono">
+          <i class="fa fa-download"></i>
+          Exportar Productos
+        </button>
+        <button id="importarProductos" class="btn btn-secondary btn-sm boton-icono">
+          <i class="fa fa-upload"></i>
+          Importar Productos
+        </button>
+
+      </div>
     </div>
-    <div class="form-group mb-3">
-      <label for="precio">Precio:</label>
-      <input type="number" id="precio" class="form-control" min="1">
-    </div>
-    <button id="agregarProducto" class="btn btn-primary btn"><i class="fas fa-arrow-down"></i> Agregar Producto</button>
-  </div>
-</div>
+  </nav>
+  </header>
+
+  <center>
+
+    <div class="col-md-8">
+      <div class="productos">
+        <input type="file" id="archivoImportar" accept=".json" style="display: none;">
+        <div class="col-md-6">
+
+          <button id="toggleAgregarProducto" class="btn btn-outline-secondary btn-lg">
+            <i class="fas fa-plus"></i> Agregar Producto
+          </button>
+
+          <div id="notificacionContenedor" class="mt-1" style="width: 95%;"></div>
+          <br>
+          <br>
+          <div class="facturacion">
+            <h6 class="tituloSeccion">Detalle de Facturación</h6>
+            <ul id="detalleFacturacion" class="list-group"></ul>
+            <hr>
+            <h6>Total: $<span id="total">0</span></h6>
+            <span id="cantidadProductos"></span>
+          </div>
+        </div>
+        <br>
+
+
+        <div class="contenidoFormulario">
+          <div class="form-tarjeta">
+            <div class="step-container">
+              <div class="step" id="step1">
+                <div class="form-group mb-3">
+                  <label for="nombreProducto">¿Qué producto quieres agregar?</label>
+                  <input type="text" id="nombreProducto" class="form-control">
+                  <div class="error-msg" id="errorMsg1"></div>
+                  <br>
+                  <button id="next1" class="btn btn-primary btn">Siguiente</button>
+                </div>
+              </div>
+              <div class="step" id="step2">
+                <div class="form-group mb-3">
+                  <label for="precio">Ahora, vamos a ponerle un precio a <span id="nombreProductoLabel"></span>:</label>
+                  <input type="number" id="precio" class="form-control" min="1">
+                  <div class="error-msg" id="errorMsg2"></div>
+                  <br>
+                  <button id="back1" class="btn btn-secondary btn">Atrás</button>
+                  <button id="next2" class="btn btn-primary btn">Siguiente</button>
+                </div>
+              </div>
+              <div class="step" id="step3">
+                <div class="form-group mb-3">
+                  <label for="categoriaProductoAgregar">
+                    Se agregará <span id="nombreProductoLabel2"></span> con un precio de $<span
+                      id="precioLabel2"></span><br>
+                    <br>
+                    ¿Quieres darle una categoría?
+                  </label>
+                  <select class="form-control" id="categoriaProductoAgregar">
+                  </select>
+                  <br>
+                  <button id="back2" class="btn btn-secondary btn">Atrás</button>
+                  <button id="agregarProducto" class="btn btn-primary btn"><i class="fas fa-arrow-down"></i> Agregar
+                    Producto</button>
+
+                </div>
+              </div>
+
+
+            </div>
+          </div>
+        </div>
+
+
+
+
 
         <h6 id="productosAFacturar"><span>Agregue productos para comenzar</span></h6>
 
-            <div>
-              <input type="text" id="buscarProducto" placeholder="Buscar producto" class="buscar">
-			</div>
-			<br>
-            <ul id="listaProductos" class="list-group"></ul>
-            <input type="file" id="archivoImportar" accept=".json" style="display: none;">
-            <div class="button-container">	
-		  <button id="facturar" class="btn btn-primary custom-button">
+        <div>
+          <input type="text" id="buscarProducto" placeholder="Buscar producto" class="buscar">
+        </div>
+
+        <ul id="listaProductos" class="list-group"></ul>
+        <input type="file" id="archivoImportar" accept=".json" style="display: none;">
+        <div class="button-container">
+          <button id="facturar" class="btn btn-primary custom-button">
             <i class="fas fa-file-invoice-dollar"></i> Facturar
-         </button>	
-     <button id="siguienteCliente" class="btn btn-secondary w-50 custom-button" disabled>
-     <i class="fas fa-user-plus"></i> Siguiente Cliente
-</button>
-			  		  
-<div id="listaProductos" class="mt-2"></div>
+          </button>
+          <button id="siguienteCliente" class="btn btn-secondary w-50 custom-button" disabled>
+            <i class="fas fa-user-plus"></i> Siguiente Cliente
+          </button>
 
-            </div>
+          <div id="listaProductos" class="mt-2"></div>
+
         </div>
+      </div>
     </div>
-	<br>
-	</div>
-	
-</center>
-   
-<div class="modal fade" id="editarProductoModal" tabindex="-1" aria-labelledby="editarProductoModalLabel" aria-hidden="true">
+
+    <br>
+    </div>
+
+  </center>
+
+  </div>
+
+
+
+
+  <div class="modal fade" id="editarProductoModal" tabindex="-1" aria-labelledby="editarProductoModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editarProductoModalLabel">Editar producto</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="cerrarEditarProducto"></button>
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editarProductoModalLabel">Editar producto</h5>
+          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"
+            id="cerrarEditarProducto"></button>
 
-            </div>
-            <div class="modal-body">
-                <div class="mb-3">
-                    <label for="nuevoNombreProducto" class="form-label">Nombre del producto</label>
-                    <input type="text" class="form-control" id="nuevoNombreProducto">
-                </div>
-                <div class="mb-3">
-                    <label for="nuevoPrecioProducto" class="form-label">Precio del producto</label>
-                    <input type="number" class="form-control" id="nuevoPrecioProducto" step="1" min="0">
-                </div>
-            </div>
-            <div class="modal-footer">
-<div class="btn btn-danger" id="eliminarProductoModal" style="position: relative;">Eliminar</div>
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="cancelarEditarProducto">Cancelar</button>
-                <button type="button" class="btn btn-primary" id="confirmarEditarProducto">Guardar cambios</button>
-            </div>
-			
-			<p class="text-center mt-3" style="font-size: 1.1rem;">
- Sugerencia
-</p>
-			<p class="text-center mt-2" style="font-size: 0.78rem;">
- Puedes borrar todos los productos si mantienes pulsado el botón de Eliminar durante 3 segundos.
-</p>
+
         </div>
-    </div>
-</div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="nuevoNombreProducto" class="form-label">Nombre del producto</label>
+            <input type="text" class="form-control" id="nuevoNombreProducto">
+          </div>
+          <div class="mb-3">
+            <label for="nuevoPrecioProducto" class="form-label">Precio del producto</label>
+            <input type="number" class="form-control" id="nuevoPrecioProducto" step="1" min="0">
+          </div>
+        </div>
+        <span class="categoriaProducto d-none"></span>
 
-<div class="modal fade" id="historialVentasModal" tabindex="-1" role="dialog" aria-labelledby="historialVentasModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-lg" role="document" style="max-width: 80%;">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="historialVentasModalLabel">Historial de Ventas</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-	    <div class="d-flex justify-content-between">
-	   <input type="text" id="searchInput" class="form-control mb-3" placeholder="Buscar por nombre de producto">
-        <div class="input-group mb-3">
-	  <span class="input-group-text">Precio entre:</span>
-    <input type="number" id="minPriceInput" class="form-control" placeholder="Mínimo" min="0" max="99999999">
-    <span class="input-group-text">y</span>
-    <input type="number" id="maxPriceInput" class="form-control" placeholder="Máximo" min="0" max="99999999">
-	 </div>
-	 </div>
-	 <table class="table table-bordered">
-          <thead>
-            <tr>
-              <th>Fecha / Hora</th>
-              <th>Productos</th>
-              <th>Total</th>
-            </tr>
-          </thead>
-          <tbody id="historialVentasTbody">
-		 
-          </tbody>
-        </table>
-		 <nav>
-    <ul class="pagination" id="salesPagination">
-    </ul>
-  </nav>
-      </div>
-      <div class="modal-footer">
+        <div class="mb-3">
+          <label for="categoriaProducto" class="form-label">Categoría del producto</label>
+          <select class="form-control" id="categoriaProducto">
+          </select>
+        </div>
+        <div class="modal-footer">
+          <div class="btn btn-danger" id="eliminarProductoModal" style="position: relative;">Eliminar</div>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+            id="cancelarEditarProducto">Cancelar</button>
+          <button type="button" class="btn btn-primary" id="confirmarEditarProducto">Guardar cambios</button>
+        </div>
 
-       <button type="button" class="btn btn-danger" id="deleteSalesButton">Borrar registros de venta</button>
-  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-  <button type="button" class="btn btn-primary">Exportar Datos</button>
-	 </div>
-    </div>
-  </div>
-</div>
-
-
-
-<div class="modal" tabindex="-1" role="dialog" id="confirmDeleteAllModal" data-backdrop="static" data-keyboard="false">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Confirmar eliminación de todos los productos</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <p>¿Deseas borrar todos los productos existentes de la lista?</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger" id="confirmDeleteAll">Eliminar todos</button>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <p class="text-center mt-3" style="font-size: 1.1rem;">
+          Sugerencia
+        </p>
+        <p class="text-center mt-2" style="font-size: 0.78rem;">
+          Puedes borrar todos los productos si mantienes pulsado el botón de Eliminar durante 3 segundos.
+        </p>
       </div>
     </div>
   </div>
-</div>
 
 
-<div class="modal" tabindex="-1" role="dialog" id="confirmDeleteSingleModal" data-backdrop="static" data-keyboard="false">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Confirmar eliminación</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <p>¿Estás seguro de que deseas eliminar este producto? Se guardarán los cambios automáticamente.</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger" id="confirmDeleteSingle">Eliminar</button>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-      </div>
-    </div>
-  </div>
-</div>
+  <div class="modal fade" id="administrarCategoriasModal" tabindex="-1"
+    aria-labelledby="administrarCategoriasModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="administrarCategoriasModalLabel">Administrar Categorías</h5>
+          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"
+            id="cerrarAdministrarCategorias"></button>
+        </div>
+        <div class="modal-body">
+          <div id="categoriasContainer"></div>
+          <button id="agregarCategoria" class="btn btn-outline-secondary btn-lg mt-2">
+            <i class="fas fa-plus"></i> Agregar
+          </button>
+          <div id="categoriasNotificacion" class="alert alert-success mt-2 d-none">Categorías guardadas correctamente
+          </div>
 
-
-
-<div class="modal fade" id="deleteConfirmationModal" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="deleteConfirmationModalLabel">Borrar registros de ventas</h5>
-      </div>
-      <div class="modal-body">
-        ¿Borrar realmente los registros de ventas?
-      </div>
-      <div class="modal-footer">
-<button type="button" class="btn btn-secondary" id="cancelDeleteButton">No, cancelar</button>
-        <button type="button" class="btn btn-danger" id="confirmDeleteButton">Sí, borrarlos</button>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal"
+            id="cancelarAdministrarCategorias">Cerrar</button>
+          <button type="button" class="btn btn-primary" id="guardarCategorias">Guardar cambios</button>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<div class="modal modal-fullscreen" tabindex="-1" id="facturarapida1" data-backdrop="static" data-bs-keyboard="false">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Opciones de Facturación Rápida</h5>
+  <div class="modal fade" id="historialVentasModal" tabindex="-1" role="dialog"
+    aria-labelledby="historialVentasModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document" style="max-width: 80%;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="historialVentasModalLabel">Historial de Ventas</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="d-flex justify-content-between">
+            <input type="text" id="searchInput" class="form-control mb-3" placeholder="Buscar por nombre de producto">
+            <div class="input-group mb-3">
+              <span class="input-group-text">Precio entre:</span>
+              <input type="number" id="minPriceInput" class="form-control" placeholder="Mínimo" min="0" max="99999999">
+              <span class="input-group-text">y</span>
+              <input type="number" id="maxPriceInput" class="form-control" placeholder="Máximo" min="0" max="99999999">
+            </div>
+          </div>
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>Fecha / Hora</th>
+                <th>Productos</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody id="historialVentasTbody">
+
+            </tbody>
+          </table>
+          <nav>
+            <ul class="pagination" id="salesPagination">
+            </ul>
+          </nav>
+        </div>
+        <div class="modal-footer">
+
+          <button type="button" class="btn btn-danger" id="deleteSalesButton">Borrar registros de venta</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-primary">Exportar Datos</button>
+        </div>
       </div>
+    </div>
+  </div>
 
-      <div class="alert alert-success d-none" id="NotificationFast" role="alert">
-        <i class="fas fa-check-circle"></i> Cambios guardados
+
+
+  <div class="modal" tabindex="-1" role="dialog" id="confirmDeleteAllModal" data-backdrop="static"
+    data-keyboard="false">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Confirmar eliminación de todos los productos</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>¿Deseas borrar todos los productos existentes de la lista?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" id="confirmDeleteAll">Eliminar todos</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        </div>
       </div>
+    </div>
+  </div>
 
-      <div class="modal-body">
-        <div class="container-fluid">
+
+  <div class="modal" tabindex="-1" role="dialog" id="confirmDeleteSingleModal" data-backdrop="static"
+    data-keyboard="false">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Confirmar eliminación</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>¿Estás seguro de que deseas eliminar este producto? Se guardarán los cambios automáticamente.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" id="confirmDeleteSingle">Eliminar</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="confirmarEliminarCategoriaModal" tabindex="-1" aria-labelledby="confirmarEliminarCategoriaModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="confirmarEliminarCategoriaModalLabel">Confirmar eliminación</h5>
+          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          ¿Estás seguro de que deseas eliminar esta categoría?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" id="cancelarEliminarCategoria">Cancelar</button>
+          <button type="button" class="btn btn-danger" id="confirmarEliminarCategoria">Eliminar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+
+
+  <div class="modal fade" id="deleteConfirmationModal" tabindex="-1" role="dialog"
+    aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteConfirmationModalLabel">Borrar registros de ventas</h5>
+        </div>
+        <div class="modal-body">
+          ¿Borrar realmente los registros de ventas?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" id="cancelDeleteButton">No, cancelar</button>
+          <button type="button" class="btn btn-danger" id="confirmDeleteButton">Sí, borrarlos</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal modal-fullscreen" tabindex="-1" id="facturarapida1" data-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Opciones de Facturación Rápida</h5>
+        </div>
+
+        <div class="alert alert-success d-none" id="NotificationFast" role="alert">
+          <i class="fas fa-check-circle"></i> Cambios guardados
+        </div>
+
+        <div class="modal-body">
+          <div class="container-fluid">
             <div class="mensaje-container" style="display: none;">
-                <p>Primero agrega algún producto para usar esta función</p>
+              <p>Primero agrega algún producto para usar esta función</p>
             </div>
             <div class="row gy-3" id="facturacionRapidaProductos"></div>
+          </div>
         </div>
-    </div>
-      <div class="modal-footer">
-<button type="button" class="btn btn-warning" id="restablecerFacturacionRapida">Restablecer</button>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-warning" id="restablecerFacturacionRapida">Restablecer</button>
 
-        <button type="button" class="btn btn-primary" id="aplicarFacturacionRapida">Aplicar</button>
-        <button type="button" class="btn btn-secondary" id="aplicarFacturacionRapida" data-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-primary" id="aplicarFacturacionRapida">Aplicar</button>
+          <button type="button" class="btn btn-secondary" id="aplicarFacturacionRapida"
+            data-dismiss="modal">Cerrar</button>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<script id="productoTemplate" type="text/template">
-    <div class="producto-grid-item">
-      <div class="producto-card" data-id="{id}">
-
-            <div class="nombrePrecio">
-                <span class="nombreProducto">{nombreProducto}</span>
-                <span class="precio">$ {precio}</span>
-            </div>
-            <button class="editarProducto btn btn-sm btn-secondary">
-                <i class="fas fa-edit"></i>
-            </button>
-            <label for="cantidad-{id}" class="me-1">Cantidad:</label>
-            <input type="number" id="cantidad-{id}" class="cantidad form-control form-control-sm" value="0" min="0" max="999999" style="width: 5rem">
-        </div>
+  <script id="productoTemplate" type="text/template">
+  <div class="producto-grid-item">
+    <div class="producto-card" data-id="{id}">
+      <div class="categoriaNombre" style="background-color: {categoriaColor}; color: white; font-size: 0.7rem; padding: 2px 5px; border-radius: 3px;">{categoriaNombre}</div>
+      <div class="nombrePrecio">
+        <span class="nombreProducto">{nombreProducto}</span>
+        <span class="precio">$ {precio}</span>
+      </div>
+      <button class="editarProducto btn btn-sm btn-secondary">
+        <i class="fas fa-edit"></i>
+      </button>
+      <label for="cantidad-{id}" class="me-1">Cantidad:</label>
+      <input type="number" id="cantidad-{id}" class="cantidad form-control form-control-sm" value="0" min="0" max="999999" style="width: 5rem">
+      <span class="categoriaProducto d-none">{categoria}</span>
     </div>
-	
-	
+  </div>
 </script>
-    <script src="script.js"></script>
-</script>
+
+
+  <script>
+    const nombreProductoInput = document.getElementById('nombreProducto');
+    const nombreProductoLabel = document.getElementById('nombreProductoLabel');
+    const precioLabel = document.querySelector('label[for="precio"]');
+
+    nombreProductoInput.addEventListener('input', () => {
+      const nombreProducto = nombreProductoInput.value;
+      nombreProductoLabel.textContent = nombreProducto;
+      precioLabel.textContent = `Ahora, vamos a ponerle un precio a ${nombreProducto}:`;
+    });
+
+    const nombreProductoLabel2 = document.getElementById('nombreProductoLabel2');
+    const precioLabel2 = document.getElementById('precioLabel2');
+    const precioInput = document.getElementById('precio');
+
+    nombreProductoInput.addEventListener('input', () => {
+      const nombreProducto = nombreProductoInput.value;
+      nombreProductoLabel.textContent = nombreProducto;
+      nombreProductoLabel2.textContent = nombreProducto;
+      precioLabel.textContent = `Ahora, vamos a ponerle un precio a ${nombreProducto}:`;
+    });
+
+    precioInput.addEventListener('input', () => {
+      const precio = precioInput.value;
+      precioLabel2.textContent = precio;
+    });
+
+
+
+  </script>
+
+
+  </script>
+  <script src="script.js"></script>
+  </script>
 </body>
 
 </html>
 
 <script>
   if ('serviceWorker' in navigator) {
-    window.addEventListener('load', function() {
-      navigator.serviceWorker.register('/service-worker.js').then(function(registration) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('/service-worker.js').then(function (registration) {
         console.log('Service Worker registered with scope:', registration.scope);
-      }, function(error) {
+      }, function (error) {
         console.log('Service Worker registration failed:', error);
       });
     });
