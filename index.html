@@ -5,7 +5,10 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="intro.css">
   <link rel="stylesheet" href="estilos.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Segoe+UI:300,400,500,600,700&display=swap">
+
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <link rel="manifest" href="manifest.json">
   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
@@ -20,13 +23,64 @@
 </head>
 
 <body>
+
+
+<div class="spotlight"></div>
+<div id="popup" class="popup">
+  <div class="slider-container">
+    <div class="slides">
+<div class="slide">
+  <h2 class="animated-text">Te damos la bienvenida a BaduCalculator Online</h2>
+  <h6 class="animated-text">Te guiaremos brevemente para comenzar a utilizar este sistema.</h6>
+</div>
+
+
+      <div class="slide">
+        <h2>Menú de opciones</h2>
+        <p>En el menú de opciones podrás personalizar tus mensajes, crear categorías, personalizar sonidos y configurar la facturación rápida.</p>
+      </div>
+      <div class="slide">
+        <h2>Agregar Productos</h2>
+        <p>Puedes comenzar agregando productos desde el botón "Agregar Producto" y siguiendo los pasos con el asistente que te guiará en el proceso.</p>
+      </div>
+      <div class="slide">
+        <h2>Guarda tus productos</h2>
+        <p>Activa la función de "Guardar al agregar" para guardar de manera automática los productos que vayas agregando. Sino, puedes guardar los productos normalmente con el botón de "Guardar"</p>
+        <p><strong>Nota:</strong> Puedes activarlo o desactivarlo en cualquier momento.</p>
+      </div>
+      <div class="slide">
+        <h2>Facturar</h2>
+        <p>Cuando ya tengas todo listo, utiliza los botones de <strong>"Facturar"</strong> para generar la factura y se copiará de manera automática en tu portapapeles la información correspondiente.</p>
+        <p>Puedes finalizar la venta y pasar al siguiente cliente, con el botón de <strong>"Siguiente Cliente"</strong></p>
+      </div>
+	  <div class="slide">
+  <h2 class="slide-5-title">Todo listo</h2>
+  <h6 class="slide-5-subtitle">Diviértete utilizando BaduCalculator Online.</h6>
+</div>
+
+    </div>
+  </div>
+  <div class="buttons-container">
+    <button id="prev" class="btn btn-primary"><i class="fas fa-chevron-left"></i> Anterior</button>
+    <button id="next" class="btn btn-primary">Siguiente <i class="fas fa-chevron-right"></i></button>
+<button id="close" class="btn btn-success" style="display: none;">Entendido <i class="fas fa-check"></i></button>
+  </div>
+</div>
+
+
+
+
   <header>
+  
+
+	
+  
     <div class="container-fluid bg-dark text-white py-3">
       <div class="container d-flex align-items-center">
         <img src="https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/icon-192x192.png"
           alt="BaduCalculator Logo" height="64" align="left">
         <h1 class="text-white mb-0 ml-3">BaduCalculator <sup class="text-secondary">online</sup></h1>
-        <span id="version">Versión 1.0.7 | Developed by Undermax Software</span>
+        <span id="version">Versión 1.0.8 | Developed by Undermax Software</span>
       </div>
     </div>
 
@@ -627,6 +681,7 @@
 
   </script>
   <script src="script.js"></script>
+   <script src="intro.js"></script>
   </script>
 </body>
 
