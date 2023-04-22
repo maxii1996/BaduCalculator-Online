@@ -40,33 +40,9 @@
 
 
 
-button {
-  background-color: #6200ee;
-  border: none;
-  color: white;
-  padding: 40px 40px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 17px;
-  margin: 20px 15px;
-  cursor: pointer;
-  border-radius: 4px;
-  outline: none;
-  transition: background-color 0.3s, transform 0.3s;
-}
 
-button:hover {
-  background-color: #3700b3;
-}
 
-button:active {
-  transform: scale(0.95);
-}
 
-button:focus {
-  outline: none;
-}
 
 .buttons-container {
   display: flex;
@@ -175,13 +151,13 @@ button:focus {
 
 .slide h3 {
   font-family: 'Segoe UI', sans-serif;
-  font-weight: 250;
+  font-weight: 200;
   font-size: 1.5rem;
 }
 
 .slide p {
   font-family: 'Segoe UI', sans-serif;
-  font-weight: 300;
+  font-weight: 400;
   text-align: center;
 }
 
