@@ -6,8 +6,6 @@ body {
 
 }
 
-
-
 h2 {
   font-size: 1.5rem;
 }
@@ -231,8 +229,8 @@ button {
 .producto-card {
   position: relative;
   padding: 15px;
-  background-color: #efefef40;
-  border-radius: 7px;
+  background-color: #efefef2a;
+  border-radius: 11px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
@@ -914,10 +912,8 @@ h1 {
   width: 28% !important;
 }
 
-
-
 #productosAFacturar {
-  margin-top: -8rem; 
+  margin-top: -10rem; 
 }
 
 .error-msg {
@@ -928,3 +924,81 @@ h1 {
 }
 
 
+#categoriaLink {
+  cursor: pointer;
+  font-weight: bold;
+}
+
+
+.row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  margin-top: 2.2rem;
+  margin-bottom: 2.6rem;
+}
+
+.col-md-auto {
+  display: flex;
+  justify-content: center;
+}
+
+.input-container {
+  position: relative;
+  display: inline-block;
+  width: 120%;
+}
+
+#buscarProducto {
+  border-radius: 17px;
+  border: none;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.051);
+  padding: 1.4rem;
+  width: 120%;
+  font-size: 0.8rem;
+  transition: all 0.3s ease-in-out;
+}
+
+#buscarProducto:focus {
+  width: 155%;
+  margin-left: -35%;
+  border-radius: 27px;
+  
+}
+
+#filtrarCategorias {
+  border: none;
+  border-radius: 27px;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.051);
+  background-color: #fff;
+  font-size: 0.72rem;
+  width: 100%;
+  font-weight: 600;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #3f3f3fe2;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding: 1rem;
+  transition: all 0.3s ease-in-out;
+
+}
+
+#filtrarCategorias:focus {
+  border: none;
+  border-radius: 27px;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.051);
+  background-color: #fff;
+  font-size: 0.72rem;
+  width: 130%;
+  margin-left: -8%;
+  font-weight: 600;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #3f3f3fe2;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding: 1rem;
+  transition: all 0.3s ease-in-out;
+}

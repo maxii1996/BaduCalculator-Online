@@ -7,6 +7,8 @@ document.getElementById("cancelDeleteButton").addEventListener("click", () => {
   $("#deleteConfirmationModal").modal("hide");
 });
 
+
+
 document.getElementById("deleteSalesButton").addEventListener("click", () => {
   $("#deleteConfirmationModal").modal("show");
 });
@@ -25,6 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
   loadSalesFromLocalStorage();
   mostrarOcultarBotonFacturar();
   cargarCategoriasSelect('categoriaProductoAgregar');
+  cargarCategoriasSelect('filtrarCategorias');
 
   const productos = document.querySelector('.productos');
   productos.style.backgroundColor = '#fff';
@@ -48,7 +51,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-
   const abrirAdministrarCategorias = document.getElementById('abrirAdministrarCategorias');
   const administrarCategoriasModalElement = document.getElementById('administrarCategoriasModal');
   const administrarCategoriasModal = new bootstrap.Modal(administrarCategoriasModalElement);
@@ -61,13 +63,14 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   document.getElementById('cancelarEliminarCategoria').addEventListener('click', cerrarConfirmarEliminarCategoriaModal);
-
   document.getElementById('agregarCategoria').removeEventListener('click', agregarCategoria);
   document.getElementById('agregarCategoria').addEventListener('click', agregarCategoriaBtnHandler);
-  document.getElementById('guardarCategorias').addEventListener('click', guardarCategorias);
-  document.getElementById('cancelarAdministrarCategorias').addEventListener('click', cerrarAdministrarCategorias);
+  document.getElementById('guardarCategorias').addEventListener('click', () => {
+    guardarCategorias();
+    cargarCategoriasSelect('filtrarCategorias');
+  });
+   document.getElementById('cancelarAdministrarCategorias').addEventListener('click', cerrarAdministrarCategorias);
   document.getElementById('cerrarAdministrarCategorias').addEventListener('click', cerrarAdministrarCategorias);
-
   document.getElementById('buscarProducto').addEventListener('input', filtrarProductos);
   document.getElementById('siguienteCliente').addEventListener('click', siguienteCliente);
   document.getElementById('save-btn').addEventListener('click', saveOptions);
@@ -84,18 +87,12 @@ document.addEventListener("DOMContentLoaded", () => {
     cerrarConfirmarEliminarCategoriaModal();
   });
   
-
-
-
-
 });
-
-
-
 
 let productoId = 0;
 
 function agregarProducto() {
+  mostrarOcultarBotonFacturar(); 
   const categoriaSeleccionada = document.getElementById('categoriaProductoAgregar').value;
   if (agregarProductoSinNotificacion(categoriaSeleccionada)) {
     mostrarNotificacion('Producto agregado correctamente', 'success', '');
@@ -107,8 +104,6 @@ function agregarProducto() {
     showStep(0);
   }
 }
-
-
 
 function esProductoDuplicado(nombreProducto) {
   const listaProductos = document.getElementById('listaProductos');
@@ -134,13 +129,11 @@ function mostrarNotificacion(mensaje, tipo, icono) {
   notificacion.classList.add('alert-custom');
 }
 
-
 function editarProducto(event) {
   const card = event.target.closest('.producto-card');
   const nombreProducto = card.querySelector('.nombreProducto');
   const precio = card.querySelector('.precio');
   const producto = card.closest('.producto-card');
-
   const editarProductoModal = new bootstrap.Modal(document.getElementById('editarProductoModal'));
   const confirmarEditarProducto = document.getElementById('confirmarEditarProducto');
   const cancelarEditarProducto = document.getElementById('cancelarEditarProducto');
@@ -217,8 +210,8 @@ function eliminarProducto(producto, editarProductoModal) {
   const confirmDeleteSingleBtn = document.getElementById("confirmDeleteSingle");
 
   confirmDeleteSingleModal.modal("show");
-
   confirmDeleteSingleBtn.addEventListener("click", () => {
+
     producto.remove();
     mostrarNotificacion('Producto eliminado correctamente', 'success');
     mostrarOcultarBotonFacturar();
@@ -227,10 +220,7 @@ function eliminarProducto(producto, editarProductoModal) {
     cargarProductos();
     confirmDeleteSingleModal.modal("hide");
     cerrarEditarProducto.click();
-
-
   });
-
 }
 
 
@@ -437,30 +427,7 @@ function importarProductos(event) {
 }
 
 
-function mostrarOcultarBotonFacturar() {
-  const listaProductos = document.getElementById('listaProductos');
-  const botonFacturar = document.getElementById('facturar');
-  const buscarProducto = document.getElementById('buscarProducto');
-  const siguienteCliente = document.getElementById('siguienteCliente');
-  const productosAFacturar = document.querySelector('#productosAFacturar span');
-  const facturacion = document.querySelector('.facturacion');
 
-  if (listaProductos.children.length === 0) {
-    botonFacturar.style.display = 'none';
-    buscarProducto.style.display = 'none';
-    siguienteCliente.style.display = 'none';
-    productosAFacturar.classList.add('zoom');
-    productosAFacturar.textContent = "Agregue productos para comenzar";
-    facturacion.style.display = 'none';
-  } else {
-    botonFacturar.style.display = 'block';
-    buscarProducto.style.display = 'block';
-    siguienteCliente.style.display = 'block';
-    productosAFacturar.classList.remove('zoom');
-    productosAFacturar.textContent = "Productos a Facturar";
-    facturacion.style.display = 'block';
-  }
-}
 
 const botonToggleAgregarProducto = document.getElementById('toggleAgregarProducto');
 const contenidoFormularioAgregarProducto = document.querySelector('.contenidoFormulario');
@@ -470,6 +437,10 @@ botonToggleAgregarProducto.addEventListener('click', () => {
   contenidoFormularioAgregarProducto.classList.toggle('mostrar');
   botonToggleAgregarProducto.innerHTML = contenidoFormularioAgregarProducto.classList.contains('mostrar') ? '<i class="fas fa-chevron-up"></i> Ocultar Menú' : '<i class="fas fa-chevron-down"></i> Agregar Producto';
 
+  const hayProductos = document.getElementById('listaProductos').children.length > 0;
+  const menuDesplegado = contenidoFormularioAgregarProducto.classList.contains('mostrar');
+  actualizarTextoProductosAFacturar(menuDesplegado, hayProductos);
+  
   if (contenidoFormularioAgregarProducto.classList.contains('mostrar')) {
     const seccionFacturacion = document.querySelector('.facturacion');
     document.querySelectorAll('.producto-card').forEach(tarjeta => tarjeta.style.backgroundColor = '#b4bbc817');
@@ -479,6 +450,8 @@ botonToggleAgregarProducto.addEventListener('click', () => {
     const botonFacturar = document.getElementById('facturar');
     const botonSiguienteCliente = document.getElementById('siguienteCliente');
     seccionFacturacion.style.display = 'none';
+    filtrarCategorias.style.display = 'none';
+
     const productos = document.querySelector('.productos');
     productos.style.backgroundColor = '#fafafa';
 
@@ -487,51 +460,46 @@ botonToggleAgregarProducto.addEventListener('click', () => {
     botonFacturar.style.display = 'none';
     botonSiguienteCliente.style.display = 'none';
   } else {
-    const seccionFacturacion = document.querySelector('.facturacion');
-    const buscarProducto = document.getElementById('buscarProducto');
-    document.querySelectorAll('.producto-card').forEach(tarjeta => tarjeta.style.backgroundColor = '#efefef40');
-    botonToggleAgregarProducto.classList.remove('toggle-active');
-    const productosAFacturar = document.getElementById('productosAFacturar');
-    const botonFacturar = document.getElementById('facturar');
-    const botonSiguienteCliente = document.getElementById('siguienteCliente');
-    seccionFacturacion.style.display = 'block';
-    buscarProducto.style.display = 'block';
-    const productos = document.querySelector('.productos');
-    productos.style.backgroundColor = '#fff';
-
-    productosAFacturar.style.display = 'block';
-    botonFacturar.style.display = 'block';
-    botonSiguienteCliente.style.display = 'block';
+    mostrarOcultarBotonFacturar();
   }
 });
+
 
 
 function mostrarOcultarBotonFacturar() {
   const listaProductos = document.getElementById('listaProductos');
   const botonFacturar = document.getElementById('facturar');
   const buscarProducto = document.getElementById('buscarProducto');
+  const filtrarCategorias = document.getElementById('filtrarCategorias');
   const siguienteCliente = document.getElementById('siguienteCliente');
-  const productosAFacturar = document.querySelector('#productosAFacturar span');
   const facturacion = document.querySelector('.facturacion');
+  const contenedorBuscarFiltrar = document.getElementById('contenedorBuscarFiltrar');
 
-  if (listaProductos.children.length === 0) {
+  const menuDesplegado = contenidoFormularioAgregarProducto.classList.contains('mostrar');
+  const hayProductos = listaProductos.children.length > 0;
+
+  actualizarTextoProductosAFacturar(menuDesplegado, hayProductos);
+
+  if (!hayProductos || menuDesplegado) {
     botonFacturar.style.display = 'none';
     buscarProducto.style.display = 'none';
+    filtrarCategorias.style.display = 'none';
     siguienteCliente.style.display = 'none';
-    productosAFacturar.classList.add('zoom');
-    productosAFacturar.textContent = "Agregue productos para comenzar";
     facturacion.style.display = 'none';
+    contenedorBuscarFiltrar.style.display = 'none';
   } else {
     botonFacturar.style.display = 'block';
     buscarProducto.style.display = 'block';
+    filtrarCategorias.style.display = 'block';
     siguienteCliente.style.display = 'block';
-    productosAFacturar.classList.remove('zoom');
-    productosAFacturar.textContent = "Productos a Facturar";
     facturacion.style.display = 'block';
+    contenedorBuscarFiltrar.style.display = 'block';
   }
 }
 
-mostrarOcultarBotonFacturar();
+
+
+
 
 function showNotification(message, duration = 3000) {
   const notification = document.getElementById('notification');
@@ -680,8 +648,6 @@ window.onclick = function (event) {
 };
 
 
-
-
 if (savedValue !== null) {
   messageInput.value = savedValue;
 }
@@ -746,10 +712,6 @@ function closeModal() {
   var modalContainer = document.getElementById("modal-container");
   modalContainer.style.display = "none";
 }
-
-
-
-
 
 function saveOptions() {
   localStorage.setItem('message', document.getElementById('message-input').value);
@@ -908,9 +870,6 @@ document.getElementById("facturar").addEventListener("click", function () {
 });
 
 
-
-
-
 document.addEventListener('keydown', (event) => {
   if (event.altKey) {
     let textQuickNumber = null;
@@ -934,7 +893,6 @@ document.addEventListener('keydown', (event) => {
     }
   }
 });
-
 
 
 function exportarDatos() {
@@ -1392,31 +1350,33 @@ function cargarEstadoAutoguardado() {
   }
 }
 
+let allProductCards = [];
+
 function cargarOrdenTarjetas() {
   const listaProductos = document.getElementById('listaProductos');
   const tarjetasOrdenJson = localStorage.getItem('tarjetasOrden');
 
   if (tarjetasOrdenJson) {
     const tarjetasOrden = JSON.parse(tarjetasOrdenJson);
-    const tarjetasOrdenadas = [];
 
-    tarjetasOrden.forEach((nombreProducto) => {
-      const tarjeta = Array.from(listaProductos.children).find((producto) => {
+    allProductCards = Array.from(listaProductos.children);
+
+    const tarjetasOrdenadas = tarjetasOrden.map((nombreProducto) => {
+      return allProductCards.find((producto) => {
         return producto.querySelector('.nombreProducto').textContent === nombreProducto;
       });
+    }).filter(tarjeta => tarjeta);
 
-      if (tarjeta) {
-        tarjetasOrdenadas.push(tarjeta);
-      }
-    });
-
-    listaProductos.innerHTML = '';
     tarjetasOrdenadas.forEach((tarjeta) => {
       listaProductos.appendChild(tarjeta);
     });
+  } else {
+    allProductCards = Array.from(listaProductos.children);
   }
-
 }
+
+
+
 
 function guardarOrdenTarjetas() {
   const tarjetas = document.querySelectorAll("#listaProductos .producto-card");
@@ -1484,7 +1444,6 @@ function cerrarEditarProductoModal() {
 }
 
 
-
 function agregarCategoria(nombre = '', color = '#000000') {
   const categoriaTemplate = `
     <div class="categoria mb-2 d-flex">
@@ -1517,8 +1476,11 @@ function abrirAdministrarCategorias() {
       keyboard: false
     });
   }
+  
+  cargarCategorias();
   administrarCategoriasModal.show();
 }
+
 
 
 function agregarCategoriaBtnHandler() {
@@ -1550,12 +1512,16 @@ function guardarCategorias() {
 }
 
 function cargarCategorias() {
+  const categoriasContainer = document.getElementById('categoriasContainer');
+  categoriasContainer.innerHTML = '';
+  
   const categoriasData = JSON.parse(localStorage.getItem('categorias')) || [];
 
   categoriasData.forEach(categoriaData => {
     agregarCategoria(categoriaData.nombre, categoriaData.color);
   });
 }
+
 
 let categoriaAEliminar = null;
 
@@ -1584,19 +1550,21 @@ function cerrarConfirmarEliminarCategoriaModal() {
   }
 }
 
-
-
-
-
 function cargarCategoriasSelect(selectElementId) {
   const categoriasSelect = document.getElementById(selectElementId);
   categoriasSelect.innerHTML = '';
 
-
-  const sinCategoriaOption = document.createElement('option');
-  sinCategoriaOption.value = '';
-  sinCategoriaOption.textContent = 'Sin Categoría';
-  categoriasSelect.appendChild(sinCategoriaOption);
+  if (selectElementId === 'filtrarCategorias') {
+    const todasCategoriasOption = document.createElement('option');
+    todasCategoriasOption.value = '';
+    todasCategoriasOption.textContent = 'Todas las categorías';
+    categoriasSelect.appendChild(todasCategoriasOption);
+  } else {
+    const sinCategoriaOption = document.createElement('option');
+    sinCategoriaOption.value = '';
+    sinCategoriaOption.textContent = 'Sin Categoría';
+    categoriasSelect.appendChild(sinCategoriaOption);
+  }
 
   const categorias = JSON.parse(localStorage.getItem('categorias')) || [];
   categorias.forEach(categoria => {
@@ -1606,7 +1574,6 @@ function cargarCategoriasSelect(selectElementId) {
     categoriasSelect.appendChild(option);
   });
 }
-
 
 
 
@@ -1633,7 +1600,6 @@ function actualizarCategoriasProductos() {
     }
   });
 }
-
 
 function showStep(index) {
   const steps = $(".step");
@@ -1689,6 +1655,62 @@ $(document).ready(function () {
   });
 });
 
+document.getElementById("categoriaLink").addEventListener("click", abrirAdministrarCategorias);
+
 let administrarCategoriasModal;
+
+document.getElementById('filtrarCategorias').addEventListener('change', filtrarProductosPorCategoria);
+
+function filtrarProductosPorCategoria() {
+  const categoriaSeleccionada = document.getElementById('filtrarCategorias').value;
+  const productos = document.querySelectorAll('.producto-card');
+
+  productos.forEach(producto => {
+    const categoriaProducto = producto.querySelector('.categoriaProducto').textContent;
+
+    if (categoriaSeleccionada === '' || categoriaProducto === categoriaSeleccionada) {
+      producto.style.display = 'block';
+    } else {
+      producto.style.display = 'none';
+    }
+  });
+}
+
+
+
+function actualizarTextoProductosAFacturar(menuDesplegado, hayProductos) {
+  const productosAFacturar = document.getElementById('productosAFacturar');
+
+  if (!menuDesplegado && hayProductos) {
+    productosAFacturar.style.display = '';
+    productosAFacturar.querySelector('span').classList.remove('zoom');
+    productosAFacturar.querySelector('span').textContent = "Productos a Facturar";
+  } else if (!menuDesplegado && !hayProductos) {
+    productosAFacturar.style.display = '';
+    productosAFacturar.querySelector('span').classList.add('zoom');
+    productosAFacturar.querySelector('span').textContent = "Agregue productos para comenzar";
+  } else {
+    productosAFacturar.style.display = 'none';
+  }
+}
+
+document.getElementById('filtrarCategorias').addEventListener('change', filterAndReorderProducts);
+
+function filterAndReorderProducts() {
+  const selectedCategory = document.getElementById('filtrarCategorias').value;
+  const listaProductos = document.getElementById('listaProductos');
+
+  allProductCards.forEach(card => {
+    const productCategory = card.querySelector('.categoriaProducto').textContent;
+    if (selectedCategory === '' || productCategory === selectedCategory) {
+      card.style.display = 'block';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+}
+
+
+
 
 init();

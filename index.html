@@ -7,8 +7,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="intro.css">
   <link rel="stylesheet" href="estilos.css">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Segoe+UI:300,400,500,600,700&display=swap">
-
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <link rel="manifest" href="manifest.json">
   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
@@ -17,8 +15,8 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:900i&display=swap">
   <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
-  <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
 
+  
   <title>BaduCalculator Online</title>
 </head>
 
@@ -67,24 +65,18 @@
   </div>
 </div>
 
-
-
-
   <header>
-  
-
-	
-  
     <div class="container-fluid bg-dark text-white py-3">
       <div class="container d-flex align-items-center">
         <img src="https://raw.githubusercontent.com/maxii1996/BaduCalculator-Online/main/icon-192x192.png"
           alt="BaduCalculator Logo" height="64" align="left">
         <h1 class="text-white mb-0 ml-3">BaduCalculator <sup class="text-secondary">online</sup></h1>
-        <span id="version">Versión 1.0.8 | Developed by Undermax Software</span>
+        <span id="version">Versión 1.0.9 | Developed by Undermax Software</span>
       </div>
     </div>
 
   </header>
+  
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
 
     <div id="notification" class="notification" style="display: none;">
@@ -134,7 +126,7 @@
           <div class="d-flex mt-3">
             <h5>Facturación Rápida de productos:</h5>
             <button type="button" class="btn btn-primary d-flex justify-content-between align-items-center"
-              style="width: 25%;" id="facturacionRapidaBtn">
+              style="width: 23%;" id="facturacionRapidaBtn">
               <i class="fas fa-arrow-circle-right"></i><span style="padding-right: 1rem;">Personalizar</span>
             </button>
             <h5 class="ml-3">Categorías:</h5>
@@ -340,11 +332,12 @@
               <div class="step" id="step3">
                 <div class="form-group mb-3">
                   <label for="categoriaProductoAgregar">
-                    Se agregará <span id="nombreProductoLabel2"></span> con un precio de $<span
-                      id="precioLabel2"></span><br>
+                    Se agregará <span id="nombreProductoLabel2"></span> con un precio de $<span id="precioLabel2"></span><br>
                     <br>
-                    ¿Quieres darle una categoría?
+                    ¿Quieres darle una <span id="categoriaLink">categoría</span>?
                   </label>
+                  
+                  
                   <select class="form-control" id="categoriaProductoAgregar">
                   </select>
                   <br>
@@ -360,15 +353,30 @@
           </div>
         </div>
 
-
-
-
-
-        <h6 id="productosAFacturar"><span>Agregue productos para comenzar</span></h6>
-
-        <div>
-          <input type="text" id="buscarProducto" placeholder="Buscar producto" class="buscar">
+        <div id="contenedorBuscarFiltrar">
+          <h6 id="productosAFacturar"><span>Agregue productos para comenzar</span></h6>
+          <div class="row align-items-center">
+            <div class="col-md-auto">
+              <div class="input-group mb-3">
+                <span class="input-group-text" style="display:none;" id="basic-addon1"><i class="fas fa-search"></i></span>
+                <div class="input-container" style="width: 100%;">
+                  <input type="text" class="form-control" id="buscarProducto" placeholder="&#xF002; Buscar producto" aria-label="Buscar" aria-describedby="basic-addon1" style="font-family: 'Font Awesome 5 Free', Segoe UI, sans-serif; font-weight: 600;">
+                </div>
+              </div>
+            </div>
+            <div class="col-md-auto">
+              <div class="input-group mb-3">
+                <label class="input-group-text" style="display:none;" for="filtrarCategorias">Categoría</label>
+                <select class="form-select" id="filtrarCategorias">
+                  <option value="">&#xF0B0; Filtrar por categoría</option>
+                </select>
+              </div>
+            </div>
+          </div>
         </div>
+        
+
+        
 
         <ul id="listaProductos" class="list-group"></ul>
         <input type="file" id="archivoImportar" accept=".json" style="display: none;">
@@ -385,16 +393,11 @@
         </div>
       </div>
     </div>
-
     <br>
     </div>
 
   </center>
-
   </div>
-
-
-
 
   <div class="modal fade" id="editarProductoModal" tabindex="-1" aria-labelledby="editarProductoModalLabel"
     aria-hidden="true">
@@ -404,7 +407,6 @@
           <h5 class="modal-title" id="editarProductoModalLabel">Editar producto</h5>
           <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"
             id="cerrarEditarProducto"></button>
-
 
         </div>
         <div class="modal-body">
@@ -440,7 +442,6 @@
       </div>
     </div>
   </div>
-
 
   <div class="modal fade" id="administrarCategoriasModal" tabindex="-1"
     aria-labelledby="administrarCategoriasModalLabel" aria-hidden="true">
@@ -514,8 +515,6 @@
     </div>
   </div>
 
-
-
   <div class="modal" tabindex="-1" role="dialog" id="confirmDeleteAllModal" data-backdrop="static"
     data-keyboard="false">
     <div class="modal-dialog" role="document">
@@ -536,7 +535,6 @@
       </div>
     </div>
   </div>
-
 
   <div class="modal" tabindex="-1" role="dialog" id="confirmDeleteSingleModal" data-backdrop="static"
     data-keyboard="false">
@@ -577,9 +575,6 @@
     </div>
   </div>
   
-
-
-
   <div class="modal fade" id="deleteConfirmationModal" tabindex="-1" role="dialog"
     aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -674,20 +669,23 @@
       precioLabel2.textContent = precio;
     });
 
-
-
   </script>
-
 
   </script>
   <script src="script.js"></script>
    <script src="intro.js"></script>
   </script>
+
+
+
+
 </body>
 
 </html>
 
 <script>
+
+try {
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', function () {
       navigator.serviceWorker.register('/service-worker.js').then(function (registration) {
@@ -697,4 +695,8 @@
       });
     });
   }
+} catch (error) {
+ 
+}
+
 </script>
