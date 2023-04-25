@@ -1710,6 +1710,29 @@ function filterAndReorderProducts() {
   });
 }
 
+function removeLeadingZeroes(input) {
+  const inputValue = parseInt(input.value, 10);
+  input.value = isNaN(inputValue) ? "" : inputValue;
+}
+
+
+document.getElementById("precio").addEventListener("blur", function () {
+  removeLeadingZeroes(this);
+});
+
+
+nombreProductoInput.addEventListener("input", () => {
+  const nombreProducto = nombreProductoInput.value;
+  nombreProductoLabel.textContent = nombreProducto;
+  nombreProductoLabel2.textContent = nombreProducto;
+  precioLabel.textContent = `Ahora, vamos a ponerle un precio a ${nombreProducto}:`;
+});
+
+precioInput.addEventListener("input", () => {
+  const precio = parseInt(precioInput.value, 10);
+  precioLabel2.textContent = isNaN(precio) ? "" : precio;
+});
+
 
 
 
