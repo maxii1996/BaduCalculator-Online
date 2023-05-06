@@ -174,8 +174,14 @@ function hideSpotlight() {
 
 
 
-document.getElementById('entendido').addEventListener('click', () => {
-  localStorage.setItem('hasSeenInfoBox', true);
-});
-
+try {
+  const entendidoButton = document.getElementById('entendido');
+  if (entendidoButton) {
+    entendidoButton.addEventListener('click', () => {
+      localStorage.setItem('hasSeenInfoBox', true);
+    });
+  }
+} catch (error) {
+ 
+}
 updateSpotlight();

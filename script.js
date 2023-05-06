@@ -7,8 +7,6 @@ document.getElementById("cancelDeleteButton").addEventListener("click", () => {
   $("#deleteConfirmationModal").modal("hide");
 });
 
-
-
 document.getElementById("deleteSalesButton").addEventListener("click", () => {
   $("#deleteConfirmationModal").modal("show");
 });
@@ -18,10 +16,30 @@ document.getElementById("confirmDeleteButton").addEventListener("click", () => {
   $("#deleteConfirmationModal").modal("hide");
 });
 
+
+document.getElementById('abrir-facturacion-rapida').addEventListener('click', () => {
+  if (hayProductosEnLista()) {
+    $('#facturacion-rapida-modal').modal('show');
+  } else {
+    // Muestra el modal personalizado en lugar del alert
+    $('#errorModal').modal('show');
+  }
+});
+
+
+// Agregamos un evento que se activará cuando se muestre el modal
+$('#facturacion-rapida-modal').on('shown.bs.modal', function() {
+  // Encuentra la primera pestaña y actívala
+  const firstTabBtn = document.querySelector("#facturacion-rapida-tab .facturacion-rapida-tab-btn:first-child");
+  if (firstTabBtn) {
+    firstTabBtn.click();
+  }
+});
+
+
 document.addEventListener("DOMContentLoaded", () => {
 
   cargarEstadoAutoguardado();
-  console.log('DOMContentLoaded');
   cargarProductos();
   loadSavedTexts();
   loadSalesFromLocalStorage();
@@ -38,16 +56,13 @@ document.addEventListener("DOMContentLoaded", () => {
   document.querySelector("#historialVentasModal .btn-close").addEventListener("click", closeModal);
   document.querySelector("#historialVentasModal .btn-secondary").addEventListener("click", closeModal);
 
-  const facturarRapidaModal = $("#facturarapida1");
-  const cargarFacturacionRapidaBtn = document.getElementById("cargarFacturacionRapida");
-  cargarFacturacionRapidaBtn.addEventListener("click", cargarValoresFacturacionRapida);
 
   $("#listaProductos").sortable({
     placeholder: "placeholder",
     forcePlaceholderSize: true,
     stop: () => {
       guardarOrdenTarjetas();
-      guardarProductos();
+      guardarProductosSinConfirmacion()
     }
   });
 
@@ -69,7 +84,7 @@ document.addEventListener("DOMContentLoaded", () => {
     guardarCategorias();
     cargarCategoriasSelect('filtrarCategorias');
   });
-   document.getElementById('cancelarAdministrarCategorias').addEventListener('click', cerrarAdministrarCategorias);
+  document.getElementById('cancelarAdministrarCategorias').addEventListener('click', cerrarAdministrarCategorias);
   document.getElementById('cerrarAdministrarCategorias').addEventListener('click', cerrarAdministrarCategorias);
   document.getElementById('buscarProducto').addEventListener('input', filtrarProductos);
   document.getElementById('siguienteCliente').addEventListener('click', siguienteCliente);
@@ -86,24 +101,36 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     cerrarConfirmarEliminarCategoriaModal();
   });
+
+  cargarPresets();
   
+  setTimeout(() => {
+    crearBotonesFacturacionRapida();
+    crearMinitableroPresets();
+  }, 1000);
+
+
 });
 
 let productoId = 0;
+let presetActual = 0;
+
+
 
 function agregarProducto() {
-  mostrarOcultarBotonFacturar(); 
+  mostrarOcultarBotonFacturar();
   const categoriaSeleccionada = document.getElementById('categoriaProductoAgregar').value;
   if (agregarProductoSinNotificacion(categoriaSeleccionada)) {
     mostrarNotificacion('Producto agregado correctamente', 'success', '');
 
     if (autoguardarProductos.checked) {
-      guardarProductos();
+      guardarProductosSinConfirmacion()
     }
 
     showStep(0);
   }
 }
+
 
 function esProductoDuplicado(nombreProducto) {
   const listaProductos = document.getElementById('listaProductos');
@@ -185,7 +212,7 @@ function editarProducto(event) {
     if (nuevaCategoriaProducto) {
       producto.querySelector('.categoriaProducto').textContent = nuevaCategoriaProducto;
     }
-    guardarProductos();
+    guardarProductosSinConfirmacion()
     editarProductoModal.hide();
   };
 
@@ -208,21 +235,94 @@ function editarProducto(event) {
 function eliminarProducto(producto, editarProductoModal) {
   const confirmDeleteSingleModal = $("#confirmDeleteSingleModal");
   const confirmDeleteSingleBtn = document.getElementById("confirmDeleteSingle");
-
-  confirmDeleteSingleModal.modal("show");
-  confirmDeleteSingleBtn.addEventListener("click", () => {
-
-    producto.remove();
-    mostrarNotificacion('Producto eliminado correctamente', 'success');
-    mostrarOcultarBotonFacturar();
-    cerrarEditarProductoModal();
-    guardarProductos();
-    cargarProductos();
+  confirmDeleteSingleBtn.removeEventListener("click", confirmDeleteSingleBtn.clickHandler);
+  confirmDeleteSingleBtn.clickHandler = () => {
+    eliminarProductoConfirmado(producto, editarProductoModal);
     confirmDeleteSingleModal.modal("hide");
     cerrarEditarProducto.click();
-  });
+  };
+  confirmDeleteSingleBtn.addEventListener("click", confirmDeleteSingleBtn.clickHandler);
+
+  confirmDeleteSingleModal.modal("show");
 }
 
+
+function eliminarProductoConfirmado(producto, editarProductoModal) {
+  producto.remove();
+  mostrarNotificacion('Producto eliminado correctamente', 'success');
+  mostrarOcultarBotonFacturar();
+  cerrarEditarProductoModal();
+  guardarProductosSinConfirmacion()
+  cargarProductos();
+}
+
+
+
+const botonBorrar = document.getElementById('borrar-datos');
+const botonConfirmarBorrado = document.getElementById('confirmar-borrado');
+
+function confirmarBorradoDatos() {
+  const cookies = document.cookie.split("; ");
+  for (let c = 0; c < cookies.length; c++) {
+    const d = window.location.hostname.split(".");
+    while (d.length > 0) {
+      const cookieBase = encodeURIComponent(cookies[c].split(";")[0].split("=")[0]) + "=; expires=Thu, 01-Jan-1970 00:00:01 GMT; domain=" + d.join(".") + " ;path=";
+      const p = location.pathname.split('/');
+      document.cookie = cookieBase + '/';
+      while (p.length > 0) {
+        document.cookie = cookieBase + p.join('/');
+        p.pop();
+      }
+      d.shift();
+    }
+  }
+  localStorage.clear();
+  sessionStorage.clear();
+  location.reload();
+}
+
+botonBorrar.addEventListener('click', () => {
+  $('#borrar-datos-modal').modal('show');
+});
+
+botonConfirmarBorrado.addEventListener('mousedown', () => {
+  var tiempo = 0;
+  var intervalId = setInterval(() => {
+    tiempo += 1;
+    $('#confirmar-borrado').css('background', 'linear-gradient(to right, #dc3545 ' + tiempo * 2 + '%, white ' + tiempo * 2 + '%)');
+    if (tiempo >= 50) {
+      clearInterval(intervalId);
+      $('#confirmar-borrado').css('background', '');
+      $('#borrar-datos-modal').modal('hide');
+      confirmarBorradoDatos();
+    }
+  }, 100);
+  
+
+  document.addEventListener('mouseup', cancelarBorradoDatos);
+  document.addEventListener('mouseleave', cancelarBorradoDatos);
+
+  function cancelarBorradoDatos() {
+    clearInterval(intervalId);
+    $('#confirmar-borrado').css('background', '');
+    document.removeEventListener('mouseup', cancelarBorradoDatos);
+    document.removeEventListener('mouseleave', cancelarBorradoDatos);
+  }
+});
+
+function hayProductosEnLista() {
+  const productos = document.querySelectorAll(".producto-card");
+  return productos.length > 0;
+}
+
+
+
+function desasignarClickEventAProductos() {
+  const productos = document.querySelectorAll(".producto-card");
+  productos.forEach((producto) => {
+    producto.removeEventListener("click", editarProducto);
+  });
+}
 
 function actualizarPrecio(precioElement, nuevoPrecio) {
   precioElement.textContent = '$' + nuevoPrecio.toFixed(2);
@@ -264,16 +364,25 @@ function facturar() {
   } else {
     facturacionDiv.style.backgroundColor = '#fafafa';
   }
+
+  // Añadir esta línea para mover la ventana al inicio de la página
+  window.scrollTo(0, 0);
 }
 
+
 document.getElementById('cargarProductos').addEventListener('click', cargarProductos);
-document.getElementById('guardarProductos').addEventListener('click', guardarProductos);
+document.getElementById('guardarProductos').addEventListener('click', guardarProductosConConfirmacion);
 document.getElementById('exportarProductos').addEventListener('click', exportarProductos);
 document.getElementById('importarProductos').addEventListener('click', () => document.getElementById('archivoImportar').click());
 document.getElementById('archivoImportar').addEventListener('change', importarProductos);
 
-function guardarProductos() {
+function guardarProductosSinConfirmacion() {
   const listaProductos = document.getElementById('listaProductos');
+
+  if (listaProductos.children.length === 0) {
+    return;
+  }
+
   const productos = Array.from(listaProductos.children).map(li => {
     const nombreProducto = li.querySelector('.nombreProducto');
     const precio = li.querySelector('.precio');
@@ -290,8 +399,32 @@ function guardarProductos() {
 
   const productosJson = JSON.stringify(productos);
   localStorage.setItem('productos', productosJson);
-  showNotification('Los cambios se han guardado y aplicado correctamente', 3000, 'success', 'fa fa-check');
 }
+
+function guardarProductosConConfirmacion() {
+  const listaProductos = document.getElementById('listaProductos');
+
+  if (listaProductos.children.length === 0) {
+    alert('No hay productos en la lista para guardar.');
+    return;
+  }
+
+  const ConfirmaGuardar = new bootstrap.Modal(document.getElementById('ConfirmaGuardar'), {
+    backdrop: 'static',
+    keyboard: false
+  });
+
+  const confirmarGuardar = document.getElementById('confirmarGuardar');
+
+  confirmarGuardar.addEventListener('click', () => {
+    guardarProductosSinConfirmacion();
+    showNotification('Los cambios se han guardado y aplicado correctamente', 3000, 'success', 'fa fa-check');
+    ConfirmaGuardar.hide();
+  });
+
+  ConfirmaGuardar.show();
+}
+
 
 
 function cargarProductos() {
@@ -327,6 +460,8 @@ function cargarProductos() {
   });
 
   cargarOrdenTarjetas();
+  
+  
 }
 
 
@@ -388,6 +523,13 @@ function obtenerColorCategoria(categoria) {
 
 function exportarProductos() {
   const listaProductos = document.getElementById('listaProductos');
+  
+  if (listaProductos.children.length === 0) {
+    // Muestra una notificación o alerta aquí para informar al usuario que no hay productos en la lista
+    alert('No hay productos en la lista para exportar.');
+    return;
+  }
+
   const productos = Array.from(listaProductos.children).map(li => {
     const nombreProducto = li.querySelector('.nombreProducto').textContent;
     const precio = parseFloat(li.querySelector('.precio').textContent.substring(1));
@@ -395,36 +537,48 @@ function exportarProductos() {
     return { nombreProducto, precio, categoria: categoriaProducto };
   });
 
-  const productosJson = JSON.stringify(productos);
-  const blob = new Blob([productosJson], { type: 'application/json' });
+  const categoriasData = JSON.parse(localStorage.getItem('categorias')) || [];
+
+  const dataExport = {
+    productos: productos,
+    categorias: categoriasData
+  };
+
+  const dataJson = JSON.stringify(dataExport);
+  const blob = new Blob([dataJson], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   const link = document.createElement('a');
   link.href = url;
-  link.download = 'productos.json';
+  link.download = 'productos_categorias.json';
   link.click();
   URL.revokeObjectURL(url);
-  showNotification('Productos exportados en un archivo descargable');
+  showNotification('Productos y categorías exportados en un archivo descargable');
 }
+
 
 function importarProductos(event) {
   const archivo = event.target.files[0];
-  const reader = new FileReader();
+  const listaProductos = document.getElementById('listaProductos');
 
-  reader.onload = function (e) {
-    const productos = JSON.parse(e.target.result);
-    const listaProductos = document.getElementById('listaProductos');
-    listaProductos.innerHTML = '';
-    productos.forEach(producto => {
-      document.getElementById('nombreProducto').value = producto.nombreProducto;
-      document.getElementById('precio').value = producto.precio;
-      document.getElementById('categoriaProducto').value = producto.categoria;
-      agregarProducto();
+  if (listaProductos.children.length > 0) {
+    const ConfirmaImportar = new bootstrap.Modal(document.getElementById('ConfirmaImportar'), {
+      backdrop: 'static',
+      keyboard: false
     });
 
-    showNotification('Productos importados correctamente');
-  };
-  reader.readAsText(archivo);
+    const confirmarImportar = document.getElementById('confirmarImportar');
+
+    confirmarImportar.addEventListener('click', () => {
+      ConfirmaImportar.hide();
+      leerArchivo(archivo);
+    });
+
+    ConfirmaImportar.show();
+  } else {
+    leerArchivo(archivo);
+  }
 }
+
 
 
 
@@ -432,6 +586,8 @@ function importarProductos(event) {
 const botonToggleAgregarProducto = document.getElementById('toggleAgregarProducto');
 const contenidoFormularioAgregarProducto = document.querySelector('.contenidoFormulario');
 const tarjetasProducto = document.querySelectorAll('.producto-card');
+const botonToggleFactura = document.getElementById('toggleFactura'); 
+
 
 botonToggleAgregarProducto.addEventListener('click', () => {
   contenidoFormularioAgregarProducto.classList.toggle('mostrar');
@@ -440,11 +596,13 @@ botonToggleAgregarProducto.addEventListener('click', () => {
   const hayProductos = document.getElementById('listaProductos').children.length > 0;
   const menuDesplegado = contenidoFormularioAgregarProducto.classList.contains('mostrar');
   actualizarTextoProductosAFacturar(menuDesplegado, hayProductos);
-  
+
   if (contenidoFormularioAgregarProducto.classList.contains('mostrar')) {
     const seccionFacturacion = document.querySelector('.facturacion');
     document.querySelectorAll('.producto-card').forEach(tarjeta => tarjeta.style.backgroundColor = '#b4bbc817');
     botonToggleAgregarProducto.classList.add('toggle-active');
+    menuContainer.style.display = 'none';
+
     const buscarProducto = document.getElementById('buscarProducto');
     const productosAFacturar = document.getElementById('productosAFacturar');
     const botonFacturar = document.getElementById('facturar');
@@ -459,12 +617,15 @@ botonToggleAgregarProducto.addEventListener('click', () => {
     productosAFacturar.style.display = 'none';
     botonFacturar.style.display = 'none';
     botonSiguienteCliente.style.display = 'none';
+
+    botonToggleFactura.style.display = 'none'; 
   } else {
     mostrarOcultarBotonFacturar();
+    menuContainer.style.display = 'block';
+
+    botonToggleFactura.style.display = 'block'; 
   }
 });
-
-
 
 function mostrarOcultarBotonFacturar() {
   const listaProductos = document.getElementById('listaProductos');
@@ -496,9 +657,6 @@ function mostrarOcultarBotonFacturar() {
     contenedorBuscarFiltrar.style.display = 'block';
   }
 }
-
-
-
 
 
 function showNotification(message, duration = 3000) {
@@ -534,14 +692,27 @@ const buscarProducto = document.getElementById('buscarProducto');
 const listaProductos = document.getElementById('listaProductos');
 buscarProducto.addEventListener('input', () => {
   const valorBusqueda = buscarProducto.value.trim().toLowerCase();
+  let visibleCount = 0;
   listaProductos.childNodes.forEach((producto) => {
     if (producto.querySelector('.nombreProducto').textContent.trim().toLowerCase().includes(valorBusqueda)) {
       producto.style.display = 'block';
+      visibleCount++;
     } else {
       producto.style.display = 'none';
     }
   });
+
+  // Mostrar u ocultar el mensaje "Sin resultados"
+  const noResultsMessage = document.getElementById('noResultsMessage');
+  const noResultsText = noResultsMessage.querySelector('.no-results-text');
+  if (visibleCount === 0) {
+    noResultsText.textContent = `Sin resultados para "${buscarProducto.value.trim()}"`;
+    noResultsMessage.style.display = 'block';
+  } else {
+    noResultsMessage.style.display = 'none';
+  }
 });
+
 
 
 function siguienteCliente() {
@@ -827,13 +998,10 @@ document.getElementById("exportarConfig").addEventListener("click", exportarConf
 document.getElementById("importarConfig").addEventListener("click", function () {
   document.getElementById("archivoConfig").click();
 });
+
 document.getElementById("archivoConfig").addEventListener("change", importarConfig);
-
-
-
-
-
 document.getElementById("facturar").addEventListener("click", function () {
+  
   facturar();
 
   const totalFacturado = parseFloat(document.getElementById("total").textContent);
@@ -1025,7 +1193,6 @@ function playSiguienteClienteSound() {
   }
 }
 
-
 function loadSavedTexts() {
   var messageInput = document.getElementById("message-input");
   var endMessageInput = document.getElementById("end-message-input");
@@ -1071,196 +1238,6 @@ const closeButtons = document.querySelectorAll("#historialVentasModal .btn-close
 closeButtons.forEach(button => {
   button.addEventListener('click', closeHistorialVentasModal);
 });
-
-
-function facturarRapido() {
-  guardarConfiguracionFacturacionRapida();
-}
-
-document.getElementById('facturacionRapidaBtn').addEventListener('click', () => {
-  $('#facturarapida1').modal('show');
-  actualizarFacturacionRapida();
-  cargarConfiguracionFacturacionRapida();
-});
-
-
-function guardarConfiguracionFacturacionRapida() {
-
-  const facturacionRapidaInputs = document.querySelectorAll('.facturacion-rapida-cantidad');
-  let configuracion = {};
-
-  facturacionRapidaInputs.forEach(input => {
-    const nombreProducto = input.getAttribute('data-producto');
-    configuracion[nombreProducto] = input.value;
-  });
-
-  console.log('Guardando configuración:', configuracion);
-  localStorage.setItem("configuracionFacturacionRapida", JSON.stringify(configuracion));
-
-
-  const notificationFast = document.getElementById('NotificationFast');
-  notificationFast.classList.remove('d-none');
-
-
-  setTimeout(() => {
-    notificationFast.classList.add('d-none');
-  }, 3000);
-}
-
-const aplicarBtn = document.querySelector("#facturarapida1 .btn-primary");
-aplicarBtn.addEventListener("click", () => {
-  facturarRapido();
-  guardarConfiguracionFacturacionRapida();
-  resetearValoresFacturacionComun();
-
-});
-
-
-function cargarValoresFacturacionRapida(configuracion) {
-  const listaProductos = document.getElementById('listaProductos');
-  const productos = listaProductos.querySelectorAll('.producto-card');
-
-  productos.forEach(producto => {
-    const nombreProducto = producto.querySelector('.nombreProducto').textContent;
-    if (configuracion.hasOwnProperty(nombreProducto)) {
-      producto.querySelector('.cantidad').value = configuracion[nombreProducto];
-    }
-  });
-}
-
-
-function cargarConfiguracionFacturacionRapida() {
-  const configuracion = JSON.parse(localStorage.getItem("configuracionFacturacionRapida"));
-  console.log('Cargando configuración:', configuracion);
-
-  if (configuracion) {
-    cargarValoresFacturacionRapida(configuracion);
-  }
-}
-
-
-function actualizarFacturacionRapida() {
-  const listaProductos = document.getElementById('listaProductos');
-  const productos = listaProductos.querySelectorAll('.producto-card');
-  const facturacionRapidaProductos = document.getElementById('facturacionRapidaProductos');
-
-  facturacionRapidaProductos.innerHTML = '';
-
-  productos.forEach((producto, index) => {
-    const nombreProducto = producto.querySelector('.nombreProducto').textContent;
-    const cantidad = parseInt(producto.querySelector('.cantidad').value);
-
-    const col = document.createElement('div');
-    col.classList.add('col-md-4');
-
-    const formGroup = document.createElement('div');
-    formGroup.classList.add('form-group');
-
-    const label = document.createElement('label');
-    label.textContent = nombreProducto;
-    formGroup.appendChild(label);
-
-    const input = document.createElement('input');
-    input.type = 'number';
-    input.min = '0';
-    input.max = '999999';
-    input.value = cantidad;
-    input.classList.add('form-control', 'facturacion-rapida-cantidad');
-    input.setAttribute('data-producto', nombreProducto);
-
-
-    input.addEventListener('change', function () {
-      if (this.value > 999999) {
-        this.value = 999999;
-        alert('El valor máximo permitido es 999999');
-      }
-    });
-
-    formGroup.appendChild(input);
-
-    col.appendChild(formGroup);
-    facturacionRapidaProductos.appendChild(col);
-
-    if ((index + 1) % 3 === 0) {
-      const clearfix = document.createElement('div');
-      clearfix.classList.add('clearfix');
-      facturacionRapidaProductos.appendChild(clearfix);
-    }
-  });
-}
-
-function resetearValoresFacturacionComun() {
-  const listaProductos = document.getElementById('listaProductos');
-  const productos = listaProductos.querySelectorAll('.producto-card');
-
-  productos.forEach(producto => {
-    producto.querySelector('.cantidad').value = 0;
-  });
-}
-
-
-document.querySelector("#facturarapida1 .btn.btn-secondary").addEventListener("click", () => {
-  resetearValoresFacturacionComun();
-});
-
-
-document.getElementById('facturacionRapidaBtn').addEventListener('click', () => {
-  actualizarFacturacionRapida();
-  $('#facturarapida1').modal('show');
-});
-
-document.getElementById('cargarFacturacionRapida').addEventListener('click', () => {
-  cargarConfiguracionFacturacionRapida();
-});
-
-document.getElementById('cargarFacturacionRapida').addEventListener('click', function () {
-  const button = this;
-  const text = button.querySelector('.original-text');
-
-  text.textContent = 'Cargado';
-
-  setTimeout(function () {
-    text.textContent = 'Factura Rápida';
-  }, 1000);
-});
-
-
-const facturacionRapidaBtn = document.getElementById('facturacionRapidaBtn');
-const facturarapida1 = document.getElementById('facturarapida1');
-
-facturacionRapidaBtn.addEventListener('click', function () {
-
-  const listaProductos = document.getElementById('listaProductos');
-  const productos = listaProductos.querySelectorAll('.producto-card');
-  const hayProductos = productos.length > 0;
-  const mensajeContainer = facturarapida1.querySelector('.mensaje-container');
-  const aplicarFacturacionRapida = document.getElementById('aplicarFacturacionRapida');
-
-  if (hayProductos) {
-    mensajeContainer.style.display = 'none';
-    aplicarFacturacionRapida.style.display = 'block';
-  } else {
-    mensajeContainer.style.display = 'block';
-    aplicarFacturacionRapida.style.display = 'none';
-  }
-});
-
-
-const restablecerFacturacionRapida = document.getElementById('restablecerFacturacionRapida');
-
-restablecerFacturacionRapida.addEventListener('click', function () {
-  const confirmacion = confirm('¿Quieres restablecer todos los valores de los campos?');
-
-  if (confirmacion) {
-    const facturacionRapidaProductos = document.getElementById('facturacionRapidaProductos');
-    const inputs = facturacionRapidaProductos.querySelectorAll('.facturacion-rapida-cantidad');
-
-    inputs.forEach(input => {
-      input.value = 0;
-    });
-  }
-});
-
 
 
 function filterTable() {
@@ -1331,7 +1308,7 @@ autoguardarProductos.addEventListener('change', () => {
   guardarEstadoAutoguardado();
 
   if (autoguardarProductos.checked) {
-    guardarProductos();
+    guardarProductosSinConfirmacion()
   }
 });
 
@@ -1341,13 +1318,20 @@ function guardarEstadoAutoguardado() {
 }
 
 function cargarEstadoAutoguardado() {
-  const autoguardadoActivo = localStorage.getItem('autoguardadoActivo');
+ 
 
-  if (autoguardadoActivo === 'true') {
-    autoguardarProductos.checked = true;
-  } else {
-    autoguardarProductos.checked = false;
+  try {
+    const autoguardadoActivo = localStorage.getItem('autoguardadoActivo');
+    if (autoguardadoActivo === 'true') {
+      autoguardarProductos.checked = true;
+    } else {
+      autoguardarProductos.checked = false;
+    }
+  } catch (error) {
+    console.log(`Error al intentar leer el valor de autoguardadoActivo en localStorage: ${error}`);
   }
+
+
 }
 
 let allProductCards = [];
@@ -1433,7 +1417,7 @@ confirmarDeleteAllBtn.addEventListener("click", () => {
   const listaProductos = document.getElementById("listaProductos");
   listaProductos.innerHTML = "";
   confirmaDeleteAll.modal("hide");
-  guardarProductos();
+  guardarProductosSinConfirmacion()
   cerrarEditarProducto.click();
   cerrarEditarProductoModal();
 });
@@ -1476,7 +1460,7 @@ function abrirAdministrarCategorias() {
       keyboard: false
     });
   }
-  
+
   cargarCategorias();
   administrarCategoriasModal.show();
 }
@@ -1514,7 +1498,7 @@ function guardarCategorias() {
 function cargarCategorias() {
   const categoriasContainer = document.getElementById('categoriasContainer');
   categoriasContainer.innerHTML = '';
-  
+
   const categoriasData = JSON.parse(localStorage.getItem('categorias')) || [];
 
   categoriasData.forEach(categoriaData => {
@@ -1574,7 +1558,6 @@ function cargarCategoriasSelect(selectElementId) {
     categoriasSelect.appendChild(option);
   });
 }
-
 
 
 function actualizarCategoriaSelect(producto) {
@@ -1732,6 +1715,381 @@ precioInput.addEventListener("input", () => {
   const precio = parseInt(precioInput.value, 10);
   precioLabel2.textContent = isNaN(precio) ? "" : precio;
 });
+
+
+const MAX_PRESETS = 100;
+const PRESETS_KEY = 'facturacionRapidaPresets';
+let presets = [];
+
+function crearBotonesFacturacionRapida() {
+  const facturacionRapidaTab = document.getElementById('facturacion-rapida-tab');
+  facturacionRapidaTab.innerHTML = '';
+
+  presets.forEach((preset, index) => {
+    const listItem = document.createElement('div');
+    listItem.classList.add('d-flex', 'align-items-center', 'mb-2');
+    facturacionRapidaTab.appendChild(listItem);
+
+    const tabButton = document.createElement('a');
+    tabButton.classList.add('nav-link', 'facturacion-rapida-tab', 'facturacion-rapida-tab-btn');
+    tabButton.id = `facturacion-rapida-${index + 1}-tab`;
+    tabButton.textContent = `Factura Rápida ${index + 1}`;
+    tabButton.setAttribute('href', `#facturacion-rapida-${index + 1}`);
+    tabButton.setAttribute('data-toggle', 'pill');
+    tabButton.setAttribute('role', 'tab');
+    tabButton.setAttribute('aria-controls', `facturacion-rapida-${index + 1}`);
+    tabButton.setAttribute('aria-selected', 'false');
+    tabButton.setAttribute('data-title', `Estás editando la Facturación Rápida ${index + 1}`);
+    listItem.appendChild(tabButton);
+
+
+    const presetCheck = document.createElement('i');
+    presetCheck.id = `preset-check-${index}`;
+    presetCheck.classList.add(presets[index].enabled ? 'far' : 'fas', 'fa-eye', presets[index].enabled ? 'fa-eye' : 'fa-eye-slash', 'ml-2');
+    presetCheck.style.color = presets[index].enabled ? 'black' : 'gray';
+    listItem.appendChild(presetCheck);
+
+    const resetButton = document.createElement('i');
+    resetButton.classList.add('fas', 'fa-eraser', 'ml-2');
+    listItem.appendChild(resetButton);
+    
+    resetButton.addEventListener('click', async () => {
+      $('#confirmacionRestablecerFacturaRapida').modal('show');
+      
+      const confirmarRestablecer = document.getElementById('confirmarRestablecer');
+      confirmarRestablecer.addEventListener('click', () => {
+        const activePreset = document.querySelector(`#facturacion-rapida-${index + 1}`);
+        if (activePreset) {
+          activePreset.querySelectorAll('input[type="number"]').forEach((input) => {
+            input.value = 0;
+          });
+          presets[index].values = Array(CANTIDAD_PRODUCTOS).fill(0);
+          guardarPresets();
+          $('#confirmacionRestablecerFacturaRapida').modal('hide');
+        }
+      });
+    });
+    
+    tabButton.addEventListener('click', () => {
+      const pageNumber = index + 1;
+});
+
+    presetCheck.addEventListener('click', () => {
+      presets[index].enabled = !presets[index].enabled;
+      presetCheck.className = '';
+      presetCheck.classList.add(presets[index].enabled ? 'far' : 'fas', 'fa-eye', presets[index].enabled ? 'fa-eye' : 'fa-eye-slash', 'ml-2');
+      presetCheck.style.color = presets[index].enabled ? 'black' : 'gray';
+      guardarPresets();
+      actualizarMinitableroPresets();
+    });
+
+    tabButton.addEventListener('click', () => {
+      document.querySelectorAll('.facturacion-rapida-tab').forEach(tab => {
+        tab.classList.remove('active');
+      });
+      generarFacturacionRapida(index);
+    });
+  });
+}
+
+
+function actualizarMinitableroPresets() {
+  const minitableroPresets = document.getElementById("minitablero-presets");
+  minitableroPresets.innerHTML = '';
+
+  let textoPersonalizar = document.getElementById('textoPersonalizar');
+  if (!textoPersonalizar) {
+    textoPersonalizar = document.createElement('button');
+    textoPersonalizar.id = 'textoPersonalizar';
+    textoPersonalizar.classList.add('btn', 'btn-sm', 'btn-outline-secondary');
+    textoPersonalizar.innerHTML = 'Personalizar<i class="fas fa-edit ml-2"></i>';
+    minitableroPresets.parentElement.appendChild(textoPersonalizar);
+
+    textoPersonalizar.addEventListener('click', () => {
+      abrirFacturacionRapida(0); 
+    });
+  }
+
+
+  presets.forEach((preset, index) => {
+    if (preset.enabled) {
+      const presetButton = document.createElement('button');
+      presetButton.type = 'button';
+      presetButton.classList.add('btn', 'btn-sm', 'btn-outline-secondary');
+      presetButton.setAttribute('data-preset-index', index);
+      presetButton.textContent = index + 1;
+      minitableroPresets.appendChild(presetButton);
+
+      presetButton.addEventListener('click', () => {
+        cargarPresetEnFacturacion(index);
+      });
+
+      presetButton.addEventListener('contextmenu', (event) => {
+        event.preventDefault();
+        abrirFacturacionRapida(index);
+      });
+    }
+  });
+
+  actualizarTextoPersonalizar();
+}
+
+function generarFacturacionRapida(presetIndex) {
+
+  const facturacionContenido = document.getElementById('facturacion-contenido');
+  facturacionContenido.innerHTML = '';
+
+  const tabPane = document.createElement('div');
+  tabPane.classList.add('tab-pane', 'fade', 'show', 'active');
+  tabPane.id = `facturacion-rapida-${presetIndex + 1}`;
+  tabPane.setAttribute('role', 'tabpanel');
+  tabPane.setAttribute('aria-labelledby', `facturacion-rapida-${presetIndex + 1}-tab`);
+  facturacionContenido.appendChild(tabPane);
+
+  const pageTitle = document.createElement('h4');
+  pageTitle.textContent = `Estás editando la factura rápida ${presetIndex + 1}:`;
+  pageTitle.style.marginLeft = "4px";
+  pageTitle.style.fontFamily = "Segoe UI, sans-serif"; 
+  pageTitle.style.fontWeight = "400";
+  pageTitle.style.fontSize = "1.4rem";
+  const icon = document.createElement('span');
+  icon.className = 'fas fa-edit';
+  icon.style.marginRight = "7px";
+  icon.style.color = "#333";
+  icon.style.padding = "2px";
+  icon.style.borderRadius = "50%";
+  icon.style.background = "#fff";
+  
+  pageTitle.insertBefore(icon, pageTitle.firstChild);
+  tabPane.appendChild(pageTitle);
+
+  const table = document.createElement('table');
+  table.classList.add('table');
+  tabPane.appendChild(table);
+  const thead = document.createElement('thead');
+  table.appendChild(thead);
+  const trHeader = document.createElement('tr');
+  thead.appendChild(trHeader);
+  const thProducto = document.createElement('th');
+  thProducto.textContent = 'Lista de Productos';
+  trHeader.appendChild(thProducto);
+  const thCantidad = document.createElement('th');
+  thCantidad.textContent = 'Cantidad';
+  trHeader.appendChild(thCantidad);
+  const tbody = document.createElement('tbody');
+  table.appendChild(tbody);
+  const productos = document.querySelectorAll('.producto-card');
+  productos.forEach((producto, index) => {
+    const productoId = producto.getAttribute('data-id');
+    const nombreProducto = producto.querySelector('.nombreProducto').textContent;
+    const inputCantidad = producto.querySelector(`#cantidad-${productoId}`);
+    const tr = document.createElement('tr');
+    tbody.appendChild(tr);
+
+    const tdProducto = document.createElement('td');
+    tdProducto.textContent = nombreProducto;
+    tr.appendChild(tdProducto);
+    const tdCantidad = document.createElement('td');
+    const cantidadInput = document.createElement('input');
+    cantidadInput.type = 'number';
+    cantidadInput.id = `preset-cantidad-${productoId}-${presetIndex}`;
+    cantidadInput.classList.add('form-control', 'form-control-sm');
+    cantidadInput.min = 0;
+    cantidadInput.max = 999999;
+    cantidadInput.style.width = '5rem';
+    cantidadInput.value = presets[presetIndex].values[index];
+    cantidadInput.addEventListener('input', () => {
+      const cantidad = parseInt(cantidadInput.value);
+      presets[presetIndex].values[index] = cantidad;
+      guardarPresets();
+    });
+
+    tdCantidad.appendChild(cantidadInput);
+    tr.appendChild(tdCantidad);
+  });
+  
+  const row = document.createElement('div');
+  row.classList.add('row');
+  tabPane.appendChild(row);
+  const colConfiguracion = document.createElement('div');
+  colConfiguracion.classList.add('col-md-2');
+  row.appendChild(colConfiguracion);
+  const colProductos = document.createElement('div');
+  colProductos.classList.add('col-md-10');
+  row.appendChild(colProductos);
+  const tableContainer = document.createElement('div');
+  tableContainer.classList.add('table-responsive');
+  colProductos.appendChild(tableContainer);
+  tableContainer.appendChild(table);
+
+}
+
+function guardarPresets() {
+  localStorage.setItem(PRESETS_KEY, JSON.stringify(presets));
+}
+
+const CANTIDAD_PRODUCTOS = document.querySelectorAll(".producto-card").length;
+
+function cargarPresets() {
+  const presetsGuardados = JSON.parse(localStorage.getItem(PRESETS_KEY));
+  
+  if (presetsGuardados && presetsGuardados.length === MAX_PRESETS) {
+    presets = presetsGuardados;
+  } else {
+    presets = [];
+    for (let i = 0; i < MAX_PRESETS; i++) {
+      const preset = {
+        enabled: false,
+        values: Array(CANTIDAD_PRODUCTOS).fill(0)
+      };
+
+      if (presetsGuardados && presetsGuardados[i]) {
+        Object.assign(preset, presetsGuardados[i]);
+      }
+      
+      presets.push(preset);
+    }
+    guardarPresets();
+  }
+
+  crearBotonesFacturacionRapida();
+  actualizarMinitableroPresets();
+}
+
+
+function cargarPresetEnFacturacion(presetIndex) {
+  const productos = document.querySelectorAll('.producto-card');
+  productos.forEach((producto, index) => {
+    const productoId = producto.getAttribute('data-id');
+    const inputCantidad = producto.querySelector(`#cantidad-${productoId}`);
+    
+    if (typeof presets[presetIndex].values[index] !== 'undefined') {
+      inputCantidad.value = presets[presetIndex].values[index];
+    } else {
+      inputCantidad.value = 0;
+    }
+  });
+
+  const btnFacturacionRapida = document.querySelector('#toggleFactura');
+  const btnTextOriginal = btnFacturacionRapida.querySelector('.original-text');
+  btnTextOriginal.innerText = `Cargado el preset ${presetIndex + 1}`;
+  const boltIcon = btnFacturacionRapida.querySelector('i');
+  boltIcon.className = 'fas fa-bolt slide-bolt';
+  setTimeout(() => {
+    btnTextOriginal.innerText = 'Factura Rápida';
+    boltIcon.className = 'fas fa-bolt';
+  }, 1000);
+}
+
+
+function crearMinitableroPresets() {
+  const minitableroPresets = document.getElementById("minitablero-presets");
+  const presetButtons = minitableroPresets.querySelectorAll("button");
+
+  presetButtons.forEach((presetButton) => {
+    const presetIndex = parseInt(presetButton.getAttribute("data-preset-index"));
+
+    presetButton.addEventListener("click", () => {
+      cargarPresetEnFacturacion(presetIndex);
+    });
+  });
+}
+
+crearMinitableroPresets();
+
+function abrirFacturacionRapida(presetIndex) {
+  $('#facturacion-rapida-modal').modal('show');
+  const facturacionRapidaTab = document.getElementById(`facturacion-rapida-${presetIndex + 1}-tab`);
+  facturacionRapidaTab.click();
+}
+
+const tabs = document.querySelectorAll('.facturacion-rapida-tab');
+const observer = new MutationObserver((mutations) => {
+  mutations.forEach((mutation) => {
+    if (mutation.attributeName === 'class') {
+    }
+  });
+});
+
+tabs.forEach((tab) => {
+  observer.observe(tab, { attributes: true });
+});
+
+
+const toggleFactura = document.getElementById('toggleFactura');
+const menuContainer = document.getElementById('menu-container');
+
+toggleFactura.addEventListener('click', function() {
+  menuContainer.classList.toggle('show');
+});
+
+function actualizarTextoPersonalizar() {
+  const botonesFacturaRapida = document.querySelectorAll('#minitablero-presets button');
+  const textoPersonalizar = document.getElementById('textoPersonalizar');
+
+  if (textoPersonalizar) {
+    if (botonesFacturaRapida.length === 0) {
+      textoPersonalizar.style.display = 'block';
+    } else {
+      textoPersonalizar.style.display = 'none';
+    }
+  }
+}
+function ConfirmacionRestablecerFacturaRapida() {
+  return new Promise((resolve) => {
+    const customConfirm = document.getElementById('custom-confirm');
+    const cancelButton = document.getElementById('custom-confirm-cancel');
+    const okButton = document.getElementById('custom-confirm-ok');
+
+    customConfirm.style.display = 'block';
+
+    cancelButton.addEventListener('click', () => {
+      customConfirm.style.display = 'none';
+      resolve(false);
+    });
+
+    okButton.addEventListener('click', () => {
+      customConfirm.style.display = 'none';
+      resolve(true);
+    });
+  });
+}
+
+
+function leerArchivo(archivo) {
+  const reader = new FileReader();
+
+  reader.onload = function (e) {
+    const dataImport = JSON.parse(e.target.result);
+    const productos = dataImport.productos;
+
+    const listaProductos = document.getElementById('listaProductos');
+    listaProductos.innerHTML = '';
+    let productosAgregados = 0;
+    productos.forEach(producto => {
+      document.getElementById('nombreProducto').value = producto.nombreProducto;
+      document.getElementById('precio').value = producto.precio;
+      document.getElementById('categoriaProducto').value = producto.categoria;
+      if (agregarProductoSinNotificacion()) {
+        productosAgregados++;
+      }
+    });
+
+    if (dataImport.facturacionRapida && dataImport.facturacionRapida.presets) {
+      presets = dataImport.facturacionRapida.presets;
+      guardarPresets();
+      crearBotonesFacturacionRapida();
+    }
+
+    if (productosAgregados === 1) {
+      showNotification('Producto importado correctamente');
+    } else if (productosAgregados > 1) {
+      showNotification('Varios productos agregados');
+    }
+  };
+  reader.readAsText(archivo);
+}
+
 
 
 
